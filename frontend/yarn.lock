@@ -7069,9 +7069,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"front@workspace:.":
+"frontend@workspace:.":
   version: 0.0.0-use.local
-  resolution: "front@workspace:."
+  resolution: "frontend@workspace:."
   dependencies:
     "@babel/eslint-parser": ^7.15.8
     "@babel/preset-react": ^7.14.5
