@@ -23,7 +23,7 @@
   },
   "scripts": {
     "start": "craco start",
-    "build": "craco build",
+    "build": "jest",
     "test": "craco test",
     "eject": "react-scripts eject"
   },
@@ -48,6 +48,7 @@
   "devDependencies": {
     "@babel/eslint-parser": "^7.15.8",
     "@babel/preset-react": "^7.14.5",
+    "@reduxjs/toolkit": "^1.6.2",
     "@svgr/webpack": "^5.5.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
