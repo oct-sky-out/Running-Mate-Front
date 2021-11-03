@@ -1,5 +1,4 @@
 FROM node:14-alpine
-ENV NODE_ENV=production
 RUN yarn install
 RUN yarn upgrade berry
 WORKDIR /usr/src/app
