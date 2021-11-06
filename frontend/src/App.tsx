@@ -1,12 +1,16 @@
-import React from 'react';
-import './App.css';
-import Header from './Header/Header';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import GuestPage from './GuestPage/GuestPage';
+import Home from './Home/Home';
 
 function App() {
   return (
-    <div className="App">
-      <Header />
-    </div>
+    <BrowserRouter>
+      <Switch>
+        <Route exact path="/" component={GuestPage} />
+        <Route exact path="/home" component={Home} />
+      </Switch>
+      <div id="modal" />
+    </BrowserRouter>
   );
 }
 
