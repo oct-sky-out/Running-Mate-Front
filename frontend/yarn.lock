@@ -7448,6 +7448,7 @@ __metadata:
     query-string: ^7.0.1
     react: ^17.0.2
     react-app-rewired: ^2.1.8
+    react-daum-postcode: ^3.0.0
     react-dom: ^17.0.2
     react-icons: ^4.3.1
     react-redux: ^7.2.6
@@ -13103,6 +13104,16 @@ fsevents@^1.2.7:
   bin:
     react-app-rewired: bin/index.js
   checksum: eb4a3003b8a5950a8cad73f459b3dc944be9569291cb9374ba61b837f89329301eff68cf3d42b7d7b2f6e583c6e9229440d98d2aac002e1e31a6c549a1574d7a
+  languageName: node
+  linkType: hard
+
+"react-daum-postcode@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "react-daum-postcode@npm:3.0.0"
+  dependencies:
+    prop-types: ^15.7.2
+    react: ^17.0.2
+  checksum: cae14f6f22ef872d95f28a9d9402297295a9ae99edc4ff79833a1be9404bcfb23a054e654704acd888cbdcf58105d9efcc1fd726cba405de7622038c5358c2d7
   languageName: node
   linkType: hard
 
