@@ -1,12 +1,11 @@
 import { Button } from '@nextui-org/react';
-// import styles from './Home.module.css';
+import styles from './Home.module.css';
+import Adress from '../adress/Adress';
 
 const Home = () => {
   return (
-    <>
-      <div>
-        <div>런닝맨 로고 이미지</div>
-      </div>
+    <div>
+      <div>런닝맨 로고 이미지</div>
       <div className="flex">
         <Button>서울</Button>
         <Button>대전</Button>
@@ -15,8 +14,9 @@ const Home = () => {
         <Button>광주</Button>
         <Button>기타</Button>
       </div>
+      <Adress />
       <div>게시판</div>
-    </>
+    </div>
   );
 };
 
