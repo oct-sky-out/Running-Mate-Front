@@ -3,9 +3,9 @@ import {
   useSelector as reduxUseSelector,
   TypedUseSelectorHook,
 } from 'react-redux';
-import counterReducer from './counter';
+import signUpReducer from './signUp';
 
-const rootReducer = combineReducers({ counter: counterReducer });
+const rootReducer = combineReducers({ signUp: signUpReducer });
 
 export type RootState = ReturnType<typeof rootReducer>;
 
