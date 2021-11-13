@@ -1,12 +1,12 @@
 import { useCallback, useState } from 'react';
 import { Button } from '@nextui-org/react';
 import useModalPotal from '../../hooks/useModalPotal';
-import { ReactComponent as Logo } from '../logo.svg';
+import { ReactComponent as Logo } from '../../logo.svg';
 import styles from './GuestPage.module.css';
 
 // Modal
-import SignInModal from '../../Modals/SignInModal';
-import SignUpModal from '../../Modals/SignUpModal';
+import SignInModal from '../Modals/SignInModal';
+import SignUpModal from '../Modals/SignUpModal';
 
 export default function GuestPage() {
   //* Modal
