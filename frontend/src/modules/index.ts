@@ -5,7 +5,9 @@ import {
 } from 'react-redux';
 import signUpReducer from './signUp';
 
-const rootReducer = combineReducers({ signUp: signUpReducer });
+const rootReducer = combineReducers({
+  signUp: signUpReducer,
+});
 
 export type RootState = ReturnType<typeof rootReducer>;
 

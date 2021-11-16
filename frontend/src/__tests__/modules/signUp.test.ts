@@ -6,7 +6,9 @@ const initState = {
   name: '',
   password: '',
   checkPassword: '',
-  adress: '',
+  address: '',
+  postCode: '',
+  optionAddress: '',
 };
 
 describe('', () => {
@@ -40,9 +42,20 @@ describe('', () => {
     ).toEqual('12345');
   });
 
-  test('리덕스 setAdress 액션을 통해서 adress state가 잘 바뀌는지 확인한다.', () => {
-    expect(reducer(initState, SignUpActions.setAdress('seoul')).adress).toEqual(
-      'seoul'
-    );
+  test('리덕스 setAddress 액션을 통해서 adress state가 잘 바뀌는지 확인한다.', () => {
+    expect(
+      reducer(initState, SignUpActions.setAddress('seoul')).address
+    ).toEqual('seoul');
+  });
+  test('리덕스 setPostCode 액션을 통해서 postCode state가 잘 바뀌는지 확인한다.', () => {
+    expect(
+      reducer(initState, SignUpActions.setPostCode('123')).postCode
+    ).toEqual('123');
+  });
+  test('리덕스 setOptionAddress 액션을 통해서 optionAddress state가 잘 바뀌는지 확인한다.', () => {
+    expect(
+      reducer(initState, SignUpActions.setOptionAddress('dongjak'))
+        .optionAddress
+    ).toEqual('dongjak');
   });
 });

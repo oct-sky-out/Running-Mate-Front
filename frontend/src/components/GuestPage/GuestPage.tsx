@@ -1,14 +1,17 @@
 import { useCallback, useState } from 'react';
 import { Button } from '@nextui-org/react';
+import { useDispatch } from 'react-redux';
+import { SignUpActions } from '../../modules/signUp';
 import useModalPotal from '../../hooks/useModalPotal';
-import { ReactComponent as Logo } from '../../logo.svg';
 import styles from './GuestPage.module.css';
-
+import { ReactComponent as Logo } from '../../logo.svg';
 // Modal
 import SignInModal from '../Modals/SignInModal';
 import SignUpModal from '../Modals/SignUpModal';
 
 export default function GuestPage() {
+  //* Redux
+  const dispatch = useDispatch();
   //* Modal
   const { ModalPotal, openModal, closeModal } = useModalPotal();
   //* hooks States
@@ -37,7 +40,7 @@ export default function GuestPage() {
           <span className="block text-8xl font-bold mb-4">공유하세요.</span>
           <span className="block text-4xl mb-4">Show Your Passion!</span>
         </div>
-        <div className="col-start-3 col-start-4 row-start-3 row-end-4">
+        <div className="flex col-start-3 col-start-4 row-start-3 row-end-4">
           <Button
             auto
             className="z-0"
@@ -45,7 +48,14 @@ export default function GuestPage() {
             id={`${styles.btn}`}
             onClick={signUpButtonClicked}
           >
-            <span className="text-3xl font-bold">회원가입</span>
+            <span
+              className="text-3xl font-bold"
+              onClick={() => {
+                dispatch(SignUpActions.setInit());
+              }}
+            >
+              회원가입
+            </span>
           </Button>
           <Button
             color="gradient"

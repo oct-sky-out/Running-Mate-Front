@@ -30,7 +30,6 @@ const useModalPotal = () => {
       }
     }, [mounted]);
     if (refContainer.current && activeModal && mounted) {
-      console.log(children);
       return createPortal(
         <div className="w-full h-full flex justify-center items-center fixed top-0 left-0 z-2">
           <div

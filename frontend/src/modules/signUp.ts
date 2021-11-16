@@ -6,7 +6,9 @@ interface ISignUp {
   name: string;
   password: string;
   checkPassword: string;
-  adress: string;
+  postCode: string;
+  address: string;
+  optionAddress: string;
 }
 
 const initialState: ISignUp = {
@@ -15,13 +17,27 @@ const initialState: ISignUp = {
   name: '',
   password: '',
   checkPassword: '',
-  adress: '',
+  postCode: '',
+  address: '',
+  optionAddress: '',
 };
 
 const signUpSliceReducer = createSlice({
   name: 'signUp',
   initialState,
   reducers: {
+    setInit: (state, action: PayloadAction<void>) => {
+      return {
+        email: '',
+        nickname: '',
+        name: '',
+        password: '',
+        checkPassword: '',
+        postCode: '',
+        address: '',
+        optionAddress: '',
+      };
+    },
     setEmail: {
       prepare: (email: string) => {
         return { payload: email };
@@ -62,12 +78,28 @@ const signUpSliceReducer = createSlice({
         return { ...state, checkPassword: action.payload };
       },
     },
-    setAdress: {
-      prepare: (adress: string) => {
-        return { payload: adress };
+    setPostCode: {
+      prepare: (postCode: string) => {
+        return { payload: postCode };
       },
       reducer: (state, action: PayloadAction<string>) => {
-        return { ...state, adress: action.payload };
+        return { ...state, postCode: action.payload };
+      },
+    },
+    setAddress: {
+      prepare: (address: string) => {
+        return { payload: address };
+      },
+      reducer: (state, action: PayloadAction<string>) => {
+        return { ...state, address: action.payload };
+      },
+    },
+    setOptionAddress: {
+      prepare: (optionAddress: string) => {
+        return { payload: optionAddress };
+      },
+      reducer: (state, action: PayloadAction<string>) => {
+        return { ...state, optionAddress: action.payload };
       },
     },
   },

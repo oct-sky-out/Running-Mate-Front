@@ -1,7 +1,16 @@
 import React from 'react';
 import DaumPostCode from 'react-daum-postcode';
 
-const Address: React.FC = () => {
+import { useDispatch } from 'react-redux';
+import { SignUpActions } from '../../modules/signUp';
+
+interface IProps {
+  setOpenAddressModal: (status: boolean) => void;
+}
+
+const Address: React.FC<IProps> = ({ setOpenAddressModal }) => {
+  const dispatch = useDispatch();
+
   const handleComplete = (data: any) => {
     let fullAddress = data.address;
     if (data.addressType === 'R') {
@@ -13,14 +22,16 @@ const Address: React.FC = () => {
         extraAddress +=
           extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName;
       }
-
       fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
     }
     // fullAddress -> 전체 주소반환
+    dispatch(SignUpActions.setPostCode(data.zonecode));
+    dispatch(SignUpActions.setAddress(fullAddress));
+    setOpenAddressModal(false);
   };
   return (
     <>
-      <DaumPostCode onComplete={handleComplete} className="post-code" />
+      <DaumPostCode onComplete={handleComplete} style={{ height: '100%' }} />
     </>
   );
 };

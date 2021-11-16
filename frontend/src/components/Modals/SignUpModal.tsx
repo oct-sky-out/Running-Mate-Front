@@ -2,12 +2,13 @@ import { Input, Button } from '@nextui-org/react';
 import { FormElement } from '@nextui-org/react/esm/input/input-props';
 import { RiEyeCloseLine, RiEyeLine } from 'react-icons/ri';
 
-import React, { useRef, useCallback } from 'react';
+import React, { useRef, useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { SignUpActions } from '../../modules/signUp';
 import { useSelector } from '../../modules';
+import Address from '../address/Address';
 
-import styles from './SignInModal.module.css';
+import styles from './SignUpModal.module.css';
 import { ReactComponent as KoreanLogo } from '../../assets/logo_korean.svg';
 
 interface IProps {
@@ -20,7 +21,9 @@ type signUpActionType =
   | 'setName'
   | 'setPassword'
   | 'setCheckPassword'
-  | 'setAdress';
+  | 'setPostCode'
+  | 'setAddress'
+  | 'setOptionAddress';
 
 const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
   //* Redux State
@@ -28,7 +31,7 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
   const signUpState = useSelector((state) => {
     return state.signUp;
   });
-
+  const [openAddressModal, setOpenAddressModal] = useState(false);
   const changedInputs = useCallback(
     (
       { target: { value } }: React.ChangeEvent<FormElement>,
@@ -76,6 +79,43 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
                 changedInputs(e, 'setName');
               }}
             />
+            <div className="flex space-x-4">
+              <Input
+                disabled
+                width="30%"
+                className={`mb-5 z-0 mr-3 ${styles.signIn_form}`}
+                placeholder="우편번호"
+                value={signUpState.postCode}
+                onChange={(e) => {
+                  changedInputs(e, 'setPostCode');
+                }}
+              />
+              <Button
+                onClick={() => {
+                  setOpenAddressModal(true);
+                }}
+              >
+                주소 검색
+              </Button>
+            </div>
+            <Input
+              disabled
+              width="100%"
+              className={`mb-5 z-0 ${styles.signIn_form}`}
+              placeholder="주소"
+              value={signUpState.address}
+              onChange={(e) => {
+                changedInputs(e, 'setAddress');
+              }}
+            />
+            <Input
+              width="100%"
+              className={`mb-5 z-0 ${styles.signIn_form}`}
+              placeholder="상세주소"
+              onChange={(e) => {
+                changedInputs(e, 'setOptionAddress');
+              }}
+            />
             <Input.Password
               width="100%"
               className={`mb-5 z-0 ${styles.signIn_form}`}
@@ -103,6 +143,11 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
             </div>
           </form>
         </div>
+        {openAddressModal && (
+          <div className="z-10 w-full h-full absolute top-0 left-0">
+            <Address setOpenAddressModal={setOpenAddressModal} />
+          </div>
+        )}
       </div>
     </>
   );
