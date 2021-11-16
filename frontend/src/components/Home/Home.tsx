@@ -1,6 +1,6 @@
 import { Button } from '@nextui-org/react';
 import styles from './Home.module.css';
-import Adress from '../../adress/Adress';
+import Address from '../address/Address';
 
 const Home = () => {
   return (
@@ -14,7 +14,6 @@ const Home = () => {
         <Button>광주</Button>
         <Button>기타</Button>
       </div>
-      <Adress />
       <div>게시판</div>
     </div>
   );
