@@ -42,6 +42,15 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
     [signUpState]
   );
 
+  const signUpExecuting = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (signUpState.password === signUpState.checkPassword) {
+      dispatch(
+        SignUpActions.signUpFetch({ ...signUpState, signUpFetchState: 'Fetch' })
+      );
+    }
+  };
+
   return (
     <>
       <div
@@ -54,7 +63,7 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
           <div className="mb-5">
             <span className="text-2xl">회원가입</span>
           </div>
-          <form action="">
+          <form onSubmit={(e) => {}}>
             <Input
               width="100%"
               className={`mb-5 z-0 ${styles.signIn_form}`}
@@ -137,7 +146,11 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
               }}
             />
             <div className="h-full flex justify-center align-center">
-              <Button id={`${styles.signIn_btn}`} className="z-0 important">
+              <Button
+                type="submit"
+                id={`${styles.signIn_btn}`}
+                className="z-0 important"
+              >
                 가입하기
               </Button>
             </div>

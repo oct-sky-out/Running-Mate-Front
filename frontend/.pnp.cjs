@@ -50,6 +50,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/react-dom", "npm:17.0.10"],
             ["@types/react-redux", "npm:7.1.20"],
             ["@types/react-router-dom", "npm:5.3.1"],
+            ["@types/redux-saga", "npm:0.10.5"],
             ["@types/uuid", "npm:8.3.1"],
             ["@typescript-eslint/parser", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:5.3.0"],
             ["autoprefixer", "npm:9.8.8"],
@@ -5695,6 +5696,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/history", "npm:4.7.9"],
             ["@types/react", "npm:17.0.31"],
             ["@types/react-router", "npm:5.1.17"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@types/redux-saga", [
+        ["npm:0.10.5", {
+          "packageLocation": "./.yarn/cache/@types-redux-saga-npm-0.10.5-032d2b6de0-cc628525e0.zip/node_modules/@types/redux-saga/",
+          "packageDependencies": [
+            ["@types/redux-saga", "npm:0.10.5"],
+            ["redux-saga", "npm:1.1.3"]
           ],
           "linkType": "HARD",
         }]
@@ -11586,6 +11597,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/react-dom", "npm:17.0.10"],
             ["@types/react-redux", "npm:7.1.20"],
             ["@types/react-router-dom", "npm:5.3.1"],
+            ["@types/redux-saga", "npm:0.10.5"],
             ["@types/uuid", "npm:8.3.1"],
             ["@typescript-eslint/parser", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:5.3.0"],
             ["autoprefixer", "npm:9.8.8"],

@@ -9,11 +9,6 @@ import App from './App';
 import './index.css';
 
 const sagaMiddleware = createSagaMiddleware();
-const store = configureStore({
-  reducer: rootReducer,
-  middleware: [sagaMiddleware],
-  devTools: true,
-});
 
 const initStore = () => {
   const store = configureStore({
