@@ -1,4 +1,4 @@
-import { call, takeLatest, put } from 'redux-saga/effects';
+import { call, takeLatest, put } from '@redux-saga/core/effects';
 import { ISignUpForm } from '../types/signUpTypes';
 import { SignUpActions } from '../signUp';
 
