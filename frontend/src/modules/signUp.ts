@@ -1,15 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { ISignUp, ISignUpForm } from './types/signUpTypes';
 
-interface ISignUp {
-  email: string;
-  nickname: string;
-  name: string;
-  password: string;
-  checkPassword: string;
-  postCode: string;
-  address: string;
-  optionAddress: string;
-}
+type fetchStateType = '' | 'Fetch' | 'Success' | 'Error';
 
 const initialState: ISignUp = {
   email: '',
@@ -20,6 +12,13 @@ const initialState: ISignUp = {
   postCode: '',
   address: '',
   optionAddress: '',
+  signUpFetchState: '',
+  success: {
+    nickName: '',
+  },
+  error: {
+    code: '',
+  },
 };
 
 const signUpSliceReducer = createSlice({
@@ -36,6 +35,13 @@ const signUpSliceReducer = createSlice({
         postCode: '',
         address: '',
         optionAddress: '',
+        signUpFetchState: '',
+        success: {
+          nickName: '',
+        },
+        error: {
+          code: '',
+        },
       };
     },
     setEmail: {
@@ -100,6 +106,45 @@ const signUpSliceReducer = createSlice({
       },
       reducer: (state, action: PayloadAction<string>) => {
         return { ...state, optionAddress: action.payload };
+      },
+    },
+    signUpFetch: {
+      prepare: (
+        signUpForm: ISignUpForm & { signUpFetchState: fetchStateType }
+      ) => {
+        return { payload: signUpForm };
+      },
+      reducer: (
+        state,
+        action: PayloadAction<
+          ISignUpForm & { signUpFetchState: fetchStateType }
+        >
+      ) => {
+        return { ...state, signUpFetchState: action.payload.signUpFetchState };
+      },
+    },
+    signUpFetchSuccess: {
+      prepare: (successData: string) => {
+        return { payload: successData };
+      },
+      reducer: (state, action: PayloadAction<string>) => {
+        return {
+          ...state,
+          success: { nickName: action.payload },
+          signUpFetchState: 'Success',
+        };
+      },
+    },
+    signUpFetchError: {
+      prepare: (errorData: string) => {
+        return { payload: errorData };
+      },
+      reducer: (state, action: PayloadAction<string>) => {
+        return {
+          ...state,
+          error: { code: action.payload },
+          signUpFetchState: 'Error',
+        };
       },
     },
   },
