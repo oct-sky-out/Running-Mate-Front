@@ -63,7 +63,7 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
           <div className="mb-5">
             <span className="text-2xl">회원가입</span>
           </div>
-          <form onSubmit={(e) => {}}>
+          <form onSubmit={signUpExecuting}>
             <Input
               width="100%"
               className={`mb-5 z-0 ${styles.signIn_form}`}
