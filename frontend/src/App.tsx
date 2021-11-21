@@ -1,6 +1,5 @@
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import GuestPage from './components/GuestPage/GuestPage';
-import Address from './components/address/Address';
 import Home from './components/Home/Home';
 
 function App() {

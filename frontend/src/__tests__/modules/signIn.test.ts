@@ -1,6 +1,7 @@
 import reducer, { SignInActions } from '../../modules/signIn';
+import { ISignIn } from '../../modules/types/signInTypes';
 
-const initState = {
+const initState: ISignIn = {
   loginForm: {
     email: '',
     password: '',
@@ -10,9 +11,9 @@ const initState = {
     code: '',
   },
   userData: {
-    success: false,
+    userEmail: '',
   },
-  signInStatus: false,
+  signInStatus: '',
 };
 
 describe('', () => {
@@ -29,20 +30,30 @@ describe('', () => {
     expect(email).toEqual('example@naver.com');
     expect(password).toEqual('12345');
   });
-  test('리덕스 signInSuccess 액션을 통해서 signIn가 잘 바뀌는지 확인한다.', () => {
+  test('리덕스 signInFetch 액션(유저가 로그인을 했을 시)을 통해서 signInStatus 잘 바뀌는지 확인한다.', () => {
     const { userData, signInStatus } = reducer(
       initState,
-      SignInActions.signInSuccess({ success: true })
+      SignInActions.signInFetch({
+        email: 'example@naver.com',
+        password: '1q23',
+      })
     );
-    expect(userData.success).toEqual(true);
-    expect(signInStatus).toEqual(true);
+    expect(signInStatus).toEqual('Fetch');
   });
-  test('리덕스 signInFailure 액션을 통해서 password state가 잘 바뀌는지 확인한다.', () => {
+  test('리덕스 signInSuccess 액션을 통해서 signInStatus 잘 바뀌는지 확인한다.', () => {
+    const { userData, signInStatus } = reducer(
+      initState,
+      SignInActions.signInSuccess({ userEmail: 'example@naver.com' })
+    );
+    expect(userData.userEmail).toEqual('example@naver.com');
+    expect(signInStatus).toEqual('Success');
+  });
+  test('리덕스 signInFailure 액션을 통해서 password signInStatus 잘 바뀌는지 확인한다.', () => {
     const { error, signInStatus } = reducer(
       initState,
       SignInActions.signInFailure({ message: 'fail', code: '404' })
     );
     expect(error).toEqual({ message: 'fail', code: '404' });
-    expect(signInStatus).toEqual(false);
+    expect(signInStatus).toEqual('Error');
   });
 });
