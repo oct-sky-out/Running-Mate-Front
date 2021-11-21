@@ -2,7 +2,7 @@ import { Input, Button } from '@nextui-org/react';
 import { FormElement } from '@nextui-org/react/esm/input/input-props';
 import { RiEyeCloseLine, RiEyeLine } from 'react-icons/ri';
 
-import React, { useRef, useState, useCallback } from 'react';
+import React, { useRef, useState, useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { SignUpActions } from '../../modules/signUp';
 import { useSelector } from '../../modules';
@@ -10,12 +10,12 @@ import Address from '../address/Address';
 
 import styles from './SignUpModal.module.css';
 import { ReactComponent as KoreanLogo } from '../../assets/logo_korean.svg';
+import { ISignUp, ISignUpForm } from '../../modules/types/signUpTypes';
 
 interface IProps {
   closeModal: () => void;
 }
-
-type signUpActionType =
+type SignUpActionType =
   | 'setEmail'
   | 'setNickname'
   | 'setName'
@@ -26,6 +26,8 @@ type signUpActionType =
   | 'setOptionAddress';
 
 const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
+  const submitButtonRef = useRef<HTMLButtonElement>(null);
+
   //* Redux State
   const dispatch = useDispatch();
   const signUpState = useSelector((state) => {
@@ -35,7 +37,7 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
   const changedInputs = useCallback(
     (
       { target: { value } }: React.ChangeEvent<FormElement>,
-      actionName: signUpActionType
+      actionName: SignUpActionType
     ) => {
       dispatch(SignUpActions[actionName](value));
     },
@@ -44,12 +46,46 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
 
   const signUpExecuting = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    checkSignUpState(signUpState);
     if (signUpState.password === signUpState.checkPassword) {
       dispatch(
         SignUpActions.signUpFetch({ ...signUpState, signUpFetchState: 'Fetch' })
       );
     }
+    closeModal();
   };
+
+  const checkSignUpState = (state: ISignUp): boolean => {
+    let check: boolean = true;
+    Object.keys(state).forEach((key) => {
+      if (state[key as keyof ISignUp] === '' && key !== 'signUpFetchState') {
+        check = false;
+      }
+    });
+    return check;
+  };
+
+  const checkPasswordSame = (
+    password: string,
+    checkPassword: string
+  ): boolean => {
+    const lenPassword = password.length;
+    const lenCheckPassword = checkPassword.length;
+    return true;
+  };
+
+  useEffect(() => {
+    if (
+      checkSignUpState(signUpState) === true &&
+      checkPasswordSame(signUpState.password, signUpState.checkPassword) ===
+        true
+    ) {
+      submitButtonRef.current?.removeAttribute('disabled');
+      submitButtonRef.current?.setAttribute('alt', 'buuuutton');
+    } else {
+      submitButtonRef.current?.setAttribute('disabled', '');
+    }
+  }, [signUpState]);
 
   return (
     <>
@@ -70,6 +106,7 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
               placeholder="이메일"
               onChange={(e) => {
                 changedInputs(e, 'setEmail');
+                submitButtonRef.current?.removeAttribute('disabled');
               }}
             />
             <Input
@@ -147,9 +184,11 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
             />
             <div className="h-full flex justify-center align-center">
               <Button
+                ref={submitButtonRef}
                 type="submit"
                 id={`${styles.signIn_btn}`}
                 className="z-0 important"
+                disabled
               >
                 가입하기
               </Button>
