@@ -27,6 +27,7 @@ export default function GuestPage() {
   const signUpButtonClicked = useCallback(() => {
     setSignInAndUpModalState({ signInModal: false, signUpModal: true });
     openModal();
+    dispatch(SignUpActions.setInit());
   }, [signInAndUpModalState]);
 
   return (
@@ -48,14 +49,7 @@ export default function GuestPage() {
             id={`${styles.btn}`}
             onClick={signUpButtonClicked}
           >
-            <span
-              className="text-3xl font-bold"
-              onClick={() => {
-                dispatch(SignUpActions.setInit());
-              }}
-            >
-              회원가입
-            </span>
+            <span className="text-3xl font-bold">회원가입</span>
           </Button>
           <Button
             color="gradient"
