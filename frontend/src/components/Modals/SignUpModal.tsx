@@ -87,9 +87,11 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
 
   const onChangePasswordConfirm = useCallback(
     (e: React.ChangeEvent<FormElement>) => {
+      changedInputs(e, 'setPassword');
       const passwordRegex =
         /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
       const passwordConfirmCurrent = e.target.value;
+
       if (!passwordRegex.test(passwordConfirmCurrent)) {
         setPasswordComment(
           '8자리 이상, 영어와 숫자, 특수기호(~!@#$%^&*)를 섞은 문자'
@@ -98,9 +100,9 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
       }
       if (passwordRegex.test(passwordConfirmCurrent)) {
         setPasswordComment('안전한 비밀번호입니다 :)');
-        console.log(checkPasswordComment);
-        if (checkPasswordComment === '비밀번호가 일치합니다')
+        if (checkPasswordComment === '비밀번호가 일치합니다') {
           setSuccessPassword(true);
+        }
       }
     },
     [
@@ -114,13 +116,19 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
 
   const onChangeCheckPasswordConfirm = useCallback(
     (e: React.ChangeEvent<FormElement>) => {
-      // const checkPassword = e.target.value;
+      changedInputs(e, 'setCheckPassword');
+      const checkPassword = e.target.value;
       // const regExp = new RegExp(checkPassword, 'g');
-      if (signUpState.password === signUpState.checkPassword) {
+
+      if (signUpState.password === checkPassword) {
         setCheckPasswordComment('비밀번호가 일치합니다');
+        if (passwordComment === '안전한 비밀번호입니다 :)') {
+          setSuccessPassword(true);
+        }
       }
-      if (signUpState.password !== signUpState.checkPassword) {
+      if (signUpState.password !== checkPassword) {
         setCheckPasswordComment('비밀번호가 다릅니다.');
+        setSuccessPassword(false);
       }
     },
     [
@@ -159,6 +167,8 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
               type="email"
               onChange={(e) => {
                 changedInputs(e, 'setEmail');
+                console.log(signUpState.password);
+                console.log(signUpState.checkPassword);
               }}
             />
             <Input
@@ -222,7 +232,6 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
                 visibleIcon={<RiEyeLine fill="currentColor" />}
                 hiddenIcon={<RiEyeCloseLine fill="currentColor" />}
                 onChange={(e) => {
-                  changedInputs(e, 'setPassword');
                   onChangePasswordConfirm(e);
                 }}
               />
@@ -238,7 +247,6 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
                 visibleIcon={<RiEyeLine fill="currentColor" />}
                 hiddenIcon={<RiEyeCloseLine fill="currentColor" />}
                 onChange={(e) => {
-                  changedInputs(e, 'setCheckPassword');
                   onChangeCheckPasswordConfirm(e);
                 }}
               />
