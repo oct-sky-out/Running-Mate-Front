@@ -5,3 +5,12 @@
 #signIn_btn {
   width: 100%;
 }
+
+.password {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.password_alert {
+  color: rgb(128, 128, 128);
+}
