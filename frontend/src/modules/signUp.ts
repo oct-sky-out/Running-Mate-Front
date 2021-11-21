@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ISignUp, ISignUpForm } from './types/signUpTypes';
 
-type fetchStateType = '' | 'Fetch' | 'Success' | 'Error';
+type FetchStateType = '' | 'Fetch' | 'Success' | 'Error';
 
 const initialState: ISignUp = {
   email: '',
@@ -25,7 +25,7 @@ const signUpSliceReducer = createSlice({
   name: 'signUp',
   initialState,
   reducers: {
-    setInit: (state, action: PayloadAction<void>) => {
+    setInit: (_state, _action: PayloadAction<void>) => {
       return {
         email: '',
         nickname: '',
@@ -110,14 +110,14 @@ const signUpSliceReducer = createSlice({
     },
     signUpFetch: {
       prepare: (
-        signUpForm: ISignUpForm & { signUpFetchState: fetchStateType }
+        signUpForm: ISignUpForm & { signUpFetchState: FetchStateType }
       ) => {
         return { payload: signUpForm };
       },
       reducer: (
         state,
         action: PayloadAction<
-          ISignUpForm & { signUpFetchState: fetchStateType }
+          ISignUpForm & { signUpFetchState: FetchStateType }
         >
       ) => {
         return { ...state, signUpFetchState: action.payload.signUpFetchState };
