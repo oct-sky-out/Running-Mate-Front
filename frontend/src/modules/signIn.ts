@@ -11,7 +11,7 @@ interface ISignIn {
     code: string;
   };
   userData: {
-    success: boolean;
+    userEmail: string;
   };
   signInStatus: boolean;
 }
@@ -26,7 +26,7 @@ const initialState: ISignIn = {
     code: '',
   },
   userData: {
-    success: false,
+    userEmail: '',
   },
   signInStatus: false,
 };
@@ -58,15 +58,10 @@ const signInSliceReducer = createSlice({
       },
     },
     signInSuccess: {
-      prepare: (signInStatus: { success: boolean }) => {
-        return { payload: signInStatus };
+      prepare: (successData: { userEmail: string }) => {
+        return { payload: successData };
       },
-      reducer: (
-        state,
-        action: PayloadAction<{
-          success: boolean;
-        }>
-      ) => {
+      reducer: (state, action: PayloadAction<{ userEmail: string }>) => {
         return { ...state, userData: action.payload, signInStatus: true };
       },
     },

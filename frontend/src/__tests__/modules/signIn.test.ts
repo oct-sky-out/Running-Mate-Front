@@ -10,7 +10,7 @@ const initState = {
     code: '',
   },
   userData: {
-    success: false,
+    userEmail: '',
   },
   signInStatus: false,
 };
@@ -32,9 +32,9 @@ describe('', () => {
   test('리덕스 signInSuccess 액션을 통해서 signIn가 잘 바뀌는지 확인한다.', () => {
     const { userData, signInStatus } = reducer(
       initState,
-      SignInActions.signInSuccess({ success: true })
+      SignInActions.signInSuccess({ userEmail: 'example@naver.com' })
     );
-    expect(userData.success).toEqual(true);
+    expect(userData.userEmail).toEqual('example@naver.com');
     expect(signInStatus).toEqual(true);
   });
   test('리덕스 signInFailure 액션을 통해서 password state가 잘 바뀌는지 확인한다.', () => {
