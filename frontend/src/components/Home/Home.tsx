@@ -1,6 +1,4 @@
 import { Button } from '@nextui-org/react';
-import styles from './Home.module.css';
-import Address from '../address/Address';
 
 const Home = () => {
   return (
