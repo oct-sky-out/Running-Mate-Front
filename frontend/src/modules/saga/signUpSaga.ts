@@ -2,15 +2,7 @@ import { call, takeLatest, put } from '@redux-saga/core/effects';
 import { ISignUpForm } from '../types/signUpTypes';
 import { SignUpActions } from '../signUp';
 
-const signUp = async ({
-  email,
-  nickname,
-  name,
-  password,
-  postCode,
-  address,
-  optionAddress,
-}: ISignUpForm) => {
+const signUp = async ({ nickname }: ISignUpForm) => {
   try {
     return { nickname };
   } catch (err: any) {
