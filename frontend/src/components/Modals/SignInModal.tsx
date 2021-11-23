@@ -1,12 +1,10 @@
+import React, { useCallback } from 'react';
+import { useDispatch } from 'react-redux';
 import { Input, Button } from '@nextui-org/react';
 import { FormElement } from '@nextui-org/react/esm/input/input-props';
 import { RiEyeCloseLine, RiEyeLine } from 'react-icons/ri';
-
-import React, { useCallback } from 'react';
-import { useDispatch } from 'react-redux';
 import { SignInActions } from '../../modules/signIn';
 import { useSelector } from '../../modules';
-
 import styles from './SignInAndUpModal.module.css';
 import { ReactComponent as KoreanLogo } from '../../assets/logo_korean.svg';
 

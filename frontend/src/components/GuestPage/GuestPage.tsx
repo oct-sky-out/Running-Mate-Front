@@ -5,7 +5,6 @@ import { SignUpActions } from '../../modules/signUp';
 import useModalPotal from '../../hooks/useModalPotal';
 import styles from './GuestPage.module.css';
 import { ReactComponent as Logo } from '../../logo.svg';
-// Modal
 import SignInModal from '../Modals/SignInModal';
 import SignUpModal from '../Modals/SignUpModal';
 
@@ -62,16 +61,14 @@ export default function GuestPage() {
           </Button>
         </div>
       </div>
-      {signInAndUpModalState.signUpModal && (
-        <ModalPotal>
+      <ModalPotal>
+        {signInAndUpModalState.signUpModal && (
           <SignUpModal closeModal={closeModal} />
-        </ModalPotal>
-      )}
-      {signInAndUpModalState.signInModal && (
-        <ModalPotal>
+        )}
+        {signInAndUpModalState.signInModal && (
           <SignInModal closeModal={closeModal} />
-        </ModalPotal>
-      )}
+        )}
+      </ModalPotal>
     </>
   );
 }
