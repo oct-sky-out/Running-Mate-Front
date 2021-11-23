@@ -1,16 +1,13 @@
+import React, { useState, useCallback, useMemo } from 'react';
+import { useDispatch } from 'react-redux';
 import { Input, Button } from '@nextui-org/react';
 import { FormElement } from '@nextui-org/react/esm/input/input-props';
 import { RiEyeCloseLine, RiEyeLine } from 'react-icons/ri';
-
-import React, { useRef, useState, useCallback, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import { SignUpActions } from '../../modules/signUp';
 import { useSelector } from '../../modules';
 import Address from '../address/Address';
-
-import styles from './SignUpModal.module.css';
+import styles from './SignInAndUpModal.module.css';
 import { ReactComponent as KoreanLogo } from '../../assets/logo_korean.svg';
-import { ISignUp, ISignUpForm } from '../../modules/types/signUpTypes';
 
 interface IProps {
   closeModal: () => void;
@@ -26,14 +23,51 @@ type SignUpActionType =
   | 'setOptionAddress';
 
 const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
-  const submitButtonRef = useRef<HTMLButtonElement>(null);
-
   //* Redux State
   const dispatch = useDispatch();
-  const signUpState = useSelector((state) => {
-    return state.signUp;
-  });
+  const {
+    email,
+    nickname,
+    name,
+    password,
+    checkPassword,
+    address,
+    postCode,
+    optionAddress,
+  } = useSelector((state) => ({
+    email: state.signUp.email,
+    nickname: state.signUp.nickname,
+    name: state.signUp.name,
+    password: state.signUp.password,
+    checkPassword: state.signUp.checkPassword,
+    address: state.signUp.address,
+    postCode: state.signUp.postCode,
+    optionAddress: state.signUp.optionAddress,
+  }));
+
+  //* useStates
+  const [isPasswordSafe, setIsPasswordSafe] = useState(false);
+  const [isPasswordSame, setIsPasswordSame] = useState(false);
   const [openAddressModal, setOpenAddressModal] = useState(false);
+
+  //* useCallbacks
+  const signUpExecuting = useCallback((e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    dispatch(
+      SignUpActions.signUpFetch({
+        email,
+        nickname,
+        name,
+        password,
+        postCode,
+        address,
+        optionAddress,
+        signUpFetchState: 'Fetch',
+      })
+    );
+    closeModal();
+  }, []);
+
   const changedInputs = useCallback(
     (
       { target: { value } }: React.ChangeEvent<FormElement>,
@@ -41,56 +75,49 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
     ) => {
       dispatch(SignUpActions[actionName](value));
     },
-    [signUpState]
+    [
+      email,
+      nickname,
+      name,
+      password,
+      checkPassword,
+      address,
+      postCode,
+      optionAddress,
+    ]
   );
 
-  const signUpExecuting = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    checkSignUpState(signUpState);
-    if (signUpState.password === signUpState.checkPassword) {
-      dispatch(
-        SignUpActions.signUpFetch({ ...signUpState, signUpFetchState: 'Fetch' })
-      );
-    }
-    closeModal();
-  };
+  //* useMemoes
+  const displayedSafePasswordComment = useMemo(() => {
+    const passwordRegex =
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
 
-  const checkSignUpState = (state: ISignUp): boolean => {
-    let check: boolean = true;
-    Object.keys(state).forEach((key) => {
-      if (state[key as keyof ISignUp] === '' && key !== 'signUpFetchState') {
-        check = false;
-      }
-    });
-    return check;
-  };
+    if (!passwordRegex.test(password)) setIsPasswordSafe(false);
+    if (passwordRegex.test(password)) setIsPasswordSafe(true);
 
-  const checkPasswordSame = (
-    password: string,
-    checkPassword: string
-  ): boolean => {
-    const lenPassword = password.length;
-    const lenCheckPassword = checkPassword.length;
-    return true;
-  };
+    return (
+      <span className="mb-2 pl-2 text-xs text-gray-500">
+        {isPasswordSafe
+          ? '안전한 비밀번호입니다 :)'
+          : '8자리 이상, 영어와 숫자, 특수기호(~!@#$%^&*)를 섞은 문자'}
+      </span>
+    );
+  }, [password, checkPassword, isPasswordSafe]);
 
-  useEffect(() => {
-    if (
-      checkSignUpState(signUpState) === true &&
-      checkPasswordSame(signUpState.password, signUpState.checkPassword) ===
-        true
-    ) {
-      submitButtonRef.current?.removeAttribute('disabled');
-      submitButtonRef.current?.setAttribute('alt', 'buuuutton');
-    } else {
-      submitButtonRef.current?.setAttribute('disabled', '');
-    }
-  }, [signUpState]);
+  const displayedSamePasswordComment = useMemo(() => {
+    if (password === checkPassword) setIsPasswordSame(true);
+    if (password !== checkPassword) setIsPasswordSame(false);
+    return (
+      <span className="mb-2 pl-2 text-xs text-gray-500">
+        {isPasswordSame ? '비밀번호가 일치합니다.' : '비밀번호가 다릅니다.'}
+      </span>
+    );
+  }, [password, checkPassword, isPasswordSame]);
 
   return (
     <>
       <div
-        className={`relative p-5 rounded-md flex items-center z-20 bg-white ${styles.signIn_wrapper}`}
+        className={`relative p-5 rounded-md flex items-center z-20 bg-white ${styles.signUp_wrapper}`}
       >
         <div className="flex w-full ustify-center items-center flex-col">
           <div className="mb-5 border-b-2">
@@ -104,9 +131,9 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
               width="100%"
               className={`mb-5 z-0 ${styles.signIn_form}`}
               placeholder="이메일"
+              type="email"
               onChange={(e) => {
                 changedInputs(e, 'setEmail');
-                submitButtonRef.current?.removeAttribute('disabled');
               }}
             />
             <Input
@@ -131,7 +158,7 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
                 width="30%"
                 className={`mb-5 z-0 mr-3 ${styles.signIn_form}`}
                 placeholder="우편번호"
-                value={signUpState.postCode}
+                value={postCode}
                 onChange={(e) => {
                   changedInputs(e, 'setPostCode');
                 }}
@@ -149,7 +176,7 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
               width="100%"
               className={`mb-5 z-0 ${styles.signIn_form}`}
               placeholder="주소"
-              value={signUpState.address}
+              value={address}
               onChange={(e) => {
                 changedInputs(e, 'setAddress');
               }}
@@ -162,33 +189,47 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
                 changedInputs(e, 'setOptionAddress');
               }}
             />
-            <Input.Password
-              width="100%"
-              className={`mb-5 z-0 ${styles.signIn_form}`}
-              placeholder="비밀번호"
-              visibleIcon={<RiEyeLine fill="currentColor" />}
-              hiddenIcon={<RiEyeCloseLine fill="currentColor" />}
-              onChange={(e) => {
-                changedInputs(e, 'setPassword');
-              }}
-            />
-            <Input.Password
-              width="100%"
-              className={`mb-5 z-0 ${styles.signIn_form}`}
-              placeholder="비밀번호 확인"
-              visibleIcon={<RiEyeLine fill="currentColor" />}
-              hiddenIcon={<RiEyeCloseLine fill="currentColor" />}
-              onChange={(e) => {
-                changedInputs(e, 'setCheckPassword');
-              }}
-            />
+            <div className="flex flex-col justify-center">
+              <Input.Password
+                width="100%"
+                className={`mb-2 z-0 ${styles.signIn_form}`}
+                placeholder="비밀번호"
+                visibleIcon={<RiEyeLine fill="currentColor" />}
+                hiddenIcon={<RiEyeCloseLine fill="currentColor" />}
+                onChange={(e) => {
+                  changedInputs(e, 'setPassword');
+                }}
+              />
+              {displayedSafePasswordComment}
+            </div>
+            <div className="flex flex-col justify-center">
+              <Input.Password
+                width="100%"
+                className={`mb-2 z-0 ${styles.signIn_form}`}
+                placeholder="비밀번호 확인"
+                visibleIcon={<RiEyeLine fill="currentColor" />}
+                hiddenIcon={<RiEyeCloseLine fill="currentColor" />}
+                onChange={(e) => {
+                  changedInputs(e, 'setCheckPassword');
+                }}
+              />
+              {displayedSamePasswordComment}
+            </div>
             <div className="h-full flex justify-center align-center">
               <Button
-                ref={submitButtonRef}
                 type="submit"
                 id={`${styles.signIn_btn}`}
                 className="z-0 important"
-                disabled
+                disabled={
+                  !(
+                    isPasswordSafe &&
+                    isPasswordSame &&
+                    email &&
+                    nickname &&
+                    name &&
+                    address
+                  )
+                }
               >
                 가입하기
               </Button>

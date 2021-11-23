@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { SignInActions } from '../../modules/signIn';
 import { useSelector } from '../../modules';
 
-import styles from './SignAndUpModal.module.css';
+import styles from './SignInAndUpModal.module.css';
 import { ReactComponent as KoreanLogo } from '../../assets/logo_korean.svg';
 
 interface IProps {
