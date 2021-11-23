@@ -8,7 +8,6 @@ import { useSelector } from '../../modules';
 import Address from '../address/Address';
 import styles from './SignUpModal.module.css';
 import { ReactComponent as KoreanLogo } from '../../assets/logo_korean.svg';
-import { ISignUp, ISignUpForm } from '../../modules/types/signUpTypes';
 
 interface IProps {
   closeModal: () => void;
