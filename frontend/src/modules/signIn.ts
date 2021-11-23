@@ -1,20 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { StringMappingType } from 'typescript';
-
-interface ISignIn {
-  loginForm: {
-    email: string;
-    password: string;
-  };
-  error: {
-    message: string;
-    code: string;
-  };
-  userData: {
-    success: boolean;
-  };
-  signInStatus: boolean;
-}
+import { ISignIn } from './types/signInTypes';
 
 const initialState: ISignIn = {
   loginForm: {
@@ -26,13 +11,13 @@ const initialState: ISignIn = {
     code: '',
   },
   userData: {
-    success: false,
+    userEmail: '',
   },
-  signInStatus: false,
+  signInStatus: '',
 };
 
 const signInSliceReducer = createSlice({
-  name: 'signUp',
+  name: 'signIn',
   initialState,
   reducers: {
     setEmail: {
@@ -57,17 +42,23 @@ const signInSliceReducer = createSlice({
         };
       },
     },
-    signInSuccess: {
-      prepare: (signInStatus: { success: boolean }) => {
-        return { payload: signInStatus };
+    signInFetch: {
+      prepare: (fetchData: { email: string; password: string }) => {
+        return { payload: fetchData };
       },
       reducer: (
         state,
-        action: PayloadAction<{
-          success: boolean;
-        }>
+        _action: PayloadAction<{ email: string; password: string }>
       ) => {
-        return { ...state, userData: action.payload, signInStatus: true };
+        return { ...state, signInStatus: 'Fetch' };
+      },
+    },
+    signInSuccess: {
+      prepare: (successData: { userEmail: string }) => {
+        return { payload: successData };
+      },
+      reducer: (state, action: PayloadAction<{ userEmail: string }>) => {
+        return { ...state, userData: action.payload, signInStatus: 'Success' };
       },
     },
     signInFailure: {
@@ -81,7 +72,7 @@ const signInSliceReducer = createSlice({
           code: string;
         }>
       ) => {
-        return { ...state, error: action.payload, signInStatus: false };
+        return { ...state, error: action.payload, signInStatus: 'Error' };
       },
     },
   },

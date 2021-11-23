@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useMemo } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { Input, Button } from '@nextui-org/react';
 import { FormElement } from '@nextui-org/react/esm/input/input-props';
@@ -6,7 +6,7 @@ import { RiEyeCloseLine, RiEyeLine } from 'react-icons/ri';
 import { SignUpActions } from '../../modules/signUp';
 import { useSelector } from '../../modules';
 import Address from '../address/Address';
-import styles from './SignUpModal.module.css';
+import styles from './SignInAndUpModal.module.css';
 import { ReactComponent as KoreanLogo } from '../../assets/logo_korean.svg';
 
 interface IProps {
@@ -96,7 +96,7 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
     if (passwordRegex.test(password)) setIsPasswordSafe(true);
 
     return (
-      <span className={`mb-2 pl-2 text-xs ${styles.password_alert}`}>
+      <span className="mb-2 pl-2 text-xs text-gray-500">
         {isPasswordSafe
           ? '안전한 비밀번호입니다 :)'
           : '8자리 이상, 영어와 숫자, 특수기호(~!@#$%^&*)를 섞은 문자'}
@@ -108,7 +108,7 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
     if (password === checkPassword) setIsPasswordSame(true);
     if (password !== checkPassword) setIsPasswordSame(false);
     return (
-      <span className={`mb-2 pl-2 text-xs ${styles.password_alert}`}>
+      <span className="mb-2 pl-2 text-xs text-gray-500">
         {isPasswordSame ? '비밀번호가 일치합니다.' : '비밀번호가 다릅니다.'}
       </span>
     );
@@ -117,7 +117,7 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
   return (
     <>
       <div
-        className={`relative p-5 rounded-md flex items-center z-20 bg-white ${styles.signIn_wrapper}`}
+        className={`relative p-5 rounded-md flex items-center z-20 bg-white ${styles.signUp_wrapper}`}
       >
         <div className="flex w-full ustify-center items-center flex-col">
           <div className="mb-5 border-b-2">
@@ -189,7 +189,7 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
                 changedInputs(e, 'setOptionAddress');
               }}
             />
-            <div className={styles.password}>
+            <div className="flex flex-col justify-center">
               <Input.Password
                 width="100%"
                 className={`mb-2 z-0 ${styles.signIn_form}`}
@@ -202,7 +202,7 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
               />
               {displayedSafePasswordComment}
             </div>
-            <div className={styles.password}>
+            <div className="flex flex-col justify-center">
               <Input.Password
                 width="100%"
                 className={`mb-2 z-0 ${styles.signIn_form}`}

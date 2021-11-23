@@ -1,0 +1,12 @@
+.signUp_wrapper {
+  width: 500px;
+  height: 700px;
+}
+.signIn_wrapper {
+  width: 500px;
+  height: 500px;
+}
+#signIn_btn,
+#signUp_btn {
+  width: 100%;
+}

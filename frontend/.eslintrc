@@ -9,6 +9,7 @@
     "eslint:recommended",
     "plugin:react/recommended",
     "airbnb",
+    "airbnb-typescript",
     "plugin:prettier/recommended"
   ],
   "settings": {
@@ -28,6 +29,7 @@
     "ecmaFeatures": {
       "jsx": true
     },
+    "project": ["./tsconfig.json"],
     "ecmaVersion": 8,
     "sourceType": "module",
     "requireConfigFile": false
@@ -50,6 +52,7 @@
     ],
     "no-use-before-define": "off",
     "no-unused-vars": 1,
+    "@typescript-eslint/no-unused-vars": 0,
     "jsx-a11y/aria-role": 0,
     "jsx-a11y/click-events-have-key-events": 0,
     "jsx-a11y/no-static-element-interactions": 0
