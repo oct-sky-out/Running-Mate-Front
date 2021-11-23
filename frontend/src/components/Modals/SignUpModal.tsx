@@ -87,6 +87,7 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
     ]
   );
 
+  //* useMemoes
   const displayedSafePasswordComment = useMemo(() => {
     const passwordRegex =
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
