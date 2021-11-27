@@ -20,6 +20,22 @@ const signInSliceReducer = createSlice({
   name: 'signIn',
   initialState,
   reducers: {
+    setInit: (_state, _action: PayloadAction<void>) => {
+      return {
+        loginForm: {
+          email: '',
+          password: '',
+        },
+        error: {
+          message: '',
+          code: '',
+        },
+        userData: {
+          userEmail: '',
+        },
+        signInStatus: '',
+      };
+    },
     setEmail: {
       prepare: (email: string) => {
         return { payload: email };

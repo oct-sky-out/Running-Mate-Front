@@ -18,7 +18,7 @@ function* signUpFetchSaga({
     yield put(SignUpActions.signUpFetchSuccess(nickname));
   } catch (error: any) {
     console.error(error);
-    yield put(SignUpActions.signUpFetchError(error.code));
+    yield put(SignUpActions.signUpFetchError(error.message));
   }
 }
 
