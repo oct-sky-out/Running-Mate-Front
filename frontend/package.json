@@ -39,7 +39,11 @@
     "start": "craco start",
     "build": "jest",
     "test": "craco test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "cypress": "cypress open",
+    "cypress:headless": "cypress run",
+    "e2e": "start-server-and-test dev http://localhost:3000 cypress",
+    "e2e:headless": "start-server-and-test dev http://localhost:3000 cypress:headless"
   },
   "eslintConfig": {
     "extends": [
@@ -77,11 +81,14 @@
     "autoprefixer": "^9",
     "babel-eslint": "^10.1.0",
     "customize-cra": "^1.0.0",
+    "cypress": "^9.1.0",
+    "cypress-react-selector": "^2.3.13",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-airbnb-typescript": "^16.0.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-import-resolver-node": "^0.3.6",
     "eslint-plugin-babel": "^5.3.1",
+    "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-prettier": "^4.0.0",
