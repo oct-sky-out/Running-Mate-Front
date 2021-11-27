@@ -24,6 +24,6 @@ function* signInFetchSaga({
   }
 }
 
-export default function* watchSignUp() {
-  yield takeLatest('signUp/signInFetch', signInFetchSaga);
+export default function* watchSignIn() {
+  yield takeLatest('signIn/signInFetch', signInFetchSaga);
 }

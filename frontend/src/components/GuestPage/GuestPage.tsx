@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react';
 import { Button } from '@nextui-org/react';
 import { useDispatch } from 'react-redux';
 import { SignUpActions } from '../../modules/signUp';
+import { SignInActions } from '../../modules/signIn';
 import useModalPotal from '../../hooks/useModalPotal';
 import styles from './GuestPage.module.css';
 import { ReactComponent as Logo } from '../../logo.svg';
@@ -22,6 +23,7 @@ export default function GuestPage() {
   const signInButtonClicked = useCallback(() => {
     setSignInAndUpModalState({ signInModal: true, signUpModal: false });
     openModal();
+    dispatch(SignInActions.setInit());
   }, [signInAndUpModalState]);
   const signUpButtonClicked = useCallback(() => {
     setSignInAndUpModalState({ signInModal: false, signUpModal: true });

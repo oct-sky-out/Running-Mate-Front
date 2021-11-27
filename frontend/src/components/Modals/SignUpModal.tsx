@@ -1,13 +1,16 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Input, Button } from '@nextui-org/react';
 import { FormElement } from '@nextui-org/react/esm/input/input-props';
 import { RiEyeCloseLine, RiEyeLine } from 'react-icons/ri';
+import { ToastContainer, toast } from 'react-toastify';
+import Swal from 'sweetalert2';
 import { SignUpActions } from '../../modules/signUp';
 import { useSelector } from '../../modules';
 import Address from '../address/Address';
 import styles from './SignInAndUpModal.module.css';
 import { ReactComponent as KoreanLogo } from '../../assets/logo_korean.svg';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface IProps {
   closeModal: () => void;
@@ -34,6 +37,8 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
     address,
     postCode,
     optionAddress,
+    success,
+    error,
   } = useSelector((state) => ({
     email: state.signUp.email,
     nickname: state.signUp.nickname,
@@ -43,6 +48,8 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
     address: state.signUp.address,
     postCode: state.signUp.postCode,
     optionAddress: state.signUp.optionAddress,
+    success: state.signUp.success,
+    error: state.signUp.error,
   }));
 
   //* useStates
@@ -51,22 +58,33 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
   const [openAddressModal, setOpenAddressModal] = useState(false);
 
   //* useCallbacks
-  const signUpExecuting = useCallback((e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    dispatch(
-      SignUpActions.signUpFetch({
-        email,
-        nickname,
-        name,
-        password,
-        postCode,
-        address,
-        optionAddress,
-        signUpFetchState: 'Fetch',
-      })
-    );
-    closeModal();
-  }, []);
+  const signUpExecuting = useCallback(
+    (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      dispatch(
+        SignUpActions.signUpFetch({
+          email,
+          nickname,
+          name,
+          password,
+          postCode,
+          address,
+          optionAddress,
+          signUpFetchState: 'Fetch',
+        })
+      );
+    },
+    [
+      email,
+      nickname,
+      name,
+      password,
+      checkPassword,
+      address,
+      postCode,
+      optionAddress,
+    ]
+  );
 
   const changedInputs = useCallback(
     (
@@ -113,6 +131,26 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
       </span>
     );
   }, [password, checkPassword, isPasswordSame]);
+
+  useEffect(() => {
+    if (success.nickName !== '') {
+      closeModal();
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: '회원가입 완료되었습니다.',
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
+    if (error.code !== '') {
+      Swal.fire({
+        icon: 'error',
+        title: '에러 발생',
+        text: `${error.code}`,
+      });
+    }
+  }, [success.nickName, error.code]);
 
   return (
     <>
@@ -165,6 +203,7 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
               />
               <Button
                 onClick={() => {
+                  toast('Wow so easy!');
                   setOpenAddressModal(true);
                 }}
               >

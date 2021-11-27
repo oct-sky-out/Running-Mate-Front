@@ -1,8 +1,10 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Input, Button } from '@nextui-org/react';
 import { FormElement } from '@nextui-org/react/esm/input/input-props';
 import { RiEyeCloseLine, RiEyeLine } from 'react-icons/ri';
+import Swal from 'sweetalert2';
 import { SignInActions } from '../../modules/signIn';
 import { useSelector } from '../../modules';
 import styles from './SignInAndUpModal.module.css';
@@ -15,11 +17,15 @@ interface IProps {
 type SignUpActionType = 'setEmail' | 'setPassword';
 
 const SignInModal: React.FC<IProps> = ({ closeModal }) => {
+  //* History of React Router
+  const history = useHistory();
   //* Redux State
   const dispatch = useDispatch();
-  const { email, password } = useSelector((state) => ({
+  const { email, password, error, userData } = useSelector((state) => ({
     email: state.signIn.loginForm.email,
     password: state.signIn.loginForm.password,
+    error: state.signIn.error,
+    userData: state.signIn.userData,
   }));
 
   //* useCallbacks
@@ -37,10 +43,23 @@ const SignInModal: React.FC<IProps> = ({ closeModal }) => {
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       dispatch(SignInActions.signInFetch({ email, password }));
-      closeModal();
     },
     [email, password]
   );
+
+  useEffect(() => {
+    if (userData.userEmail !== '') {
+      closeModal();
+      history.push('/');
+    }
+    if (error.code !== '') {
+      Swal.fire({
+        icon: 'error',
+        title: '에러 발생',
+        text: `${error.code}`,
+      });
+    }
+  }, [userData.userEmail, error.code]);
 
   return (
     <>
@@ -56,7 +75,6 @@ const SignInModal: React.FC<IProps> = ({ closeModal }) => {
           </div>
           <form onSubmit={signInExecuting}>
             <Input
-              data-testid="email-input"
               width="100%"
               type="email"
               className="mb-5 z-0"
@@ -66,7 +84,6 @@ const SignInModal: React.FC<IProps> = ({ closeModal }) => {
               }}
             />
             <Input.Password
-              data-testid="password-input"
               width="100%"
               className="mb-5 z-0"
               placeholder="비밀번호"
@@ -78,7 +95,6 @@ const SignInModal: React.FC<IProps> = ({ closeModal }) => {
             />
             <div className="h-full flex justify-center align-center">
               <Button
-                data-testid="login-button"
                 type="submit"
                 id={`${styles.signIn_btn}`}
                 className="z-0 important"

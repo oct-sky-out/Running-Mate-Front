@@ -6,8 +6,8 @@ function App() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route exact path="/" component={GuestPage} />
-        <Route exact path="/home" component={Home} />
+        <Route exact path="/guest" component={GuestPage} />
+        <Route exact path="/" component={Home} />
       </Switch>
       <div id="modal" />
     </BrowserRouter>
