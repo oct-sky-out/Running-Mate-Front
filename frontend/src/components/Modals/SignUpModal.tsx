@@ -179,7 +179,7 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
               className={`mb-5 z-0 ${styles.signIn_form}`}
               placeholder="이름"
               onChange={(e) => {
-                changedInputs(e, 'setNickname');
+                changedInputs(e, 'setName');
               }}
             />
             <Input
@@ -187,7 +187,7 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
               className={`mb-5 z-0 ${styles.signIn_form}`}
               placeholder="별명"
               onChange={(e) => {
-                changedInputs(e, 'setName');
+                changedInputs(e, 'setNickname');
               }}
             />
             <div className="flex space-x-4">
@@ -203,7 +203,6 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
               />
               <Button
                 onClick={() => {
-                  toast('Wow so easy!');
                   setOpenAddressModal(true);
                 }}
               >
