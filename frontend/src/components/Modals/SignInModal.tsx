@@ -82,6 +82,7 @@ const SignInModal: React.FC<IProps> = ({ closeModal }) => {
               onChange={(e) => {
                 changedInputs(e, 'setEmail');
               }}
+              data-cy="email"
             />
             <Input.Password
               width="100%"
@@ -92,6 +93,7 @@ const SignInModal: React.FC<IProps> = ({ closeModal }) => {
               onChange={(e) => {
                 changedInputs(e, 'setPassword');
               }}
+              data-cy="password"
             />
             <div className="h-full flex justify-center align-center">
               <Button
@@ -99,6 +101,7 @@ const SignInModal: React.FC<IProps> = ({ closeModal }) => {
                 id={`${styles.signIn_btn}`}
                 className="z-0 important"
                 disabled={!(email && password)}
+                data-cy="signIn-btn"
               >
                 로그인
               </Button>
