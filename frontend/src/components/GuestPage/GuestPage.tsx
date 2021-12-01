@@ -5,7 +5,7 @@ import { SignUpActions } from '../../modules/signUp';
 import { SignInActions } from '../../modules/signIn';
 import useModalPotal from '../../hooks/useModalPotal';
 import styles from './GuestPage.module.css';
-import { ReactComponent as Logo } from '../../logo.svg';
+import { ReactComponent as Logo } from '../../assets/logo_big.svg';
 import SignInModal from '../Modals/SignInModal';
 import SignUpModal from '../Modals/SignUpModal';
 
@@ -34,7 +34,7 @@ export default function GuestPage() {
   return (
     <>
       <div className={`h-screen ${styles.wrapper} grid grid-rows-3 grid-col-3`}>
-        <Logo className="mt-6" width="200px" />
+        <Logo className="mt-6 ml-16" width="200px" />
         <div className="col-start-0 col-start-1 row-start-2 row-end-3 ml-14">
           <span className="block text-7xl font-bold mb-4">
             크루와 함께 달리고,

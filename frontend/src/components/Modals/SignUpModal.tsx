@@ -9,7 +9,7 @@ import { SignUpActions } from '../../modules/signUp';
 import { useSelector } from '../../modules';
 import Address from '../address/Address';
 import styles from './SignInAndUpModal.module.css';
-import { ReactComponent as KoreanLogo } from '../../assets/logo_korean.svg';
+import { ReactComponent as MiniLogo } from '../../assets/logo_mini.svg';
 import 'react-toastify/dist/ReactToastify.css';
 
 interface IProps {
@@ -157,9 +157,9 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
       <div
         className={`relative p-5 rounded-md flex items-center z-20 bg-white ${styles.signUp_wrapper}`}
       >
-        <div className="flex w-full ustify-center items-center flex-col">
-          <div className="mb-5 border-b-2">
-            <KoreanLogo />
+        <div className="flex w-full justify-center items-center flex-col">
+          <div className="w-3/4 mb-5 border-b-2 flex justify-center">
+            <MiniLogo width="100" height="100" />
           </div>
           <div className="mb-5">
             <span className="text-2xl">회원가입</span>

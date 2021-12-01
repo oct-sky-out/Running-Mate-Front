@@ -8,7 +8,7 @@ import Swal from 'sweetalert2';
 import { SignInActions } from '../../modules/signIn';
 import { useSelector } from '../../modules';
 import styles from './SignInAndUpModal.module.css';
-import { ReactComponent as KoreanLogo } from '../../assets/logo_korean.svg';
+import { ReactComponent as MiniLogo } from '../../assets/logo_mini.svg';
 
 interface IProps {
   closeModal: () => void;
@@ -67,8 +67,8 @@ const SignInModal: React.FC<IProps> = ({ closeModal }) => {
         className={`relative p-5 rounded-md flex items-center z-20 bg-white ${styles.signIn_wrapper}`}
       >
         <div className="flex w-full ustify-center items-center flex-col">
-          <div className="mb-5 border-b-2">
-            <KoreanLogo />
+          <div className="w-3/4 mb-5 border-b-2 flex justify-center">
+            <MiniLogo width="100" height="100" />
           </div>
           <div className="mb-5">
             <span className="text-2xl">로그인</span>
