@@ -1,18 +1,33 @@
-import { Button } from '@nextui-org/react';
+import styles from './Home.module.css';
 
 const Home = () => {
   return (
-    <div>
-      <div>런닝맨 로고 이미지</div>
-      <div className="flex">
-        <Button>서울</Button>
-        <Button>대전</Button>
-        <Button>경기</Button>
-        <Button>부산</Button>
-        <Button>광주</Button>
-        <Button>기타</Button>
+    <div className={`${styles.home}`}>
+      <div className="justify-center text-center font-bold py-16 text-3xl">
+        <span>Notices</span>
       </div>
-      <div>게시판</div>
+      <div className={`flex justify-center w-full ${styles.nav}`}>
+        <div className={styles.filler}> </div>
+        <button type="button" className={styles.nav__region}>
+          서울
+        </button>
+        <button type="button" className={styles.nav__region}>
+          경기
+        </button>
+        <button type="button" className={styles.nav__region}>
+          대전
+        </button>
+        <button type="button" className={styles.nav__region}>
+          부산
+        </button>
+        <button type="button" className={styles.nav__region}>
+          광주
+        </button>
+        <button type="button" className={styles.nav__region}>
+          기타
+        </button>
+        <div className={styles.filler}> </div>
+      </div>
     </div>
   );
 };

@@ -58,6 +58,7 @@ export default function GuestPage() {
             className="m-1 z-0"
             onClick={signInButtonClicked}
             auto
+            data-cy="move-signIn"
           >
             <span className="text-3xl font-bold">로그인</span>
           </Button>
