@@ -14,6 +14,7 @@ const initialState: ISignIn = {
     userEmail: '',
   },
   signInStatus: '',
+  isLogged: false,
 };
 
 const signInSliceReducer = createSlice({
@@ -34,6 +35,7 @@ const signInSliceReducer = createSlice({
           userEmail: '',
         },
         signInStatus: '',
+        isLogged: false,
       };
     },
     setEmail: {

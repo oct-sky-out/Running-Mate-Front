@@ -11,6 +11,7 @@ export interface ISignIn {
     userEmail: string;
   };
   signInStatus: '' | 'Fetch' | 'Success' | 'Error';
+  isLogged: boolean;
 }
 
 export interface ISignInForm {
