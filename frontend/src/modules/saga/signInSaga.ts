@@ -19,7 +19,7 @@ function* signInFetchSaga({
       SignInActions.signInSuccess({
         email,
         address: '서울 강남구',
-        nicknmae: '귀여미',
+        nickname: '귀여미',
       })
     );
   } catch (error: any | Error) {

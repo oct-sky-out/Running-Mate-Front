@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux';
 import { Input, Button } from '@nextui-org/react';
 import { FormElement } from '@nextui-org/react/esm/input/input-props';
 import { RiEyeCloseLine, RiEyeLine } from 'react-icons/ri';
-import { ToastContainer, toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 import { SignUpActions } from '../../modules/signUp';
 import { useSelector } from '../../modules';
@@ -171,9 +170,6 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
                 className={` z-0 ${styles.signIn_form}`}
                 placeholder="주소 (시/도, 시/군/구 까지만 입력) "
                 value={address}
-                onChange={(e) => {
-                  changedInputs(e, 'setAddress');
-                }}
               />
               <Button
                 className=""

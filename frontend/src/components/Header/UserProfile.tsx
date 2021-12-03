@@ -35,16 +35,16 @@ const UserProfile = () => {
         {isMyMenuOpen && (
           <div className="absolute top-16 right-16 border-2 w-64 rounded border-purple bg-white divide-y-2 divide-purple divide-solid">
             <div
-              className="flex h-10 justify-center items-center"
+              className="flex h-10 py-2 justify-center items-center cursor-pointer"
               onClick={moveMyPage}
             >
-              <span>내 정보관리</span>
+              <button type="button">내 정보관리</button>
             </div>
             <div
-              className="flex h-10 justify-center items-center"
+              className="flex h-10 py-2 justify-center items-center cursor-pointer"
               onClick={logOut}
             >
-              <span>로그아웃</span>
+              <button type="button">로그아웃</button>
             </div>
           </div>
         )}

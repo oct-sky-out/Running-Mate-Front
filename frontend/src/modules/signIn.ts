@@ -12,7 +12,7 @@ const initialState: ISignIn = {
   },
   userData: {
     email: '',
-    nicknmae: '',
+    nickname: '',
     address: '',
   },
   signInStatus: '',
@@ -35,7 +35,7 @@ const signInSliceReducer = createSlice({
         },
         userData: {
           email: '',
-          nicknmae: '',
+          nickname: '',
           address: '',
         },
         signInStatus: '',
@@ -76,10 +76,38 @@ const signInSliceReducer = createSlice({
         return { ...state, signInStatus: 'Fetch' };
       },
     },
+    setUserNicknameData: {
+      prepare: (successData: string) => {
+        return { payload: successData };
+      },
+      reducer: (state, action: PayloadAction<string>) => {
+        return {
+          ...state,
+          userData: {
+            ...state.userData,
+            nicknmae: action.payload,
+          },
+        };
+      },
+    },
+    setUserAddressData: {
+      prepare: (successData: string) => {
+        return { payload: successData };
+      },
+      reducer: (state, action: PayloadAction<string>) => {
+        return {
+          ...state,
+          userData: {
+            ...state.userData,
+            address: action.payload,
+          },
+        };
+      },
+    },
     signInSuccess: {
       prepare: (successData: {
         email: string;
-        nicknmae: string;
+        nickname: string;
         address: string;
       }) => {
         return { payload: successData };
@@ -88,7 +116,7 @@ const signInSliceReducer = createSlice({
         state,
         action: PayloadAction<{
           email: string;
-          nicknmae: string;
+          nickname: string;
           address: string;
         }>
       ) => {

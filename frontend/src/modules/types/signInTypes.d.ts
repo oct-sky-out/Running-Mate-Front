@@ -9,7 +9,7 @@ export interface ISignIn {
   };
   userData: {
     email: string;
-    nicknmae: string;
+    nickname: string;
     address: string;
   };
   signInStatus: '' | 'Fetch' | 'Success' | 'Error';

@@ -35,7 +35,7 @@ const Header = () => {
   }
   return (
     <div
-      className={`w-full h-24 sticky top-0 bg-white transition duration-1000 border-b-2 border-purple border-opacity-0 ${scrollBottomLine}`}
+      className={`z-2 w-full h-24 sticky top-0 bg-white transition duration-1000 border-b-2 border-purple border-opacity-0 ${scrollBottomLine}`}
     >
       <div className="flex w-full h-full mx-5">
         <div className="w-full space-x-4 flex items-center font-bold">
