@@ -23,6 +23,7 @@ const mockStore: RootState = {
       userEmail: '',
     },
     signInStatus: '',
+    isLogged: false,
   },
   signUp: {
     email: '',
@@ -30,9 +31,7 @@ const mockStore: RootState = {
     name: '',
     password: '',
     checkPassword: '',
-    postCode: '',
     address: '',
-    optionAddress: '',
     signUpFetchState: '',
     success: {
       nickName: '',

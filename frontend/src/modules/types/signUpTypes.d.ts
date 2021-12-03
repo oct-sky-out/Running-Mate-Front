@@ -4,9 +4,7 @@ export interface ISignUp {
   name: string;
   password: string;
   checkPassword: string;
-  postCode: string;
   address: string;
-  optionAddress: string;
   signUpFetchState: '' | 'Fetch' | 'Success' | 'Error';
   success: {
     nickName: string;
@@ -21,7 +19,5 @@ export interface ISignUpForm {
   nickname: string;
   name: string;
   password: string;
-  postCode: string;
   address: string;
-  optionAddress: string;
 }

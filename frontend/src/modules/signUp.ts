@@ -9,9 +9,7 @@ const initialState: ISignUp = {
   name: '',
   password: '',
   checkPassword: '',
-  postCode: '',
   address: '',
-  optionAddress: '',
   signUpFetchState: '',
   success: {
     nickName: '',
@@ -32,9 +30,7 @@ const signUpSliceReducer = createSlice({
         name: '',
         password: '',
         checkPassword: '',
-        postCode: '',
         address: '',
-        optionAddress: '',
         signUpFetchState: '',
         success: {
           nickName: '',
@@ -84,28 +80,12 @@ const signUpSliceReducer = createSlice({
         return { ...state, checkPassword: action.payload };
       },
     },
-    setPostCode: {
-      prepare: (postCode: string) => {
-        return { payload: postCode };
-      },
-      reducer: (state, action: PayloadAction<string>) => {
-        return { ...state, postCode: action.payload };
-      },
-    },
     setAddress: {
       prepare: (address: string) => {
         return { payload: address };
       },
       reducer: (state, action: PayloadAction<string>) => {
         return { ...state, address: action.payload };
-      },
-    },
-    setOptionAddress: {
-      prepare: (optionAddress: string) => {
-        return { payload: optionAddress };
-      },
-      reducer: (state, action: PayloadAction<string>) => {
-        return { ...state, optionAddress: action.payload };
       },
     },
     signUpFetch: {

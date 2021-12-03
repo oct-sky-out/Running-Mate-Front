@@ -12,21 +12,12 @@ const Address: React.FC<IProps> = ({ setOpenAddressModal }) => {
   const dispatch = useDispatch();
 
   const handleComplete = (data: any) => {
-    let fullAddress = data.address;
     if (data.addressType === 'R') {
-      let extraAddress = '';
-      if (data.bname !== '') {
-        extraAddress += data.bname;
+      if (data.sido !== '' && data.sigungu !== '') {
+        // data.sido + data.sigungu -> 도/시 시/군/구를 붙여서
+        dispatch(SignUpActions.setAddress(`${data.sido} ${data.sigungu}`));
       }
-      if (data.buildingName !== '') {
-        extraAddress +=
-          extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName;
-      }
-      fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
     }
-    // fullAddress -> 전체 주소반환
-    dispatch(SignUpActions.setPostCode(data.zonecode));
-    dispatch(SignUpActions.setAddress(fullAddress));
     setOpenAddressModal(false);
   };
   return (
