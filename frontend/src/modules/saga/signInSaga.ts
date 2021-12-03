@@ -15,7 +15,13 @@ function* signInFetchSaga({
 }: ReturnType<typeof SignInActions.signInFetch>) {
   try {
     const { email } = yield call(signIn, payload);
-    yield put(SignInActions.signInSuccess({ userEmail: email }));
+    yield put(
+      SignInActions.signInSuccess({
+        email,
+        address: '서울 강남구',
+        nicknmae: '귀여미',
+      })
+    );
   } catch (error: any | Error) {
     console.error(error);
     yield put(

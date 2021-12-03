@@ -11,7 +11,9 @@ const initialState: ISignIn = {
     code: '',
   },
   userData: {
-    userEmail: '',
+    email: '',
+    nicknmae: '',
+    address: '',
   },
   signInStatus: '',
   isLogged: false,
@@ -32,9 +34,12 @@ const signInSliceReducer = createSlice({
           code: '',
         },
         userData: {
-          userEmail: '',
+          email: '',
+          nicknmae: '',
+          address: '',
         },
         signInStatus: '',
+
         isLogged: false,
       };
     },
@@ -72,10 +77,21 @@ const signInSliceReducer = createSlice({
       },
     },
     signInSuccess: {
-      prepare: (successData: { userEmail: string }) => {
+      prepare: (successData: {
+        email: string;
+        nicknmae: string;
+        address: string;
+      }) => {
         return { payload: successData };
       },
-      reducer: (state, action: PayloadAction<{ userEmail: string }>) => {
+      reducer: (
+        state,
+        action: PayloadAction<{
+          email: string;
+          nicknmae: string;
+          address: string;
+        }>
+      ) => {
         return { ...state, userData: action.payload, signInStatus: 'Success' };
       },
     },

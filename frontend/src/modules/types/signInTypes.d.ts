@@ -8,7 +8,9 @@ export interface ISignIn {
     code: string;
   };
   userData: {
-    userEmail: string;
+    email: string;
+    nicknmae: string;
+    address: string;
   };
   signInStatus: '' | 'Fetch' | 'Success' | 'Error';
   isLogged: boolean;

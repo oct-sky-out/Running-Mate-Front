@@ -48,7 +48,7 @@ const SignInModal: React.FC<IProps> = ({ closeModal }) => {
   );
 
   useEffect(() => {
-    if (userData.userEmail !== '') {
+    if (userData.email !== '') {
       closeModal();
       history.push('/');
     }
@@ -59,7 +59,7 @@ const SignInModal: React.FC<IProps> = ({ closeModal }) => {
         text: `${error.code}`,
       });
     }
-  }, [userData.userEmail, error.code]);
+  }, [userData.address, error.code]);
 
   return (
     <>

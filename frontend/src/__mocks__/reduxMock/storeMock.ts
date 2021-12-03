@@ -20,7 +20,9 @@ const mockStore: RootState = {
       code: '',
     },
     userData: {
-      userEmail: '',
+      email: '',
+      nicknmae: '',
+      address: '',
     },
     signInStatus: '',
     isLogged: false,
