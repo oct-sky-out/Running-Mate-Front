@@ -21,9 +21,7 @@ type SignUpActionType =
   | 'setName'
   | 'setPassword'
   | 'setCheckPassword'
-  | 'setPostCode'
-  | 'setAddress'
-  | 'setOptionAddress';
+  | 'setAddress';
 
 const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
   //* Redux State
@@ -35,8 +33,6 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
     password,
     checkPassword,
     address,
-    postCode,
-    optionAddress,
     success,
     error,
   } = useSelector((state) => ({
@@ -46,8 +42,6 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
     password: state.signUp.password,
     checkPassword: state.signUp.checkPassword,
     address: state.signUp.address,
-    postCode: state.signUp.postCode,
-    optionAddress: state.signUp.optionAddress,
     success: state.signUp.success,
     error: state.signUp.error,
   }));
@@ -67,23 +61,12 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
           nickname,
           name,
           password,
-          postCode,
           address,
-          optionAddress,
           signUpFetchState: 'Fetch',
         })
       );
     },
-    [
-      email,
-      nickname,
-      name,
-      password,
-      checkPassword,
-      address,
-      postCode,
-      optionAddress,
-    ]
+    [email, nickname, name, password, checkPassword, address]
   );
 
   const changedInputs = useCallback(
@@ -93,16 +76,7 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
     ) => {
       dispatch(SignUpActions[actionName](value));
     },
-    [
-      email,
-      nickname,
-      name,
-      password,
-      checkPassword,
-      address,
-      postCode,
-      optionAddress,
-    ]
+    [email, nickname, name, password, checkPassword, address]
   );
 
   //* useMemoes
@@ -190,18 +164,19 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
                 changedInputs(e, 'setNickname');
               }}
             />
-            <div className="flex space-x-4">
+            <div className="flex mb-5 items-center space-x-2 justify-between">
               <Input
                 disabled
-                width="30%"
-                className={`mb-5 z-0 mr-3 ${styles.signIn_form}`}
-                placeholder="우편번호"
-                value={postCode}
+                width="100%"
+                className={` z-0 ${styles.signIn_form}`}
+                placeholder="주소 (시/도, 시/군/구 까지만 입력) "
+                value={address}
                 onChange={(e) => {
-                  changedInputs(e, 'setPostCode');
+                  changedInputs(e, 'setAddress');
                 }}
               />
               <Button
+                className=""
                 onClick={() => {
                   setOpenAddressModal(true);
                 }}
@@ -209,24 +184,6 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
                 주소 검색
               </Button>
             </div>
-            <Input
-              disabled
-              width="100%"
-              className={`mb-5 z-0 ${styles.signIn_form}`}
-              placeholder="주소"
-              value={address}
-              onChange={(e) => {
-                changedInputs(e, 'setAddress');
-              }}
-            />
-            <Input
-              width="100%"
-              className={`mb-5 z-0 ${styles.signIn_form}`}
-              placeholder="상세주소"
-              onChange={(e) => {
-                changedInputs(e, 'setOptionAddress');
-              }}
-            />
             <div className="flex flex-col justify-center">
               <Input.Password
                 width="100%"
