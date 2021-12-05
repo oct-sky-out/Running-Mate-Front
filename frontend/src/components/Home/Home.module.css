@@ -16,8 +16,3 @@
   border-bottom-width: 3px;
   border-bottom-color: MainColor;
 }
-
-.filler {
-  border-bottom: solid;
-  border-bottom-color: homeNavBorderColor;
-}
