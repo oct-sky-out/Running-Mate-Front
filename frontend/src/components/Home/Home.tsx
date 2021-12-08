@@ -4,6 +4,22 @@ import styles from './Home.module.css';
 import BoardData from '../../excuteData/BoardMock/BoardMock';
 
 const Home = () => {
+  interface INavRegion {
+    seoul: string;
+    gyeonggi: string;
+    deajeon: string;
+    busan: string;
+    gwangju: string;
+    else: string;
+  }
+  const navRegion: INavRegion = {
+    seoul: '서울',
+    gyeonggi: '경기',
+    deajeon: '대전',
+    busan: '부산',
+    gwangju: '광주',
+    else: '기타',
+  };
   return (
     <div>
       <div className={`${styles.home}`}>
@@ -11,24 +27,13 @@ const Home = () => {
           <span>뛰 어 요</span>
         </div>
         <div className={`flex justify-center w-full ${styles.nav}`}>
-          <button type="button" className={styles.nav__region}>
-            서울
-          </button>
-          <button type="button" className={styles.nav__region}>
-            경기
-          </button>
-          <button type="button" className={styles.nav__region}>
-            대전
-          </button>
-          <button type="button" className={styles.nav__region}>
-            부산
-          </button>
-          <button type="button" className={styles.nav__region}>
-            광주
-          </button>
-          <button type="button" className={styles.nav__region}>
-            기타
-          </button>
+          {Object.keys(navRegion).map((region) => {
+            return (
+              <button type="button" className={styles.nav__region}>
+                {navRegion[region as keyof typeof navRegion]}
+              </button>
+            );
+          })}
         </div>
       </div>
       <div className="pt-7 grid grid-cols-3 mx-auto my-0 w-2/3 gap-y-10 grid-template-rows">
