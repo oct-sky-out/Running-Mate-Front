@@ -20,6 +20,9 @@ function* signInFetchSaga({
         email,
         address: '서울 강남구',
         nickname: '귀여미',
+        crew: '',
+        isCrewLeader: false,
+        crewId: '',
       })
     );
   } catch (error: any | Error) {

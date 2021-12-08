@@ -14,6 +14,9 @@ const initialState: ISignIn = {
     email: '',
     nickname: '',
     address: '',
+    crew: '',
+    crewId: '',
+    isCrewLeader: false,
   },
   signInStatus: '',
   isLogged: false,
@@ -37,9 +40,11 @@ const signInSliceReducer = createSlice({
           email: '',
           nickname: '',
           address: '',
+          crew: '',
+          crewId: '',
+          isCrewLeader: false,
         },
         signInStatus: '',
-
         isLogged: false,
       };
     },
@@ -109,6 +114,9 @@ const signInSliceReducer = createSlice({
         email: string;
         nickname: string;
         address: string;
+        crew: string;
+        crewId: string;
+        isCrewLeader: boolean;
       }) => {
         return { payload: successData };
       },
@@ -118,6 +126,9 @@ const signInSliceReducer = createSlice({
           email: string;
           nickname: string;
           address: string;
+          crew: string;
+          crewId: string;
+          isCrewLeader: boolean;
         }>
       ) => {
         return { ...state, userData: action.payload, signInStatus: 'Success' };
