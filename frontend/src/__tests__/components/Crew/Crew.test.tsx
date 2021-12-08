@@ -23,9 +23,10 @@ import CrewDetail from '../../../components/Crew/CrewDetail';
 
 const Crew = () => {
   //* Redux
+  //! 로그인 상태로 가정했습니다.
   const { _crew, _crewId, nickname } = useSelector((state) => ({
-    crew: state.signIn.userData.crew,
-    crewId: state.signIn.userData.crewId,
+    _crew: state.signIn.userData.crew,
+    _crewId: state.signIn.userData.crewId,
     nickname: state.signIn.userData.nickname,
   }));
 
