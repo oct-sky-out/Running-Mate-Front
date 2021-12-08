@@ -75,23 +75,27 @@ const SignInModal: React.FC<IProps> = ({ closeModal }) => {
           </div>
           <form onSubmit={signInExecuting}>
             <Input
+              data-testid="email-input"
               width="100%"
               type="email"
               className="mb-5 z-0"
               placeholder="이메일"
               onChange={(e) => {
-                changedInputs(e, 'setEmail');
+                dispatch(SignInActions.setEmail(e.target.value));
+                // changedInputs(e, 'setEmail');
               }}
               data-cy="email"
             />
             <Input.Password
+              data-testid="password-input"
               width="100%"
               className="mb-5 z-0"
               placeholder="비밀번호"
               visibleIcon={<RiEyeLine fill="currentColor" />}
               hiddenIcon={<RiEyeCloseLine fill="currentColor" />}
               onChange={(e) => {
-                changedInputs(e, 'setPassword');
+                dispatch(SignInActions.setPassword(e.target.value));
+                // changedInputs(e, 'setPassword');
               }}
               data-cy="password"
             />
@@ -102,6 +106,7 @@ const SignInModal: React.FC<IProps> = ({ closeModal }) => {
                 className="z-0 important"
                 disabled={!(email && password)}
                 data-cy="signIn-btn"
+                data-testid="login-button"
               >
                 로그인
               </Button>
