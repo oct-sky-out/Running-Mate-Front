@@ -5,6 +5,7 @@ import BoardData from '../../excuteData/BoardMock/BoardMock';
 
 const Home = () => {
   interface INavRegion {
+    [key: string]: string;
     seoul: string;
     gyeonggi: string;
     deajeon: string;
@@ -30,7 +31,7 @@ const Home = () => {
           {Object.keys(navRegion).map((region) => {
             return (
               <button type="button" className={styles.nav__region}>
-                {navRegion[region as keyof typeof navRegion]}
+                {navRegion[region]}
               </button>
             );
           })}
