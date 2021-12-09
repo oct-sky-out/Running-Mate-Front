@@ -1,8 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { v4 } from 'uuid';
 import { Button } from '@nextui-org/react';
-import { BsFillPeopleFill } from 'react-icons/bs';
 import { useSelector } from '../../modules';
 import imageURL from '../../lib/URL/Image';
 import CrewMock from '../../excuteData/CrewMock/CrewMock';
@@ -18,7 +17,7 @@ const Crew = () => {
 
   //* useState
   const [imageOrder, setImageOrder] = useState(0);
-  const [hideImageClassName, setHideImageClassName] = useState('hidden');
+
   //* useRef
   const crewBoardTop = useRef<undefined | number>(undefined);
 
