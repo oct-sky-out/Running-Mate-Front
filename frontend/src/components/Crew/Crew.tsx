@@ -53,9 +53,9 @@ const Crew = () => {
           })}
         </div>
         <div className="absolute w-full h-1/3 inset-y-0">
-          {!crew && (
+          {crew && (
             <div>
-              <div className="absolute right-1/2 top-20">
+              <div className="absolute right-1/2 bottom-40">
                 <h1 className="text-3xl">
                   {nickname}안녕님의 크루는 {crew}오르고 달리기 입니다!
                 </h1>
@@ -69,12 +69,22 @@ const Crew = () => {
           )}
           {crew || (
             <div className="">
-              <div className="absolute right-1/2 top-20">
+              <div className="absolute right-1/2 bottom-40 ">
                 <h1 className="text-4xl">현재 가입된 크루가 없습니다.</h1>
                 <h1 className="text-3xl">크루에 들어가서 같이 뛰실래요?</h1>
               </div>
-              <div className="w-10 absolute right-1/3 bottom-20 ">
-                <Button size="xlarge" onClick={scrollDown}>
+              <div className="w-10 absolute right-1/3 bottom-20 flex flex-col space-y-5">
+                <Link to="/crew/new" data-cy="create-new-crew">
+                  <Button size="xlarge" onClick={scrollDown} color="#8b8bf5">
+                    크루 생성하기 ▹
+                  </Button>
+                </Link>
+                <Button
+                  size="xlarge"
+                  onClick={scrollDown}
+                  data-cy="join-crew"
+                  color="#3579EC"
+                >
                   크루 가입하기 ▹
                 </Button>
               </div>
@@ -97,7 +107,7 @@ const Crew = () => {
                 className="w-60 h-60 relative shadow-2xl transition ease-in-out duration-300 transform hover:scale-105 mx-3 rounded-2xl bg-white border-2"
                 to={`/crew/${crewInformation.crewID}`}
                 key={v4()}
-                data-testid={`${index}-crew-link`}
+                data-cy={`${index}-crew-link`}
               >
                 <div className="">
                   <img
