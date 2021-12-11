@@ -7,10 +7,12 @@ import createSagaMiddleware from 'redux-saga';
 import rootSaga from './saga';
 import signUpReducer from './signUp';
 import signInReducer from './signIn';
+import createCrewReducer from './createCrew';
 
 const rootReducer = combineReducers({
   signUp: signUpReducer,
   signIn: signInReducer,
+  createCrew: createCrewReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

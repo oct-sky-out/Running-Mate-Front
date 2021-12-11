@@ -33,6 +33,13 @@ const mockStore: RootState = {
       code: '',
     },
   },
+  createCrew: {
+    crew: {
+      crewName: '',
+      crewExplain: '',
+      crewRegion: '',
+    },
+  },
 };
 
 export { mockStore };
