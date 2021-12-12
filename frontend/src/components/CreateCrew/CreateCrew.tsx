@@ -104,7 +104,11 @@ const CreateCrew = () => {
             questionOrder === questions.length ? 'block' : 'hidden'
           } `}
         >
-          <Button className="mr-20" type="button">
+          <Button
+            className="mr-20"
+            type="button"
+            data-testid="go-crew-page-button"
+          >
             <Link to="/crew">크루 페이지로 돌아가기</Link>
           </Button>
           <Button type="button">
