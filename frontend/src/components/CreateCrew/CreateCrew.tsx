@@ -1,10 +1,13 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+
 import { Input, Button } from '@nextui-org/react';
 import { FormElement } from '@nextui-org/react/esm/input/input-props';
+
 import { CreateCrewActions } from '../../modules/createCrew';
 import { useSelector } from '../../modules/index';
+import CreateCrewOrderMarker from './CreateCrewOrderMarker';
 
 type CreacteCrewActionType = 'setCrewName' | 'setCrewExplain' | 'setCrewRegion';
 
@@ -32,7 +35,7 @@ const CreateCrew = () => {
     '달리는 지역이 어딘가요?',
     '간단한 크루 소개글을 작성해주세요.',
   ];
-  const complete: string = '축하합니다. 새로운 크루를 만들었습니다!';
+  const complete: string = '🎉 축하합니다. 새로운 크루를 만들었습니다!';
 
   const moveNextOrComplete = () => {
     if (questionOrder < questions.length) setQuestionOrder(questionOrder + 1);
@@ -64,8 +67,9 @@ const CreateCrew = () => {
     dispatch(CreateCrewActions.setInit());
   }, []);
   return (
-    <div>
-      <span data-testid="question-span">
+    <div className="flex flex-col justify-center items-center pt-10">
+      <CreateCrewOrderMarker questionOrder={questionOrder} />
+      <span className="text-5xl font-bold mb-20 " data-testid="question-span">
         {questionOrder === questions.length
           ? complete
           : questions[questionOrder]}
@@ -78,9 +82,12 @@ const CreateCrew = () => {
             : { visibility: 'visible' }
         }
         onSubmit={(e) => e.preventDefault}
+        className="w-3/5 text-center mb-10"
       >
         <Input
           type="text"
+          width={`${questionOrder < questions.length - 1 ? '20%' : '60%'}`}
+          className="mb-20"
           value={reduxStates[questionOrder] || ''}
           onChange={(e) => {
             InputStateToRedux(
@@ -93,32 +100,28 @@ const CreateCrew = () => {
       </form>
       <div>
         <div
-          style={
-            questionOrder === questions.length
-              ? { visibility: 'visible' }
-              : { visibility: 'hidden' }
-          }
+          className={`${
+            questionOrder === questions.length ? 'block' : 'hidden'
+          } `}
         >
-          <button type="button">
+          <Button className="mr-20" type="button">
             <Link to="/crew">크루 페이지로 돌아가기</Link>
-          </button>
-          <button type="button">
-            <Link to="/crew">크루 관리하러 가기</Link>
-          </button>
+          </Button>
+          <Button type="button">
+            <Link to="/crew/crewid">크루 관리하러 가기</Link>
+          </Button>
         </div>
         <div
-          style={
-            questionOrder === questions.length
-              ? { visibility: 'hidden' }
-              : { visibility: 'visible' }
-          }
+          className={`${
+            questionOrder === questions.length ? 'hidden' : 'block'
+          }`}
         >
           <Button
-            style={
+            className={`${
               questionOrder === 0 || questionOrder === questions.length
-                ? { visibility: 'hidden' }
-                : { visibility: 'visible' }
-            }
+                ? 'invisible'
+                : 'visible'
+            } mr-20`}
             type="button"
             onClick={movePrevious}
             data-testid="previous-button"
