@@ -36,6 +36,10 @@ const mockStore: RootState = {
       code: '',
     },
   },
+  newPassword: {
+    newPassword: '',
+    checkNewPassword: '',
+  },
 };
 
 export { mockStore };

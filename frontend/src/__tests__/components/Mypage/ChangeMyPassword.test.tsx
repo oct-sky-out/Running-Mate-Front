@@ -87,8 +87,6 @@ const ChangeMyPassword = () => {
   );
 };
 
-const store = useMockStore;
-
 describe('비밀번호 변경 컴포넌트 테스팅', () => {
   test('비밀번호가 안전한 비밀번호인가?', async () => {
     render(
