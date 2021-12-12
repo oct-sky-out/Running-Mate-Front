@@ -5,7 +5,7 @@ interface IProps {
   questionOrder: number;
 }
 
-const CreateCrewOrderMarker = (props: IProps) => {
+const CreateCrewOrderMarker = ({ questionOrder }: IProps) => {
   //* Redux
   const { crewName, crewRegion, crewExplain } = useSelector((state) => ({
     crewName: state.createCrew.crew.crewName,
@@ -13,7 +13,6 @@ const CreateCrewOrderMarker = (props: IProps) => {
     crewExplain: state.createCrew.crew.crewExplain,
   }));
 
-  const { questionOrder } = props;
   const reduxStates = [crewName, crewRegion, crewExplain];
   const orders: string[] = ['이름', '지역', '소개'];
 
@@ -37,9 +36,7 @@ const CreateCrewOrderMarker = (props: IProps) => {
                   ? 'transition ease-in-out delay-150 bg-gray-300'
                   : 'transition ease-in-out delay-200 bg-purple-400'
               }`}
-            >
-              {' '}
-            </div>
+            />
           </>
         );
       })}
