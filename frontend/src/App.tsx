@@ -1,4 +1,5 @@
 import { BrowserRouter, Switch, Route, withRouter } from 'react-router-dom';
+import CreateNewCrew from './components/CreateCrew/CreateCrew';
 import Crew from './components/Crew/Crew';
 import CrewDetail from './components/Crew/CrewDetail';
 import GuestPage from './components/GuestPage/GuestPage';
@@ -14,6 +15,8 @@ function App() {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/guest" component={GuestPage} />
+          <Route exact path="/MyPage" component={MyPage} />
+          <Route exact path="/crew/new" component={CreateNewCrew} />
           <Route exact path="/myPage" component={MyPage} />
           <Route exact path="/myPage/changePassword" component={MyPage} />
           <Route exact path="/crew" component={Crew} />
