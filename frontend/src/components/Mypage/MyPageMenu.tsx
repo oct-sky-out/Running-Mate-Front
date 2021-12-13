@@ -6,7 +6,7 @@ import { FaChevronCircleRight } from 'react-icons/fa';
 const MyPageMenu = () => {
   const menuTexts: { [key: string]: string } = {
     '/mypage': '내 정보 관리',
-    '/change-my-password': '비밀번호 변경',
+    '/mypage/changePassword': '비밀번호 변경',
   };
 
   const history = useHistory();

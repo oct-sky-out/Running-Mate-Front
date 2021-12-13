@@ -8,11 +8,13 @@ import rootSaga from './saga';
 import signUpReducer from './signUp';
 import signInReducer from './signIn';
 import createCrewReducer from './createCrew';
+import newPasswordReducer from './newPassword';
 
 const rootReducer = combineReducers({
   signUp: signUpReducer,
   signIn: signInReducer,
   createCrew: createCrewReducer,
+  newPassword: newPasswordReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

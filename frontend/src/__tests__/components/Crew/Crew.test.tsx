@@ -19,8 +19,6 @@ import { Button } from '@nextui-org/react';
 import imageURL from '../../../lib/URL/Image';
 import CrewMock from '../../../excuteData/CrewMock/CrewMock';
 
-import CrewDetail from '../../../components/Crew/CrewDetail';
-
 const Crew = () => {
   //* Redux
   //! 로그인 상태로 가정했습니다.
