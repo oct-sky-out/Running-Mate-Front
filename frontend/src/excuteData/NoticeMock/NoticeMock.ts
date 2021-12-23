@@ -1,6 +1,19 @@
 interface NoticeData {
   [key: string]: { [key: string]: object };
-  notice: { [key: string]: object };
+  notice: {
+    [key: string]: {
+      imageUrl: string;
+      title: string;
+      number: string;
+      end: string;
+      date: string;
+      writer: string;
+      explain: string;
+      space: string;
+      chattingUrl: string;
+      profileUrl: string;
+    };
+  };
 }
 const Notice: NoticeData = {
   notice: {
@@ -14,6 +27,9 @@ const Notice: NoticeData = {
       writer: '뤱몬스터',
       explain:
         '서울 여의도 한강공원에서 달리실분 선착순으로 10명 구합니다. 거리는 3km정도 됩니다. 연락주세요.',
+      space: '서울 여의도 한강공원',
+      chattingUrl: 'chatting__URL',
+      profileUrl: 'https://t1.daumcdn.net/cfile/blog/2449D04958048A9B27',
     },
     1: {
       imageUrl:
@@ -25,6 +41,9 @@ const Notice: NoticeData = {
       writer: '권지용',
       explain:
         '대전 은행동에서 달리실분 선착순으로 10명 구합니다. 거리는 3km정도 됩니다. 연락주세요.',
+      space: '대전 은행동',
+      chattingUrl: 'chatting__URL',
+      profileUrl: 'https://t1.daumcdn.net/cfile/blog/2449D04958048A9B27',
     },
     2: {
       imageUrl:
@@ -36,6 +55,9 @@ const Notice: NoticeData = {
       writer: '이지은',
       explain:
         '수원 화성주위에서 달리실분 선착순으로 10명 구합니다. 거리는 3km정도 됩니다. 연락주세요.',
+      space: '수원 화성',
+      chattingUrl: 'chatting__URL',
+      profileUrl: 'https://t1.daumcdn.net/cfile/blog/2449D04958048A9B27',
     },
     3: {
       imageUrl:
@@ -47,6 +69,9 @@ const Notice: NoticeData = {
       writer: '전정국',
       explain:
         '서울 여의도 한강공원에서 달리실분 선착순으로 10명 구합니다. 거리는 3km정도 됩니다. 연락주세요.',
+      space: '서울 여의도 한강공원',
+      chattingUrl: 'chatting__URL',
+      profileUrl: 'https://t1.daumcdn.net/cfile/blog/2449D04958048A9B27',
     },
   },
 };
