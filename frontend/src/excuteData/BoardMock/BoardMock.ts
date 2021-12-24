@@ -7,6 +7,7 @@ const BoardData = {
       number: '4',
       end: '1640404801000',
       writer: '뤱몬스터',
+      noticeId: '0',
     },
     {
       imageUrl:
@@ -15,6 +16,7 @@ const BoardData = {
       number: '4',
       end: '1640404801000',
       writer: '권지용',
+      noticeId: '1',
     },
     {
       imageUrl:
@@ -23,6 +25,7 @@ const BoardData = {
       number: '4',
       end: '1638590401000',
       writer: '이지은',
+      noticeId: '2',
     },
     {
       imageUrl:
@@ -31,6 +34,7 @@ const BoardData = {
       number: '4',
       end: '1638766501000',
       writer: '전정국',
+      noticeId: '3',
     },
   ],
 };

@@ -3,16 +3,16 @@ import Board from '../Board/Board';
 import styles from './Home.module.css';
 import BoardData from '../../excuteData/BoardMock/BoardMock';
 
+interface INavRegion {
+  [key: string]: string;
+  seoul: string;
+  gyeonggi: string;
+  deajeon: string;
+  busan: string;
+  gwangju: string;
+  else: string;
+}
 const Home = () => {
-  interface INavRegion {
-    [key: string]: string;
-    seoul: string;
-    gyeonggi: string;
-    deajeon: string;
-    busan: string;
-    gwangju: string;
-    else: string;
-  }
   const navRegion: INavRegion = {
     seoul: '서울',
     gyeonggi: '경기',
