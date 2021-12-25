@@ -25,6 +25,8 @@ const ViewNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
     chattingUrl,
   } = noticeMockData.notice[noticeId];
 
+  const endDate = new Date(Number(end));
+
   return (
     <div className="flex flex-col justify-center items-center">
       <div className="w-3/5">
@@ -71,7 +73,20 @@ const ViewNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
               장소: &ensp;{space}
             </span>
             <span className="block font-bold mb-3 text-xl">
-              시간: &ensp;{end}
+              시간: &ensp;
+              {`${endDate.getFullYear()}-${endDate.getMonth()}-${endDate.getDate()} ${
+                endDate.getHours() < 10
+                  ? `0${endDate.getHours()}`
+                  : endDate.getHours()
+              }:${
+                endDate.getMinutes() < 10
+                  ? `0${endDate.getMinutes()}`
+                  : endDate.getMinutes()
+              }: ${
+                endDate.getSeconds() < 10
+                  ? `0${endDate.getSeconds()}`
+                  : endDate.getSeconds()
+              }`}
             </span>
             <span className="block font-bold mb-3 text-xl">
               오픈 채팅방 링크: &ensp;{chattingUrl}
