@@ -6,6 +6,7 @@ import GuestPage from './components/GuestPage/GuestPage';
 import Header from './components/Header/Header';
 import Home from './components/Home/Home';
 import MyPage from './components/Mypage/MyPage';
+import ViewNotice from './components/ViewNotice/ViewNotice';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route exact path="/myPage/changePassword" component={MyPage} />
           <Route exact path="/crew" component={Crew} />
           <Route exact path="/crew/:id" component={CrewDetail} />
+          <Route exact path="/notice/:noticeId" component={ViewNotice} />
         </Switch>
         <div id="modal" />
       </BrowserRouter>
