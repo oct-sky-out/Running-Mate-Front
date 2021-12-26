@@ -33,6 +33,7 @@ const ViewNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
         <button
           type="button"
           className="py-4 flex items-center mb-4"
+          data-cy="back"
           onClick={() => {
             history.goBack();
           }}
