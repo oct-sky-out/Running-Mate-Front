@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import { SignUpActions } from '../../modules/signUp';
 import { useSelector } from '../../modules';
 import Address from '../address/Address';
+import usePasswordCheck from '../../hooks/usePasswordCheck';
 import styles from './SignInAndUpModal.module.css';
 import { ReactComponent as MiniLogo } from '../../assets/logo_mini.svg';
 import 'react-toastify/dist/ReactToastify.css';
@@ -45,9 +46,15 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
     error: state.signUp.error,
   }));
 
+  const {
+    changeChekcPassword,
+    changePassword,
+    isSafedAndPasswordSame,
+    getConfirmPasswordState,
+    getSamePasswordState,
+  } = usePasswordCheck();
+
   //* useStates
-  const [isPasswordSafe, setIsPasswordSafe] = useState(false);
-  const [isPasswordSame, setIsPasswordSame] = useState(false);
   const [openAddressModal, setOpenAddressModal] = useState(false);
 
   //* useCallbacks
@@ -75,35 +82,8 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
     ) => {
       dispatch(SignUpActions[actionName](value));
     },
-    [email, nickname, name, password, checkPassword, address]
+    [email, nickname, name, address]
   );
-
-  //* useMemoes
-  const displayedSafePasswordComment = useMemo(() => {
-    const passwordRegex =
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
-
-    if (!passwordRegex.test(password)) setIsPasswordSafe(false);
-    if (passwordRegex.test(password)) setIsPasswordSafe(true);
-
-    return (
-      <span className="mb-2 pl-2 text-xs text-gray-500">
-        {isPasswordSafe
-          ? '안전한 비밀번호입니다 :)'
-          : '8자리 이상, 영어와 숫자, 특수기호(~!@#$%^&*)를 섞은 문자'}
-      </span>
-    );
-  }, [password, checkPassword, isPasswordSafe]);
-
-  const displayedSamePasswordComment = useMemo(() => {
-    if (password === checkPassword) setIsPasswordSame(true);
-    if (password !== checkPassword) setIsPasswordSame(false);
-    return (
-      <span className="mb-2 pl-2 text-xs text-gray-500">
-        {isPasswordSame ? '비밀번호가 일치합니다.' : '비밀번호가 다릅니다.'}
-      </span>
-    );
-  }, [password, checkPassword, isPasswordSame]);
 
   useEffect(() => {
     if (success.nickName !== '') {
@@ -187,11 +167,15 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
                 placeholder="비밀번호"
                 visibleIcon={<RiEyeLine fill="currentColor" />}
                 hiddenIcon={<RiEyeCloseLine fill="currentColor" />}
-                onChange={(e) => {
-                  changedInputs(e, 'setPassword');
-                }}
+                onChange={(e) =>
+                  changePassword(e, () =>
+                    dispatch(SignUpActions.setPassword(e.target.value))
+                  )
+                }
               />
-              {displayedSafePasswordComment}
+              <span className="mb-2 pl-2 text-xs text-gray-500">
+                {getConfirmPasswordState()}
+              </span>
             </div>
             <div className="flex flex-col justify-center">
               <Input.Password
@@ -201,10 +185,14 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
                 visibleIcon={<RiEyeLine fill="currentColor" />}
                 hiddenIcon={<RiEyeCloseLine fill="currentColor" />}
                 onChange={(e) => {
-                  changedInputs(e, 'setCheckPassword');
+                  changeChekcPassword(e, password, () =>
+                    dispatch(SignUpActions.setCheckPassword(e.target.value))
+                  );
                 }}
               />
-              {displayedSamePasswordComment}
+              <span className="mb-2 pl-2 text-xs text-gray-500">
+                {getSamePasswordState()}
+              </span>
             </div>
             <div className="h-full flex justify-center align-center">
               <Button
@@ -213,8 +201,7 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
                 className="z-0 important"
                 disabled={
                   !(
-                    isPasswordSafe &&
-                    isPasswordSame &&
+                    isSafedAndPasswordSame(password, checkPassword) &&
                     email &&
                     nickname &&
                     name &&
