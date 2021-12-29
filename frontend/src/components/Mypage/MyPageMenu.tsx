@@ -1,7 +1,8 @@
 import React from 'react';
 import { v4 } from 'uuid';
-import { withRouter, useHistory } from 'react-router-dom';
+import { withRouter, useHistory, useLocation } from 'react-router-dom';
 import { FaChevronCircleRight } from 'react-icons/fa';
+import MenuButton from '../../common/components/MenuButton';
 
 const MyPageMenu = () => {
   const menuTexts: { [key: string]: string } = {
@@ -10,32 +11,25 @@ const MyPageMenu = () => {
   };
 
   const history = useHistory();
+  const location = useLocation();
 
   const moveURL = (url: string) => {
     history.push(url);
   };
 
   return (
-    <div className="col-span-1 w-full pt-5 flex justify-center border-r-2">
-      <div className="">
-        <ul>
-          {Object.keys(menuTexts).map((url) => (
-            <li
-              key={v4()}
-              className="mb-3 transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110"
-            >
-              <button
-                type="button"
-                className="flex flex-left items-center text-xl font-bold"
-                onClick={() => moveURL(url)}
-              >
-                <FaChevronCircleRight color="#8b8bf5" className="mr-2" />
-                {menuTexts[url]}
-              </button>
-            </li>
-          ))}
-        </ul>
-      </div>
+    <div className="flex justify-center w-full">
+      {Object.keys(menuTexts).map((url) => (
+        <MenuButton
+          type="button"
+          className={`flex flex-left items-center text-xl font-bold ${
+            location.pathname === url ? 'border-purple' : null
+          }`}
+          onClick={() => moveURL(url)}
+        >
+          {menuTexts[url]}
+        </MenuButton>
+      ))}
     </div>
   );
 };

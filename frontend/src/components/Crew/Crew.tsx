@@ -74,7 +74,7 @@ const Crew = () => {
               </div>
               <div className="w-10 absolute right-1/3 bottom-20 flex flex-col space-y-5">
                 <Link to="/crew/new" data-cy="create-new-crew">
-                  <Button size="xlarge" onClick={scrollDown} color="#8b8bf5">
+                  <Button size="xlarge" color="#8b8bf5">
                     크루 생성하기 ▹
                   </Button>
                 </Link>

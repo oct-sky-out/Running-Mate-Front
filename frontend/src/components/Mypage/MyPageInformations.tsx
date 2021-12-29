@@ -31,7 +31,7 @@ const MyPageInformations = () => {
 
   return (
     <>
-      <div className="h-screen col-span-4 w-full pt-5 flex justify-center border-r-2">
+      <div className="h-screen col-span-4 w-full pt-5 flex justify-center ">
         <div className="space-y-20">
           <div className="space-y-3">
             <span className="text-2xl">이메일</span>

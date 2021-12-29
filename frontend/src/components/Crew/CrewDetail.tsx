@@ -10,10 +10,13 @@ import { BsPeopleFill } from 'react-icons/bs';
 import { GiPositionMarker } from 'react-icons/gi';
 import { v4 } from 'uuid';
 import CrewWidget from './CrewWidget';
+import DetailBaseBorder from '../../common/components/DetailBaseBorder';
+import PreviousPageButton from '../../common/components/PreviousPageButton';
 
 // test data
 import crewMock from '../../excuteData/CrewMock/CrewMock';
 import crewRewardMock from '../../excuteData/CrewMock/CrewRewardMock';
+import NextPageButton from '../../common/components/NextPageButton';
 
 interface MatchParam {
   id: string;
@@ -28,21 +31,18 @@ const CrewDetail: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
   const mockLeaderState = true;
 
   return (
-    <div className="w-4/5 mx-auto my-20 p-10 border rounded-3xl shadow-lg relative ">
-      <div
-        className="w-28 flex justify-center items-center cursor-pointer"
-        onClick={history.goBack}
-      >
-        <GrFormPrevious size="32" />
-        <span>뒤로가기</span>
-      </div>
+    <DetailBaseBorder>
+      <PreviousPageButton
+        text="뒤로가기"
+        iconSize="32"
+        onClick={() => history.goBack()}
+        className="w-28"
+      />
       {mockLeaderState ? (
-        <Link to={`/crew/${match.params.id}/management`}>
-          <div className="absolute top-10 right-10 w-32 flex justify-center items-center cursor-pointer">
-            <span>크루 관리하기</span>
-            <GrFormNext size="32" />
-          </div>
-        </Link>
+        <NextPageButton
+          text="크루 관리하기"
+          nextPageURL={`/crew/${match.params.id}/management`}
+        />
       ) : null}
       <div className="w-full mx-auto my-0 py-5 flex flex-col flex-wrap justify-center items-center space-y-5">
         <div className="w-full flex justify-center items-center">
@@ -89,7 +89,7 @@ const CrewDetail: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
           </div>
         </div>
       </div>
-    </div>
+    </DetailBaseBorder>
   );
 };
 
