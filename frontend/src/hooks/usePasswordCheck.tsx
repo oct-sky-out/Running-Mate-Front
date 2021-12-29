@@ -14,11 +14,11 @@ const usePasswordCheck = () => {
       const passwordRegex =
         /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
 
-      if (passwordRegex.test(e.target.value) && e.target.value.length >= 8) {
+      if (passwordRegex.test(e.target.value)) {
         setConfirmPassword('안전한 비밀번호입니다.');
         setSafePassword(true);
       }
-      if (!passwordRegex.test(e.target.value) || e.target.value.length < 8) {
+      if (!passwordRegex.test(e.target.value)) {
         setConfirmPassword(
           '비밀먼호 형식은 8자리 이상, 영어와 숫자, 특수기호(~!@#$%^&*)를 섞은 문자입니다.'
         );
