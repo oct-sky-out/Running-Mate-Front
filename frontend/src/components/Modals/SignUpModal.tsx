@@ -107,52 +107,59 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
 
   return (
     <>
-      <div
-        className={`relative p-5 rounded-md flex items-center z-20 bg-white ${styles.signUp_wrapper}`}
-      >
+      <div className="relative p-5 rounded-md flex items-center z-20 bg-white h-900">
         <div className="flex w-full justify-center items-center flex-col">
           <div className="w-3/4 mb-5 border-b-2 flex justify-center">
             <MiniLogo width="100" height="100" />
           </div>
-          <div className="mb-5">
+          <div className="mb-10">
             <span className="text-2xl">회원가입</span>
           </div>
-          <form onSubmit={signUpExecuting}>
+          <form onSubmit={signUpExecuting} className="space-y-10">
             <Input
+              color="secondary"
+              bordered
               width="100%"
               className={`mb-5 z-0 ${styles.signIn_form}`}
-              placeholder="이메일"
+              labelPlaceholder="이메일"
               type="email"
               onChange={(e) => {
                 changedInputs(e, 'setEmail');
               }}
             />
             <Input
+              color="secondary"
+              bordered
               width="100%"
               className={`mb-5 z-0 ${styles.signIn_form}`}
-              placeholder="이름"
+              labelPlaceholder="이름"
               onChange={(e) => {
                 changedInputs(e, 'setName');
               }}
             />
             <Input
+              color="secondary"
+              bordered
               width="100%"
               className={`mb-5 z-0 ${styles.signIn_form}`}
-              placeholder="별명"
+              labelPlaceholder="별명"
               onChange={(e) => {
                 changedInputs(e, 'setNickname');
               }}
             />
             <div className="flex mb-5 items-center space-x-2 justify-between">
               <Input
+                color="secondary"
+                bordered
                 disabled
                 width="100%"
                 className={` z-0 ${styles.signIn_form}`}
-                placeholder="주소 (시/도, 시/군/구 까지만 입력) "
+                labelPlaceholder="주소 (시/도, 시/군/구 까지만 입력) "
                 value={address}
               />
               <Button
-                className=""
+                rounded
+                color="secondary"
                 onClick={() => {
                   setOpenAddressModal(true);
                 }}
@@ -162,9 +169,11 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
             </div>
             <div className="flex flex-col justify-center">
               <Input.Password
+                color="secondary"
+                bordered
                 width="100%"
                 className={`mb-2 z-0 ${styles.signIn_form}`}
-                placeholder="비밀번호"
+                labelPlaceholder="비밀번호"
                 visibleIcon={<RiEyeLine fill="currentColor" />}
                 hiddenIcon={<RiEyeCloseLine fill="currentColor" />}
                 onChange={(e) =>
@@ -179,9 +188,11 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
             </div>
             <div className="flex flex-col justify-center">
               <Input.Password
+                color="secondary"
+                bordered
                 width="100%"
                 className={`mb-2 z-0 ${styles.signIn_form}`}
-                placeholder="비밀번호 확인"
+                labelPlaceholder="비밀번호 확인"
                 visibleIcon={<RiEyeLine fill="currentColor" />}
                 hiddenIcon={<RiEyeCloseLine fill="currentColor" />}
                 onChange={(e) => {
@@ -196,6 +207,8 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
             </div>
             <div className="h-full flex justify-center align-center">
               <Button
+                color="secondary"
+                rounded
                 type="submit"
                 id={`${styles.signIn_btn}`}
                 className="z-0 important"

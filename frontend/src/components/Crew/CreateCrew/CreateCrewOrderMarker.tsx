@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from '../../modules/index';
+import { useSelector } from '../../../modules/index';
 
 interface IProps {
   questionOrder: number;

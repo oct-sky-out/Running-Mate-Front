@@ -4,7 +4,7 @@ import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import { Router, withRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import CreateCrew from '../../../components/CreateCrew/CreateCrew';
+import CreateCrew from '../../../components/Crew/CreateCrew/CreateCrew';
 import { useMockStore } from '../../../modules';
 import { createMemoryHistory } from 'history';
 
