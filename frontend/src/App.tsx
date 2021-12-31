@@ -24,6 +24,11 @@ function App() {
           <Route exact path="/crew" component={Crew} />
           <Route exact path="/crew/:id" component={CrewDetail} />
           <Route exact path="/crew/:id/management" component={CrewManagement} />
+          <Route
+            exact
+            path="/crew/:id/peopleManagement"
+            component={CrewManagement}
+          />
           <Route exact path="/notice/:noticeId" component={ViewNotice} />
         </Switch>
         <div id="modal" />

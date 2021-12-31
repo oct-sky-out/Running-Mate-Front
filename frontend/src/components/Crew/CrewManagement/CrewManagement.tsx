@@ -5,6 +5,7 @@ import PreviousPageButton from '../../../common/components/PreviousPageButton';
 import crewMock from '../../../excuteData/CrewMock/CrewMock';
 import CrewManagementMenu from './CrewManagementMenu';
 import Management from './Management';
+import PeopleManagement from './PeopleManagement';
 
 interface MatchParam {
   id: string;
@@ -14,6 +15,7 @@ const CrewManagement: React.FC<RouteComponentProps<MatchParam>> = ({
   match,
 }) => {
   const history = useHistory();
+  console.log(match.path.toLowerCase().includes('peoplemanagement'));
   return (
     <DetailBaseBorder>
       <PreviousPageButton
@@ -39,7 +41,11 @@ const CrewManagement: React.FC<RouteComponentProps<MatchParam>> = ({
         </div>
       </div>
       <CrewManagementMenu />
-      <Management />
+      {match.path.toLowerCase().includes('peoplemanagement') ? (
+        <PeopleManagement />
+      ) : (
+        <Management />
+      )}
     </DetailBaseBorder>
   );
 };

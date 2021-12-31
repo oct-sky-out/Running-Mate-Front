@@ -10,10 +10,11 @@ const CrewManagementMenu = () => {
   const { id } = useParams<{ id: string }>();
   const location = useLocation();
   const history = useHistory();
+  console.log(location.pathname.toLowerCase());
 
   const menuTexts = {
     [`/crew/${id}/management`]: '크루 정보관리',
-    [`/crew/${id}/peopleManagement`]: '크루원 관리',
+    [`/crew/${id}/peoplemanagement`]: '크루원 관리',
   };
 
   return (
@@ -22,7 +23,7 @@ const CrewManagementMenu = () => {
         <MenuButton
           type="button"
           className={`flex flex-left items-center text-xl font-bold ${
-            location.pathname === url ? 'border-purple' : null
+            location.pathname.toLowerCase() === url ? 'border-purple' : null
           }`}
           onClick={() => history.push(url)}
         >
