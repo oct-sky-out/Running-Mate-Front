@@ -33,7 +33,7 @@ const ChangeMyPassword = () => {
             size="xlarge"
             data-testid="password"
             width="100%"
-            placeholder="새로운 비밀번호"
+            labelPlaceholder="새로운 비밀번호"
             type="password"
             visibleIcon={<RiEyeLine fill="currentColor" />}
             hiddenIcon={<RiEyeCloseLine fill="currentColor" />}
@@ -53,7 +53,7 @@ const ChangeMyPassword = () => {
             color="secondary"
             size="xlarge"
             data-testid="check-password"
-            placeholder="비밀번호 확인"
+            labelPlaceholder="비밀번호 확인"
             width="100%"
             type="password"
             visibleIcon={<RiEyeLine fill="currentColor" />}
