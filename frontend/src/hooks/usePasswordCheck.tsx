@@ -49,10 +49,13 @@ const usePasswordCheck = () => {
     [samePassword]
   );
 
-  const isSafedAndPasswordSame = useCallback((target1, target2) => {
-    if (safePassword && L.isEqual(target1, target2)) return true;
-    return false;
-  }, []);
+  const isSafedAndPasswordSame = useCallback(
+    (target1, target2) => {
+      if (safePassword && L.isEqual(target1, target2)) return true;
+      return false;
+    },
+    [safePassword]
+  );
 
   return {
     getConfirmPasswordState: () => confirmPassword,
