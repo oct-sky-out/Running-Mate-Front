@@ -28,6 +28,8 @@ const ChangeMyPassword = () => {
       <div className="w-2/3 flex flex-col items-center mx-auto my-0 space-y-20">
         <div className="w-2/3 flex flex-col justify-center">
           <Input.Password
+            bordered
+            color="secondary"
             size="xlarge"
             data-testid="password"
             width="100%"
@@ -47,6 +49,8 @@ const ChangeMyPassword = () => {
         </div>
         <div className="w-2/3 flex flex-col justify-center">
           <Input.Password
+            bordered
+            color="secondary"
             size="xlarge"
             data-testid="check-password"
             placeholder="비밀번호 확인"
@@ -64,6 +68,8 @@ const ChangeMyPassword = () => {
         </div>
         <div className="">
           <Button
+            rounded
+            color="secondary"
             size="xlarge"
             disabled={!isSafedAndPasswordSame(newPassword, checkNewPassword)}
           >
