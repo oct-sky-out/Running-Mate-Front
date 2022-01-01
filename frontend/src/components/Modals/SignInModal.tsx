@@ -70,16 +70,18 @@ const SignInModal: React.FC<IProps> = ({ closeModal }) => {
           <div className="w-3/4 mb-5 border-b-2 flex justify-center">
             <MiniLogo width="100" height="100" />
           </div>
-          <div className="mb-5">
+          <div className="mb-10">
             <span className="text-2xl">로그인</span>
           </div>
-          <form onSubmit={signInExecuting}>
+          <form onSubmit={signInExecuting} className="space-y-10">
             <Input
+              color="secondary"
+              bordered
               data-testid="email-input"
               width="100%"
               type="email"
               className="mb-5 z-0"
-              placeholder="이메일"
+              labelPlaceholder="이메일"
               onChange={(e) => {
                 dispatch(SignInActions.setEmail(e.target.value));
                 // changedInputs(e, 'setEmail');
@@ -87,10 +89,12 @@ const SignInModal: React.FC<IProps> = ({ closeModal }) => {
               data-cy="email"
             />
             <Input.Password
+              color="secondary"
+              bordered
               data-testid="password-input"
               width="100%"
               className="mb-5 z-0"
-              placeholder="비밀번호"
+              labelPlaceholder="비밀번호"
               visibleIcon={<RiEyeLine fill="currentColor" />}
               hiddenIcon={<RiEyeCloseLine fill="currentColor" />}
               onChange={(e) => {
@@ -101,6 +105,8 @@ const SignInModal: React.FC<IProps> = ({ closeModal }) => {
             />
             <div className="h-full flex justify-center align-center">
               <Button
+                rounded
+                color="secondary"
                 type="submit"
                 id={`${styles.signIn_btn}`}
                 className="z-0 important"

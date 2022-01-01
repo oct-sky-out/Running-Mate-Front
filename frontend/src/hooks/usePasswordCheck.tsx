@@ -7,7 +7,7 @@ const usePasswordCheck = () => {
     '비밀먼호 형식은 8자리 이상, 영어와 숫자, 특수기호(~!@#$%^&*)를 섞은 문자입니다.'
   );
   const [samePassword, setSamePassword] = useState('');
-  const [safePassword, setSafePassword] = useState(true);
+  const [safePassword, setSafePassword] = useState(false);
 
   const changePassword = useCallback(
     L.debounce((e: React.ChangeEvent<FormElement>, dispatch?: () => void) => {
@@ -49,10 +49,13 @@ const usePasswordCheck = () => {
     [samePassword]
   );
 
-  const isSafedAndPasswordSame = useCallback((target1, target2) => {
-    if (safePassword && L.isEqual(target1, target2)) return true;
-    return false;
-  }, []);
+  const isSafedAndPasswordSame = useCallback(
+    (target1, target2) => {
+      if (safePassword && L.isEqual(target1, target2)) return true;
+      return false;
+    },
+    [safePassword]
+  );
 
   return {
     getConfirmPasswordState: () => confirmPassword,

@@ -5,18 +5,17 @@ import {
   useHistory,
   Link,
 } from 'react-router-dom';
-import { GrFormPrevious, GrFormNext } from 'react-icons/gr';
 import { BsPeopleFill } from 'react-icons/bs';
 import { GiPositionMarker } from 'react-icons/gi';
 import { v4 } from 'uuid';
 import CrewWidget from './CrewWidget';
-import DetailBaseBorder from '../../common/components/DetailBaseBorder';
-import PreviousPageButton from '../../common/components/PreviousPageButton';
+import DetailBaseBorder from '../../../common/components/DetailBaseBorder';
+import PreviousPageButton from '../../../common/components/PreviousPageButton';
 
 // test data
-import crewMock from '../../excuteData/CrewMock/CrewMock';
-import crewRewardMock from '../../excuteData/CrewMock/CrewRewardMock';
-import NextPageButton from '../../common/components/NextPageButton';
+import crewMock from '../../../excuteData/CrewMock/CrewMock';
+import crewRewardMock from '../../../excuteData/CrewMock/CrewRewardMock';
+import NextPageButton from '../../../common/components/NextPageButton';
 
 interface MatchParam {
   id: string;
