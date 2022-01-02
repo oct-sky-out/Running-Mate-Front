@@ -9,12 +9,14 @@ import signUpReducer from './signUp';
 import signInReducer from './signIn';
 import createCrewReducer from './createCrew';
 import newPasswordReducer from './newPassword';
+import createNoticeReducer from './createNotice';
 
 const rootReducer = combineReducers({
   signUp: signUpReducer,
   signIn: signInReducer,
   createCrew: createCrewReducer,
   newPassword: newPasswordReducer,
+  createNotice: createNoticeReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

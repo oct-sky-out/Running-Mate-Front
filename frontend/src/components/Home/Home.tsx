@@ -1,4 +1,6 @@
+import { Link } from 'react-router-dom';
 import { v4 } from 'uuid';
+import { HiOutlinePlusCircle } from 'react-icons/hi';
 import Board from '../Board/Board';
 import BoardData from '../../excuteData/BoardMock/BoardMock';
 import MenuButton from '../../common/components/MenuButton';
@@ -38,6 +40,18 @@ const Home = () => {
           return <Board key={v4()} data={data} />;
         })}
       </div>
+      <button
+        type="button"
+        className="fixed right-16 bottom-16 transform hover:scale-110 transition ease-in-out duration-300"
+      >
+        <Link to="/notice-create">
+          <HiOutlinePlusCircle
+            className="text-5xl"
+            color="#8b8bf5"
+            title="게시글 생성"
+          />
+        </Link>
+      </button>
     </div>
   );
 };
