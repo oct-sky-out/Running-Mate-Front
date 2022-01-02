@@ -31,7 +31,7 @@ const MyPageInformations = () => {
 
   return (
     <>
-      <div className="h-screen col-span-4 w-full pt-5 flex justify-center border-r-2">
+      <div className="h-screen col-span-4 w-full pt-5 flex justify-center ">
         <div className="space-y-20">
           <div className="space-y-3">
             <span className="text-2xl">이메일</span>
@@ -40,6 +40,8 @@ const MyPageInformations = () => {
           <div className="space-y-3">
             <span className="text-2xl">닉네임</span>
             <Input
+              color="secondary"
+              bordered
               type="text"
               width="100%"
               className="z-0"
@@ -52,6 +54,8 @@ const MyPageInformations = () => {
           <div className="space-y-3">
             <span className="text-2xl">회원주소</span>
             <Input
+              color="secondary"
+              bordered
               disabled
               width="100%"
               className="z-0"
@@ -59,6 +63,8 @@ const MyPageInformations = () => {
               value={address}
             />
             <Button
+              color="secondary"
+              rounded
               className="z-0"
               onClick={() => {
                 openModal();
@@ -68,7 +74,12 @@ const MyPageInformations = () => {
             </Button>
           </div>
           <div className="flex justify-center items-center">
-            <Button className="z-0" onClick={() => {}}>
+            <Button
+              rounded
+              color="secondary"
+              className="z-0"
+              onClick={() => {}}
+            >
               저장하기
             </Button>
           </div>

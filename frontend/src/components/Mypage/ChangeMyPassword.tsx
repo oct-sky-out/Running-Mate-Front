@@ -6,6 +6,7 @@ import { FormElement } from '@nextui-org/react/esm/input/input-props';
 import { RiEyeCloseLine, RiEyeLine } from 'react-icons/ri';
 import { useSelector } from '../../modules/index';
 import { newPasswordActions } from '../../modules/newPassword';
+import usePasswordCheck from '../../hooks/usePasswordCheck';
 
 const ChangeMyPassword = () => {
   const dispatch = useDispatch();
@@ -14,86 +15,63 @@ const ChangeMyPassword = () => {
     checkNewPassword: state.newPassword.checkNewPassword,
   }));
 
-  const [confirmPassword, setConfirmPassword] = useState(
-    '비밀먼호 형식은 8자리 이상, 영어와 숫자, 특수기호(~!@#$%^&*)를 섞은 문자입니다.'
-  );
-  const [samePassword, setSamePassword] = useState('');
-  const [safePassword, setSafePassword] = useState(true);
+  const {
+    changeChekcPassword,
+    changePassword,
+    isSafedAndPasswordSame,
+    getConfirmPasswordState,
+    getSamePasswordState,
+  } = usePasswordCheck();
 
-  const changeNewPassword = useCallback(
-    L.debounce((e: React.ChangeEvent<FormElement>) => {
-      const passwordRegex =
-        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
-
-      if (passwordRegex.test(e.target.value) && e.target.value.length >= 8) {
-        setConfirmPassword('안전한 비밀번호입니다.');
-        setSafePassword(true);
-      }
-      if (!passwordRegex.test(e.target.value) || e.target.value.length < 8) {
-        setConfirmPassword(
-          '비밀먼호 형식은 8자리 이상, 영어와 숫자, 특수기호(~!@#$%^&*)를 섞은 문자입니다.'
-        );
-        setSafePassword(false);
-      }
-      dispatch(newPasswordActions.setNewPassword(e.target.value));
-    }, 500),
-    [confirmPassword, safePassword]
-  );
-  const changeChekcNewPassword = useCallback(
-    L.debounce((e: React.ChangeEvent<FormElement>) => {
-      if (L.isEqual(newPassword, e.target.value)) {
-        setSamePassword('같은 비밀번호입니다.');
-      }
-      if (!L.isEqual(newPassword, e.target.value)) {
-        setSamePassword('비밀번호가 다릅니다.');
-      }
-      dispatch(newPasswordActions.setCheckNewPassword(e.target.value));
-    }, 500),
-    [newPassword, samePassword]
-  );
-
-  const isSame = useCallback(() => {
-    if (safePassword && L.isEqual(newPassword, checkNewPassword)) {
-      return false;
-    }
-    return true;
-  }, [safePassword, newPassword, checkNewPassword]);
   return (
-    <div className="h-screen col-span-4 w-full pt-20 border-r-2">
+    <div className="h-screen col-span-4 w-full pt-20">
       <div className="w-2/3 flex flex-col items-center mx-auto my-0 space-y-20">
         <div className="w-2/3 flex flex-col justify-center">
           <Input.Password
+            bordered
+            color="secondary"
             size="xlarge"
             data-testid="password"
             width="100%"
-            placeholder="새로운 비밀번호"
+            labelPlaceholder="새로운 비밀번호"
             type="password"
             visibleIcon={<RiEyeLine fill="currentColor" />}
             hiddenIcon={<RiEyeCloseLine fill="currentColor" />}
-            onChange={changeNewPassword}
+            onChange={(e) =>
+              changePassword(e, () =>
+                dispatch(newPasswordActions.setNewPassword(e.target.value))
+              )
+            }
           />
-          <span data-testid="password-confrim">{confirmPassword}</span>
+          <span data-testid="password-confrim">
+            {getConfirmPasswordState()}
+          </span>
         </div>
         <div className="w-2/3 flex flex-col justify-center">
           <Input.Password
+            bordered
+            color="secondary"
             size="xlarge"
             data-testid="check-password"
-            placeholder="비밀번호 확인"
+            labelPlaceholder="비밀번호 확인"
             width="100%"
             type="password"
             visibleIcon={<RiEyeLine fill="currentColor" />}
             hiddenIcon={<RiEyeCloseLine fill="currentColor" />}
-            onChange={changeChekcNewPassword}
+            onChange={(e) =>
+              changeChekcPassword(e, newPassword, () =>
+                dispatch(newPasswordActions.setCheckNewPassword(e.target.value))
+              )
+            }
           />
-          <span data-testid="password-same">{samePassword}</span>
+          <span data-testid="password-same">{getSamePasswordState()}</span>
         </div>
         <div className="">
           <Button
+            rounded
+            color="secondary"
             size="xlarge"
-            data-testid="check-password"
-            placeholder="새로운 비밀번호"
-            onChange={changeChekcNewPassword}
-            disabled={isSame()}
+            disabled={!isSafedAndPasswordSame(newPassword, checkNewPassword)}
           >
             변경
           </Button>

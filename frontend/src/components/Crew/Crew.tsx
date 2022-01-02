@@ -74,7 +74,7 @@ const Crew = () => {
               </div>
               <div className="w-10 absolute right-1/3 bottom-20 flex flex-col space-y-5">
                 <Link to="/crew/new" data-cy="create-new-crew">
-                  <Button size="xlarge" onClick={scrollDown} color="#8b8bf5">
+                  <Button size="xlarge" color="#8b8bf5">
                     크루 생성하기 ▹
                   </Button>
                 </Link>
@@ -104,7 +104,7 @@ const Crew = () => {
             {CrewMock.crew.map((crewInformation, index) => (
               <Link
                 className="w-60 h-60 relative shadow-2xl transition ease-in-out duration-300 transform hover:scale-105 mx-3 rounded-2xl bg-white border-2"
-                to={`/crew/${crewInformation.crewID}`}
+                to={`/crew/${crewInformation.crewName}`}
                 key={v4()}
                 data-cy={`${index}-crew-link`}
               >

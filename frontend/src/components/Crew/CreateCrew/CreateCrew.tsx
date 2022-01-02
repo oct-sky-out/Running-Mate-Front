@@ -5,8 +5,8 @@ import { useDispatch } from 'react-redux';
 import { Input, Button } from '@nextui-org/react';
 import { FormElement } from '@nextui-org/react/esm/input/input-props';
 
-import { CreateCrewActions } from '../../modules/createCrew';
-import { useSelector } from '../../modules/index';
+import { CreateCrewActions } from '../../../modules/createCrew';
+import { useSelector } from '../../../modules/index';
 import CreateCrewOrderMarker from './CreateCrewOrderMarker';
 
 type CreacteCrewActionType = 'setCrewName' | 'setCrewExplain' | 'setCrewRegion';

@@ -2,8 +2,8 @@ import { Link } from 'react-router-dom';
 import { v4 } from 'uuid';
 import { HiOutlinePlusCircle } from 'react-icons/hi';
 import Board from '../Board/Board';
-import styles from './Home.module.css';
 import BoardData from '../../excuteData/BoardMock/BoardMock';
+import MenuButton from '../../common/components/MenuButton';
 
 interface INavRegion {
   [key: string]: string;
@@ -25,17 +25,13 @@ const Home = () => {
   };
   return (
     <div>
-      <div className={`${styles.home}`}>
+      <div className="shadow-md">
         <div className="justify-center text-center font-bold py-16 text-3xl">
           <span>뛰 어 요</span>
         </div>
-        <div className={`flex justify-center w-full ${styles.nav}`}>
+        <div className="flex justify-center w-full">
           {Object.keys(navRegion).map((region) => {
-            return (
-              <button type="button" className={styles.nav__region}>
-                {navRegion[region]}
-              </button>
-            );
+            return <MenuButton type="button">{navRegion[region]}</MenuButton>;
           })}
         </div>
       </div>
