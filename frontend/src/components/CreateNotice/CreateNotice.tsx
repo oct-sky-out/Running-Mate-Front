@@ -44,7 +44,7 @@ const CreateNotice = () => {
 
     const reader = new FileReader();
     reader.onload = () => {
-      dispatch(CreateNoticeActions.setImageOneURL(reader.result));
+      dispatch(CreateNoticeActions.setImageOneURL(reader.result || ''));
     };
     reader.readAsDataURL(file);
   };
@@ -144,7 +144,7 @@ const CreateNotice = () => {
                   <img
                     src={imageOneURL as string}
                     alt="map"
-                    className="h-full w-full"
+                    className="w-full"
                   />
                 ) : (
                   <div className="h-ful w-full flex flex-col justify-center items-center text-indigo-400 space-y-2">

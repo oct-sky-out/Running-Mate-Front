@@ -67,24 +67,18 @@ const createNoticeSliceReducer = createSlice({
       },
     },
     setImageOneURL: {
-      prepare: (imageOneURL: string | ArrayBuffer | null | undefined) => {
+      prepare: (imageOneURL: string | ArrayBuffer) => {
         return { payload: imageOneURL };
       },
-      reducer: (
-        state,
-        action: PayloadAction<string | ArrayBuffer | null | undefined>
-      ) => {
+      reducer: (state, action: PayloadAction<string | ArrayBuffer>) => {
         return { ...state, imageOneURL: action.payload };
       },
     },
     setImageTwoURL: {
-      prepare: (imageTwoURL: string | ArrayBuffer | null | undefined) => {
+      prepare: (imageTwoURL: string | ArrayBuffer) => {
         return { payload: imageTwoURL };
       },
-      reducer: (
-        state,
-        action: PayloadAction<string | ArrayBuffer | null | undefined>
-      ) => {
+      reducer: (state, action: PayloadAction<string | ArrayBuffer>) => {
         return { ...state, imageTwoURL: action.payload };
       },
     },
