@@ -152,9 +152,10 @@ const CreateNotice = () => {
                     className="h-full w-full"
                   />
                 ) : (
-                  <div className="h-ful w-full flex flex-col justify-center items-center text-indigo-400">
+                  <div className="h-ful w-full flex flex-col justify-center items-center text-indigo-400 space-y-2">
                     <span className="block">러닝 경로 지도를</span>
                     <span className="block">등록해주세요</span>
+                    <span className="block">(네이버지도 or 카카오 지도)</span>
                   </div>
                 )}
               </div>
@@ -181,11 +182,11 @@ const CreateNotice = () => {
               onChange={(e) => dispatch(CreateNoticeActions.setExplain(e))}
               style={{ height: '300px' }}
               data-testid="explain-input"
-              placeholder="공지 설명글을 작성해주세요 :)"
+              placeholder="공지 설명글을 작성해주세요 : )"
             />
           </div>
           <div className="flex justify-end">
-            <div className="w-3/12 flex flex-col">
+            <div className="w-3/12 flex flex-col mb-10">
               <Button auto color="#8b8bf5" rounded data-testid="submit-button">
                 등록
               </Button>
