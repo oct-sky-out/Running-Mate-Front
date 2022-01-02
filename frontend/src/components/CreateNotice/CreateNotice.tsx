@@ -35,9 +35,6 @@ const CreateNotice = () => {
       imageOneURL: state.createNotice.imageOneURL,
     }));
 
-  //* useState
-  const [fileImage, setFileImage] = useState<string | ArrayBuffer | null>();
-
   //* event version
   const saveFileImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
@@ -67,10 +64,6 @@ const CreateNotice = () => {
     dispatch(CreateNoticeActions.setInit());
   }, []);
 
-  useEffect(() => {
-    dispatch(CreateNoticeActions.setImageOneURL(fileImage));
-  }, [fileImage]);
-
   return (
     <div className="mt-10">
       <div className="flex justify-center">
@@ -99,13 +92,15 @@ const CreateNotice = () => {
                   <span className="whitespace-nowrap mr-5 font-bold">
                     러닝 만남 시간 :
                   </span>
-                  <DatePicker
-                    selected={time}
-                    onChange={onChangeDatePickderState}
-                    timeInputLabel="Time:"
-                    dateFormat="MM/dd/yyyy h:mm aa"
-                    showTimeInput
-                  />
+                  <div className="py-1 pl-4 rounded border-solid border-2 border-indigo-400">
+                    <DatePicker
+                      selected={time}
+                      onChange={onChangeDatePickderState}
+                      timeInputLabel="Time:"
+                      dateFormat="MM/dd/yyyy h:mm aa"
+                      showTimeInput
+                    />
+                  </div>
                 </div>
               </div>
               <div>

@@ -45,7 +45,11 @@ const Home = () => {
         className="fixed right-16 bottom-16 transform hover:scale-110 transition ease-in-out duration-300"
       >
         <Link to="/notice-create">
-          <HiOutlinePlusCircle className="text-5xl" />
+          <HiOutlinePlusCircle
+            className="text-5xl"
+            color="#8b8bf5"
+            title="게시글 생성"
+          />
         </Link>
       </button>
     </div>
