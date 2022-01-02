@@ -47,6 +47,15 @@ const mockStore: RootState = {
     newPassword: '',
     checkNewPassword: '',
   },
+  createNotice: {
+    title: '',
+    explain: '',
+    location: '',
+    time: new Date(),
+    openChatLink: '',
+    imageOneURL: '',
+    imageTwoURL: '',
+  },
 };
 
 export { mockStore };

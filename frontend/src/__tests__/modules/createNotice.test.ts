@@ -5,8 +5,10 @@ const initState: INotice = {
   title: '',
   explain: '',
   location: '',
-  time: '',
+  time: new Date(),
   openChatLink: '',
+  imageOneURL: '',
+  imageTwoURL: '',
 };
 
 describe('', () => {
@@ -40,10 +42,10 @@ describe('', () => {
     ).toEqual('서울 여의도역 3번 출구');
   });
   test('리덕스 setTime 액션을 통해서 time state가 잘 바뀌는지 확인한다.', () => {
-    expect(
-      reducer(initState, CreateNoticeActions.setTime('2021년 12월 25일 18시'))
-        .time
-    ).toEqual('2021년 12월 25일 18시');
+    const date = new Date('December 25, 2021 12:25:00');
+    return expect(
+      reducer(initState, CreateNoticeActions.setTime(date)).time
+    ).toEqual(date);
   });
 
   test('리덕스.setOpenChatLink 액션을 통해서 openChatLink state가 잘 바뀌는지 확인한다.', () => {

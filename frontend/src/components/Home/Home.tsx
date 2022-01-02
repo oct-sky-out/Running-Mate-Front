@@ -1,4 +1,6 @@
+import { Link } from 'react-router-dom';
 import { v4 } from 'uuid';
+import { HiOutlinePlusCircle } from 'react-icons/hi';
 import Board from '../Board/Board';
 import styles from './Home.module.css';
 import BoardData from '../../excuteData/BoardMock/BoardMock';
@@ -42,6 +44,14 @@ const Home = () => {
           return <Board key={v4()} data={data} />;
         })}
       </div>
+      <button
+        type="button"
+        className="fixed right-16 bottom-16 transform hover:scale-110 transition ease-in-out duration-300"
+      >
+        <Link to="/notice-create">
+          <HiOutlinePlusCircle className="text-5xl" />
+        </Link>
+      </button>
     </div>
   );
 };

@@ -1,12 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { INotice } from '../modules/types/createNotice';
+import { INotice } from './types/createNotice';
 
 const initialState: INotice = {
   title: '',
   explain: '',
   location: '',
-  time: '',
+  time: new Date(),
   openChatLink: '',
+  imageOneURL: '',
+  imageTwoURL: '',
 };
 
 const createNoticeSliceReducer = createSlice({
@@ -18,8 +20,10 @@ const createNoticeSliceReducer = createSlice({
         title: '',
         explain: '',
         location: '',
-        time: '',
+        time: new Date(),
         openChatLink: '',
+        imageOneURL: '',
+        imageTwoURL: '',
       };
     },
     setTitle: {
@@ -47,10 +51,10 @@ const createNoticeSliceReducer = createSlice({
       },
     },
     setTime: {
-      prepare: (time: string) => {
+      prepare: (time: Date) => {
         return { payload: time };
       },
-      reducer: (state, action: PayloadAction<string>) => {
+      reducer: (state, action: PayloadAction<Date>) => {
         return { ...state, time: action.payload };
       },
     },
@@ -60,6 +64,28 @@ const createNoticeSliceReducer = createSlice({
       },
       reducer: (state, action: PayloadAction<string>) => {
         return { ...state, openChatLink: action.payload };
+      },
+    },
+    setImageOneURL: {
+      prepare: (imageOneURL: string | ArrayBuffer | null | undefined) => {
+        return { payload: imageOneURL };
+      },
+      reducer: (
+        state,
+        action: PayloadAction<string | ArrayBuffer | null | undefined>
+      ) => {
+        return { ...state, imageOneURL: action.payload };
+      },
+    },
+    setImageTwoURL: {
+      prepare: (imageTwoURL: string | ArrayBuffer | null | undefined) => {
+        return { payload: imageTwoURL };
+      },
+      reducer: (
+        state,
+        action: PayloadAction<string | ArrayBuffer | null | undefined>
+      ) => {
+        return { ...state, imageTwoURL: action.payload };
       },
     },
   },
