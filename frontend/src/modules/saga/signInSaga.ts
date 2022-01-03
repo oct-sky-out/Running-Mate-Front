@@ -1,10 +1,12 @@
 import { call, takeLatest, put } from '@redux-saga/core/effects';
 import { ISignInForm } from '../types/signInTypes';
 import { SignInActions } from '../signIn';
+import axios from '../../lib/api/axios';
 
-const signIn = async ({ email, password }: ISignInForm) => {
+const signIn = async (signInData: ISignInForm) => {
   try {
-    return { email, password };
+    const { data } = await axios.post('/login', signInData);
+    console.log(data);
   } catch (err: any) {
     throw new Error('error-code-101');
   }
