@@ -14,9 +14,9 @@ const initialState: ISignIn = {
     email: '',
     nickname: '',
     address: '',
-    crew: '',
+    crewName: '',
     crewId: '',
-    isCrewLeader: false,
+    crewLeader: false,
   },
   signInStatus: '',
   isLogged: false,
@@ -26,28 +26,34 @@ const signInSliceReducer = createSlice({
   name: 'signIn',
   initialState,
   reducers: {
-    setInit: (_state, _action: PayloadAction<void>) => {
-      return {
-        loginForm: {
-          email: '',
-          password: '',
-        },
-        error: {
-          message: '',
-          code: '',
-        },
-        userData: {
-          email: '',
-          nickname: '',
-          address: '',
-          crew: '',
-          crewId: '',
-          isCrewLeader: false,
-        },
-        signInStatus: '',
-        isLogged: false,
-      };
-    },
+    setInit: (_state, _action: PayloadAction<void>) => ({
+      loginForm: {
+        email: '',
+        password: '',
+      },
+      error: {
+        message: '',
+        code: '',
+      },
+      userData: {
+        email: '',
+        nickname: '',
+        address: '',
+        crewName: '',
+        crewId: '',
+        crewLeader: false,
+      },
+      signInStatus: '',
+      isLogged: false,
+    }),
+    setInitError: (state, _action: PayloadAction<void>) => ({
+      ...state,
+      error: {
+        message: '',
+        code: '',
+      },
+      signInStatus: '',
+    }),
     setEmail: {
       prepare: (email: string) => {
         return { payload: email };
@@ -114,9 +120,9 @@ const signInSliceReducer = createSlice({
         email: string;
         nickname: string;
         address: string;
-        crew: string;
+        crewName: string;
         crewId: string;
-        isCrewLeader: boolean;
+        crewLeader: boolean;
       }) => {
         return { payload: successData };
       },
@@ -126,12 +132,17 @@ const signInSliceReducer = createSlice({
           email: string;
           nickname: string;
           address: string;
-          crew: string;
+          crewName: string;
           crewId: string;
-          isCrewLeader: boolean;
+          crewLeader: boolean;
         }>
       ) => {
-        return { ...state, userData: action.payload, signInStatus: 'Success' };
+        return {
+          ...state,
+          userData: action.payload,
+          signInStatus: 'Success',
+          isLogged: true,
+        };
       },
     },
     signInFailure: {

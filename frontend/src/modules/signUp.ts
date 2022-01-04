@@ -6,13 +6,12 @@ type FetchStateType = '' | 'Fetch' | 'Success' | 'Error';
 const initialState: ISignUp = {
   email: '',
   nickname: '',
-  name: '',
   password: '',
   checkPassword: '',
   address: '',
   signUpFetchState: '',
   success: {
-    nickName: '',
+    id: 0,
   },
   error: {
     code: '',
@@ -27,13 +26,12 @@ const signUpSliceReducer = createSlice({
       return {
         email: '',
         nickname: '',
-        name: '',
         password: '',
         checkPassword: '',
         address: '',
         signUpFetchState: '',
         success: {
-          nickName: '',
+          id: 0,
         },
         error: {
           code: '',
@@ -54,14 +52,6 @@ const signUpSliceReducer = createSlice({
       },
       reducer: (state, action: PayloadAction<string>) => {
         return { ...state, nickname: action.payload };
-      },
-    },
-    setName: {
-      prepare: (name: string) => {
-        return { payload: name };
-      },
-      reducer: (state, action: PayloadAction<string>) => {
-        return { ...state, name: action.payload };
       },
     },
     setPassword: {
@@ -88,6 +78,9 @@ const signUpSliceReducer = createSlice({
         return { ...state, address: action.payload };
       },
     },
+    setSignUpState: (state, action: PayloadAction<void>) => {
+      return { ...state, signUpFetchState: '', error: { code: '' } };
+    },
     signUpFetch: {
       prepare: (
         signUpForm: ISignUpForm & { signUpFetchState: FetchStateType }
@@ -104,13 +97,13 @@ const signUpSliceReducer = createSlice({
       },
     },
     signUpFetchSuccess: {
-      prepare: (successData: string) => {
+      prepare: (successData: number) => {
         return { payload: successData };
       },
-      reducer: (state, action: PayloadAction<string>) => {
+      reducer: (state, action: PayloadAction<number>) => {
         return {
           ...state,
-          success: { nickName: action.payload },
+          success: { id: action.payload },
           signUpFetchState: 'Success',
         };
       },

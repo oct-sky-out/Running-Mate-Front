@@ -17,8 +17,7 @@ const MyPageInformations = () => {
   }));
 
   //* Modal
-  const { ModalPotal, closeModal, openModal, getActiveModalState } =
-    useModalPotal();
+  const { ModalPotal, closeModal, openModal } = useModalPotal();
 
   //* Event
   const changedUserData = useCallback(

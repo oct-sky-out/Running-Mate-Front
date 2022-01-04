@@ -11,9 +11,9 @@ export interface ISignIn {
     email: string;
     nickname: string;
     address: string;
-    crew: string;
+    crewName: string | null;
     crewId: string;
-    isCrewLeader: boolean;
+    crewLeader: boolean;
   };
   signInStatus: '' | 'Fetch' | 'Success' | 'Error';
   isLogged: boolean;

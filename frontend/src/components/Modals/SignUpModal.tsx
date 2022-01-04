@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo, useEffect } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Input, Button } from '@nextui-org/react';
 import { FormElement } from '@nextui-org/react/esm/input/input-props';
@@ -18,7 +18,6 @@ interface IProps {
 type SignUpActionType =
   | 'setEmail'
   | 'setNickname'
-  | 'setName'
   | 'setPassword'
   | 'setCheckPassword'
   | 'setAddress';
@@ -29,20 +28,18 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
   const {
     email,
     nickname,
-    name,
     password,
     checkPassword,
     address,
-    success,
+    fetchState,
     error,
   } = useSelector((state) => ({
     email: state.signUp.email,
     nickname: state.signUp.nickname,
-    name: state.signUp.name,
     password: state.signUp.password,
     checkPassword: state.signUp.checkPassword,
     address: state.signUp.address,
-    success: state.signUp.success,
+    fetchState: state.signUp.signUpFetchState,
     error: state.signUp.error,
   }));
 
@@ -65,14 +62,13 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
         SignUpActions.signUpFetch({
           email,
           nickname,
-          name,
           password,
           address,
           signUpFetchState: 'Fetch',
         })
       );
     },
-    [email, nickname, name, password, checkPassword, address]
+    [email, nickname, password, checkPassword, address]
   );
 
   const changedInputs = useCallback(
@@ -82,32 +78,37 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
     ) => {
       dispatch(SignUpActions[actionName](value));
     },
-    [email, nickname, name, address]
+    [email, nickname, address]
   );
 
   useEffect(() => {
-    if (success.nickName !== '') {
+    if (fetchState === 'Success') {
       closeModal();
       Swal.fire({
         position: 'center',
         icon: 'success',
-        title: '회원가입 완료되었습니다.',
+        title: '회원가입이 완료되었습니다.',
+        text: '로그인하고 서비스를 이용해보세요!',
         showConfirmButton: false,
         timer: 1500,
+      }).then(() => {
+        dispatch(SignUpActions.setInit());
       });
     }
-    if (error.code !== '') {
+    if (fetchState === 'Error') {
       Swal.fire({
         icon: 'error',
         title: '에러 발생',
         text: `${error.code}`,
+      }).then(() => {
+        dispatch(SignUpActions.setSignUpState());
       });
     }
-  }, [success.nickName, error.code]);
+  }, [fetchState, error.code]);
 
   return (
     <>
-      <div className="relative p-5 rounded-md flex items-center z-20 bg-white h-900">
+      <div className="relative p-5 rounded-md flex items-center z-20 bg-white h-11/12 overflow-y-scroll">
         <div className="flex w-full justify-center items-center flex-col">
           <div className="w-3/4 mb-5 border-b-2 flex justify-center">
             <MiniLogo width="100" height="100" />
@@ -132,16 +133,6 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
               bordered
               width="100%"
               className={`mb-5 z-0 ${styles.signIn_form}`}
-              labelPlaceholder="이름"
-              onChange={(e) => {
-                changedInputs(e, 'setName');
-              }}
-            />
-            <Input
-              color="secondary"
-              bordered
-              width="100%"
-              className={`mb-5 z-0 ${styles.signIn_form}`}
               labelPlaceholder="별명"
               onChange={(e) => {
                 changedInputs(e, 'setNickname');
@@ -153,11 +144,13 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
                 bordered
                 disabled
                 width="100%"
-                className={` z-0 ${styles.signIn_form}`}
+                className={`z-0 ${styles.signIn_form}`}
                 labelPlaceholder="주소 (시/도, 시/군/구 까지만 입력) "
                 value={address}
               />
               <Button
+                auto
+                className="grow-0"
                 rounded
                 color="secondary"
                 onClick={() => {
@@ -217,7 +210,6 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
                     isSafedAndPasswordSame(password, checkPassword) &&
                     email &&
                     nickname &&
-                    name &&
                     address
                   )
                 }
