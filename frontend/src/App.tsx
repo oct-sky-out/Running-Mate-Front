@@ -1,4 +1,4 @@
-import { BrowserRouter, Switch, Route, withRouter } from 'react-router-dom';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import CreateNotice from './components/CreateNotice/CreateNotice';
 import CreateNewCrew from './components/Crew/CreateCrew/CreateCrew';
 import Crew from './components/Crew/Crew';

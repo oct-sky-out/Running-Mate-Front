@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
@@ -44,7 +44,7 @@ const CreateCrew = () => {
     if (questionOrder > 0) setQuestionOrder(questionOrder - 1);
   };
 
-  const Memo = useMemo(() => {
+  useEffect(() => {
     if (questionOrder >= questions.length - 1) {
       setCanComplete(true);
     }

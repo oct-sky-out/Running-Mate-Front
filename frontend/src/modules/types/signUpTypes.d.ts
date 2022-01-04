@@ -1,13 +1,12 @@
 export interface ISignUp {
   email: string;
   nickname: string;
-  name: string;
   password: string;
   checkPassword: string;
   address: string;
   signUpFetchState: '' | 'Fetch' | 'Success' | 'Error';
   success: {
-    nickName: string;
+    id: number;
   };
   error: {
     code: string;
@@ -17,7 +16,6 @@ export interface ISignUp {
 export interface ISignUpForm {
   email: string;
   nickname: string;
-  name: string;
   password: string;
   address: string;
 }

@@ -1,6 +1,5 @@
 import React from 'react';
 import { useHistory, withRouter, RouteComponentProps } from 'react-router-dom';
-import { FaArrowLeft } from 'react-icons/fa';
 import Notice from '../../excuteData/NoticeMock/NoticeMock';
 import DetailBaseBorder from '../../common/components/DetailBaseBorder';
 import dateParser from '../../common/functions/dateParser';

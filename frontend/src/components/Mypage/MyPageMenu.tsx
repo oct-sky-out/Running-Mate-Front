@@ -1,7 +1,4 @@
-import React from 'react';
-import { v4 } from 'uuid';
 import { withRouter, useHistory, useLocation } from 'react-router-dom';
-import { FaChevronCircleRight } from 'react-icons/fa';
 import MenuButton from '../../common/components/MenuButton';
 
 const MyPageMenu = () => {

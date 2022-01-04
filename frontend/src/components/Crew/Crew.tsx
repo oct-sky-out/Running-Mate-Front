@@ -9,8 +9,8 @@ import CrewMock from '../../excuteData/CrewMock/CrewMock';
 const Crew = () => {
   //* Redux
   //! 로그인 상태로 가정했습니다.
-  const { crew, crewId, nickname } = useSelector((state) => ({
-    crew: state.signIn.userData.crew,
+  const { crewName, crewId, nickname } = useSelector((state) => ({
+    crewName: state.signIn.userData.crewName,
     crewId: state.signIn.userData.crewId,
     nickname: state.signIn.userData.nickname,
   }));
@@ -52,11 +52,11 @@ const Crew = () => {
           })}
         </div>
         <div className="absolute w-full h-1/3 inset-y-0">
-          {crew && (
+          {crewName && (
             <div>
               <div className="absolute right-1/2 bottom-40">
                 <h1 className="text-3xl">
-                  {nickname}안녕님의 크루는 {crew}오르고 달리기 입니다!
+                  {nickname}안녕님의 크루는 {crewName}오르고 달리기 입니다!
                 </h1>
               </div>
               <div className="block w-10 absolute right-1/3 bottom-20 ">
@@ -66,7 +66,7 @@ const Crew = () => {
               </div>
             </div>
           )}
-          {crew || (
+          {crewName || (
             <div className="">
               <div className="absolute right-1/2 bottom-40 ">
                 <h1 className="text-4xl">현재 가입된 크루가 없습니다.</h1>
