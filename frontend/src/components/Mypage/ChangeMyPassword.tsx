@@ -1,8 +1,5 @@
-import React, { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import L from 'lodash';
 import { Button, Input } from '@nextui-org/react';
-import { FormElement } from '@nextui-org/react/esm/input/input-props';
 import { RiEyeCloseLine, RiEyeLine } from 'react-icons/ri';
 import { useSelector } from '../../modules/index';
 import { newPasswordActions } from '../../modules/newPassword';

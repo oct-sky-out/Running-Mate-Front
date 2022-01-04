@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  withRouter,
-  RouteComponentProps,
-  useHistory,
-  Link,
-} from 'react-router-dom';
+import { withRouter, RouteComponentProps, useHistory } from 'react-router-dom';
 import { BsPeopleFill } from 'react-icons/bs';
 import { GiPositionMarker } from 'react-icons/gi';
 import { v4 } from 'uuid';
