@@ -2,7 +2,6 @@ import React, { useCallback, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Input, Button } from '@nextui-org/react';
-import { FormElement } from '@nextui-org/react/esm/input/input-props';
 import { RiEyeCloseLine, RiEyeLine } from 'react-icons/ri';
 import Swal from 'sweetalert2';
 import { SignInActions } from '../../modules/signIn';
@@ -13,8 +12,6 @@ import { ReactComponent as MiniLogo } from '../../assets/logo_mini.svg';
 interface IProps {
   closeModal: () => void;
 }
-
-type SignUpActionType = 'setEmail' | 'setPassword';
 
 const SignInModal: React.FC<IProps> = ({ closeModal }) => {
   //* History of React Router
@@ -29,16 +26,6 @@ const SignInModal: React.FC<IProps> = ({ closeModal }) => {
   }));
 
   //* useCallbacks
-  const changedInputs = useCallback(
-    (
-      { target: { value } }: React.ChangeEvent<FormElement>,
-      actionName: SignUpActionType
-    ) => {
-      dispatch(SignInActions[actionName](value));
-    },
-    [email, password]
-  );
-
   const signInExecuting = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
@@ -52,14 +39,16 @@ const SignInModal: React.FC<IProps> = ({ closeModal }) => {
       closeModal();
       history.push('/');
     }
-    if (error.code !== '') {
+    if (error.code === '500') {
       Swal.fire({
         icon: 'error',
-        title: '에러 발생',
-        text: `${error.code}`,
+        title: '로그인 실패',
+        text: `${error.message}`,
+      }).then(() => {
+        dispatch(SignInActions.setInitError());
       });
     }
-  }, [userData.address, error.code]);
+  }, [userData.email, error]);
 
   return (
     <>
@@ -84,7 +73,6 @@ const SignInModal: React.FC<IProps> = ({ closeModal }) => {
               labelPlaceholder="이메일"
               onChange={(e) => {
                 dispatch(SignInActions.setEmail(e.target.value));
-                // changedInputs(e, 'setEmail');
               }}
               data-cy="email"
             />
@@ -99,7 +87,6 @@ const SignInModal: React.FC<IProps> = ({ closeModal }) => {
               hiddenIcon={<RiEyeCloseLine fill="currentColor" />}
               onChange={(e) => {
                 dispatch(SignInActions.setPassword(e.target.value));
-                // changedInputs(e, 'setPassword');
               }}
               data-cy="password"
             />

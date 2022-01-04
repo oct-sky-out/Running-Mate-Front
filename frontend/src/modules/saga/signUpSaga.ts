@@ -11,12 +11,11 @@ const signUp = async (signUpForm: ISignUpForm) => {
       nickName: signUpForm.nickname,
       address: signUpForm.address,
     };
-    console.log(sendData);
-    const { data } = await axios.post('/join', sendData);
-    console.log(data);
-    return;
+    const { data } = await axios.post<number>('/join', sendData);
+
+    return { userId: data };
   } catch (err: any) {
-    throw new Error('error-code-101');
+    throw new Error('서버오류로 인해 회원가입 실패하였습니다.');
   }
 };
 
@@ -24,8 +23,8 @@ function* signUpFetchSaga({
   payload,
 }: ReturnType<typeof SignUpActions.signUpFetch>) {
   try {
-    const { nickname } = yield call(signUp, payload);
-    yield put(SignUpActions.signUpFetchSuccess(nickname));
+    const { userId } = yield call(signUp, payload);
+    yield put(SignUpActions.signUpFetchSuccess(userId));
   } catch (error: any) {
     console.error(error);
     yield put(SignUpActions.signUpFetchError(error.message));

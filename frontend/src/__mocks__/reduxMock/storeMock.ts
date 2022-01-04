@@ -14,9 +14,9 @@ const mockStore: RootState = {
       email: '',
       nickname: '',
       address: '',
-      crew: '',
+      crewName: '',
       crewId: '',
-      isCrewLeader: false,
+      crewLeader: false,
     },
     signInStatus: '',
     isLogged: false,
@@ -24,13 +24,12 @@ const mockStore: RootState = {
   signUp: {
     email: '',
     nickname: '',
-    name: '',
     password: '',
     checkPassword: '',
     address: '',
     signUpFetchState: '',
     success: {
-      nickName: '',
+      id: 0,
     },
     error: {
       code: '',

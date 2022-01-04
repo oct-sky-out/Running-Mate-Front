@@ -31,7 +31,11 @@ const Home = () => {
         </div>
         <div className="flex justify-center w-full">
           {Object.keys(navRegion).map((region) => {
-            return <MenuButton type="button">{navRegion[region]}</MenuButton>;
+            return (
+              <MenuButton key={v4()} type="button">
+                {navRegion[region]}
+              </MenuButton>
+            );
           })}
         </div>
       </div>
