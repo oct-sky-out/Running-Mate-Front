@@ -96,7 +96,7 @@ const signInSliceReducer = createSlice({
           ...state,
           userData: {
             ...state.userData,
-            nicknmae: action.payload,
+            nickname: action.payload,
           },
         };
       },
