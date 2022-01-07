@@ -19,6 +19,7 @@ const mockStore: RootState = {
       crewLeader: false,
     },
     signInStatus: '',
+    token: '',
     isLogged: false,
   },
   signUp: {

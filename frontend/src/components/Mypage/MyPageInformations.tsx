@@ -11,7 +11,7 @@ type Props = {
   token: string;
 };
 
-const MyPageInformations: React.FC<Props> = ({ token }) => {
+const MyPageInformations: React.FC<Props> = (token) => {
   //* Redux
   const dispatch = useDispatch();
   const { email, nickname, address } = useSelector((state) => ({
