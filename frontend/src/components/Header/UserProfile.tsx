@@ -33,7 +33,7 @@ const UserProfile = () => {
           onClick={() => setIsMyMenuOpen(!isMyMenuOpen)}
         />
         {isMyMenuOpen && (
-          <div className="absolute w-24 lg:w-64 md:w-48 top-8 right-4 md:top-12 md:right-12 lg:top-16 text-xs md:text-base border-2 rounded border-purple bg-white divide-y-2 divide-purple divide-solid">
+          <div className="absolute w-24 lg:w-64 md:w-48 top-12 right-4 md:top-16 md:right-12 text-xs md:text-base border-2 rounded border-purple bg-white divide-y-2 divide-purple divide-solid">
             <div
               className="flex h-5 md:h-10 md:py-2 justify-center items-center cursor-pointer"
               onClick={moveMyPage}

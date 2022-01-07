@@ -34,10 +34,10 @@ const Header = () => {
     return null;
   }
   return (
-    <div
-      className={`z-2 w-screen py-5 h-8 md:h-16 lg:h-24 sticky top-0 bg-white transition duration-1000 border-b-2 border-purple border-opacity-0 ${scrollBottomLine}`}
-    >
-      <div className="px-5 flex w-full h-8 md:h-16 lg:h-full items-center">
+    <div className="z-2 w-screen h-16 md:h-24 sticky top-0 bg-white">
+      <div
+        className={`bg-white transition duration-1000 border-b-2 border-purple border-opacity-0 ${scrollBottomLine} px-5 flex w-full h-full items-center`}
+      >
         <div className="w-full h-full space-x-4 flex items-center font-bold text-xs md:text-base lg:text-lg">
           <Logo
             width="80"
