@@ -19,6 +19,7 @@ const initialState: ISignIn = {
     crewLeader: false,
   },
   signInStatus: '',
+  token: '',
   isLogged: false,
 };
 
@@ -44,6 +45,7 @@ const signInSliceReducer = createSlice({
         crewLeader: false,
       },
       signInStatus: '',
+      token: '',
       isLogged: false,
     }),
     setInitError: (state, _action: PayloadAction<void>) => ({
@@ -85,6 +87,17 @@ const signInSliceReducer = createSlice({
         _action: PayloadAction<{ email: string; password: string }>
       ) => {
         return { ...state, signInStatus: 'Fetch' };
+      },
+    },
+    setToken: {
+      prepare: (token: string) => {
+        return { payload: token };
+      },
+      reducer: (state, action: PayloadAction<string>) => {
+        return {
+          ...state,
+          token: action.payload,
+        };
       },
     },
     setUserNicknameData: {
