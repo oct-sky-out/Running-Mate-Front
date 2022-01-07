@@ -35,21 +35,21 @@ const Header = () => {
   }
   return (
     <div
-      className={`z-2 w-full h-24 sticky top-0 bg-white transition duration-1000 border-b-2 border-purple border-opacity-0 ${scrollBottomLine}`}
+      className={`z-2 w-screen py-5 h-8 md:h-16 lg:h-24 sticky top-0 bg-white transition duration-1000 border-b-2 border-purple border-opacity-0 ${scrollBottomLine}`}
     >
-      <div className="flex w-full h-full mx-5">
-        <div className="w-full space-x-4 flex items-center font-bold">
+      <div className="px-5 flex w-full h-8 md:h-16 lg:h-full items-center">
+        <div className="w-full h-full space-x-4 flex items-center font-bold text-xs md:text-base lg:text-lg">
           <Logo
             width="80"
             height="80"
-            className="cursor-pointer"
+            className="cursor-pointer w-10 lg:w-24 md:w-14"
             onClick={moveHome}
           />
           <Link
             to="/"
-            className={
+            className={`${
               location.pathname === '/' ? 'text-purple' : 'hover:text-purple'
-            }
+            }`}
           >
             <span>뛰어요</span>
           </Link>
