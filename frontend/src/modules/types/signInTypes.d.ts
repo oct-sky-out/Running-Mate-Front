@@ -16,6 +16,7 @@ export interface ISignIn {
     crewLeader: boolean;
   };
   signInStatus: '' | 'Fetch' | 'Success' | 'Error';
+  token: string;
   isLogged: boolean;
 }
 

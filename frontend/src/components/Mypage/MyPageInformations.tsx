@@ -5,8 +5,13 @@ import { useSelector } from '../../modules';
 import { SignInActions } from '../../modules/signIn';
 import useModalPotal from '../../hooks/useModalPotal';
 import Address from '../address/Address';
+import axios from '../../lib/api/axios';
 
-const MyPageInformations = () => {
+type Props = {
+  token: string;
+};
+
+const MyPageInformations: React.FC<Props> = ({ token }) => {
   //* Redux
   const dispatch = useDispatch();
   const { email, nickname, address } = useSelector((state) => ({
@@ -19,7 +24,7 @@ const MyPageInformations = () => {
   const { ModalPotal, closeModal, openModal } = useModalPotal();
 
   useEffect(() => {
-    const userData = localStorage?.getItem('userData');
+    const userData = localStorage.getItem('userData');
     if (userData) {
       const userDataObj = JSON.parse(userData);
       dispatch(SignInActions.signInSuccess(userDataObj));
@@ -76,7 +81,17 @@ const MyPageInformations = () => {
               rounded
               color="secondary"
               className="z-0"
-              onClick={() => {}}
+              onClick={async () => {
+                await axios.post(`/user/${nickname}`, {
+                  headers: {
+                    'X-AUTH-TOKEN': token,
+                  },
+                  body: {
+                    nickName: nickname,
+                    address,
+                  },
+                });
+              }}
             >
               저장하기
             </Button>
