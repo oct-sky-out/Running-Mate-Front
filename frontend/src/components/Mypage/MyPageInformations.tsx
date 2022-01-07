@@ -1,6 +1,5 @@
-import React, { useCallback } from 'react';
+import { useEffect } from 'react';
 import { Button, Input } from '@nextui-org/react';
-import { FormElement } from '@nextui-org/react/esm/input/input-props';
 import { useDispatch } from 'react-redux';
 import { useSelector } from '../../modules';
 import { SignInActions } from '../../modules/signIn';
@@ -19,14 +18,13 @@ const MyPageInformations = () => {
   //* Modal
   const { ModalPotal, closeModal, openModal } = useModalPotal();
 
-  //* Event
-  const changedUserData = useCallback(
-    ({ target: { value } }: React.ChangeEvent<FormElement>) => {
-      console.log(nickname, value);
-      dispatch(SignInActions.setUserNicknameData(nickname + value));
-    },
-    [nickname]
-  );
+  useEffect(() => {
+    const userData = localStorage?.getItem('userData');
+    if (userData) {
+      const userDataObj = JSON.parse(userData);
+      dispatch(SignInActions.signInSuccess(userDataObj));
+    }
+  }, []);
 
   return (
     <>
@@ -44,9 +42,10 @@ const MyPageInformations = () => {
               type="text"
               width="100%"
               className="z-0"
+              value={nickname}
               placeholder="변경할 닉네임"
               onChange={(e) => {
-                changedUserData(e);
+                dispatch(SignInActions.setUserNicknameData(e.target.value));
               }}
             />
           </div>
