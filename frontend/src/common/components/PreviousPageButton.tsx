@@ -5,13 +5,15 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
   text: string;
   tailwindTextSize?: string;
   iconSize: string;
+  iconSizeClassName?: string;
   className?: string;
 }
 
 const PreviousPageButton: React.FC<IProps> = ({
   text,
   tailwindTextSize,
-  iconSize = '32',
+  iconSize = 'text-base',
+  iconSizeClassName = 'text-base',
   className,
   ...props
 }) => {
@@ -22,7 +24,7 @@ const PreviousPageButton: React.FC<IProps> = ({
       }`}
       {...props}
     >
-      <GrFormPrevious size={iconSize} />
+      <GrFormPrevious className={iconSizeClassName} />
       <span className={tailwindTextSize}>{text}</span>
     </div>
   );

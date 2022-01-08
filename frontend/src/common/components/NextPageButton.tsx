@@ -21,7 +21,7 @@ const NextPageButton: React.FC<IProps> = ({
   return (
     <Link to={nextPageURL}>
       <div
-        className={`absolute top-10 right-10 w-32 flex justify-center items-center cursor-pointer ${
+        className={`w-32 flex justify-center items-center cursor-pointer ${
           className || null
         }`}
         {...props}

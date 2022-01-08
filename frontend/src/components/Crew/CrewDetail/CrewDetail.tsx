@@ -26,18 +26,20 @@ const CrewDetail: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
 
   return (
     <DetailBaseBorder>
-      <PreviousPageButton
-        text="뒤로가기"
-        iconSize="32"
-        onClick={() => history.goBack()}
-        className="w-28"
-      />
-      {mockLeaderState ? (
-        <NextPageButton
-          text="크루 관리하기"
-          nextPageURL={`/crew/${match.params.id}/management`}
+      <div className="flex items-center justify-between">
+        <PreviousPageButton
+          text="뒤로가기"
+          iconSize="32"
+          onClick={() => history.goBack()}
+          className="w-28"
         />
-      ) : null}
+        {mockLeaderState ? (
+          <NextPageButton
+            text="크루 관리하기"
+            nextPageURL={`/crew/${match.params.id}/management`}
+          />
+        ) : null}
+      </div>
       <div className="w-full mx-auto my-0 py-5 flex flex-col flex-wrap justify-center items-center space-y-5">
         <div className="w-full flex justify-center items-center">
           <img
@@ -55,23 +57,24 @@ const CrewDetail: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
         </div>
       </div>
       <div className="space-y-5">
-        <span className="text-lg">기본정보</span>
-        <div className="flex flex-wrap items-end space-y-5">
+        <span className="pl-5 md:pl-0 text-lg">기본정보</span>
+        <div className="w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 mx-auto gap-5">
           {normalCategory.map((category) => (
-            <CrewWidget
-              key={v4()}
-              Icon={category.icon}
-              widgetTitle={category.title}
-              widgetDescription={category.description}
-              iconColor="#8b8bf5"
-            />
+            <div key={v4()} className="flex justify-center">
+              <CrewWidget
+                Icon={category.icon}
+                widgetTitle={category.title}
+                widgetDescription={category.description}
+                iconColor="#8b8bf5"
+              />
+            </div>
           ))}
         </div>
         <div>
-          <span className="text-lg">리워드</span>
-          <div className=" flex flex-wrap items-end space-y-5">
+          <span className="pl-5 md:pl-0 text-lg">리워드</span>
+          <div className="w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 mx-auto gap-5 pt-10">
             {crewRewardMock.map((category) => (
-              <div key={v4()}>
+              <div key={v4()} className="flex justify-center">
                 <CrewWidget
                   Icon={category.icon}
                   widgetTitle={category.title}

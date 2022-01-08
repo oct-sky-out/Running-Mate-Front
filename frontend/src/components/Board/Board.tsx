@@ -18,7 +18,7 @@ const Board: React.FC<IProps & RouteComponentProps> = ({ data }) => {
   const { imageUrl, title, number, end, writer, noticeId } = data;
 
   return (
-    <div className="w-60 h-80 shadow-2xl transition ease-in-out duration-300 transform hover:scale-105 mx-3 rounded-2xl bg-white border-2">
+    <div className="w-60 h-80 shadow-2xl transition ease-in-out duration-300 transform hover:scale-105 mx-auto my-0 rounded-2xl bg-white border-2">
       <Link to={`/notice/${noticeId}`}>
         <div className="h-2/4 border-b-2 rounded-t-2xl flex-grow">
           <img
