@@ -33,17 +33,18 @@ const ViewNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
     <DetailBaseBorder>
       <PreviousPageButton
         text="뒤로가기"
-        iconSize="48"
-        tailwindTextSize="text-2xl"
-        className="w-48 py-4 flex justify-start items-center"
+        iconSize="0"
+        iconSizeClassName="text-2xl md:text-3xl lg:text-4xl"
+        tailwindTextSize="text-lg md:text-2xl lg:text-3xl"
+        className="w-24 md:w-32 lg:w-40 py-4 flex justify-start items-start"
         data-cy="back"
         onClick={() => {
           history.goBack();
         }}
       />
       <div className="flex flex-col mb-20 pb-5 border-b-2">
-        <h1 className="text-4xl mb-10 font-bold">{title}</h1>
-        <div className="flex items-centeren justify-between mb-4">
+        <h1 className="text-xl md:text-4xl mb-10 font-bold">{title}</h1>
+        <div className="flex items-center justify-between mb-4">
           <div className="flex items-center cursor-pointer">
             <img
               src={profileUrl}
@@ -52,7 +53,7 @@ const ViewNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
             />
             <span>{writer}</span>
           </div>
-          <span className="mr-3">{date}</span>
+          <span className="align-bottom mr-3">{date}</span>
         </div>
         <div className="text-right mr-4">
           <button type="button" className="cursor-pointer">
@@ -65,9 +66,9 @@ const ViewNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
         </div>
       </div>
       <div>
-        <div className="flex justify-center mb-20">
-          <img src={imageUrl} alt="map" className="w-2/5" />
-          <p className="w-2/5 ml-9 text-xl break-words">{explain}</p>
+        <div className="grid grid-cols-1 gap-10 mb-20">
+          <img src={imageUrl} alt="map" className="w-full" />
+          <p className="w-full text-base md:text-2xl break-words">{explain}</p>
         </div>
         <div className="pl-4">
           <span className="block font-bold mb-3 text-xl">
