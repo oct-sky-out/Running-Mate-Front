@@ -68,24 +68,31 @@ const Crew = () => {
           )}
           {crewName || (
             <div className="">
-              <div className="absolute right-1/2 bottom-40 ">
-                <h1 className="text-4xl">현재 가입된 크루가 없습니다.</h1>
-                <h1 className="text-3xl">크루에 들어가서 같이 뛰실래요?</h1>
+              <div className="w-full absolute top-12 lg:top-1/3 lg:right-1/4 lg:bottom-40 flex flex-col items-center">
+                <h1 className="text-2xl lg:text-4xl">
+                  현재 가입된 크루가 없습니다.
+                </h1>
+                <h1 className="text-xl lg:text-3xl">
+                  크루에 들어가서 같이 뛰실래요?
+                </h1>
               </div>
-              <div className="w-10 absolute right-1/3 bottom-20 flex flex-col space-y-5">
-                <Link to="/crew/new" data-cy="create-new-crew">
-                  <Button size="xlarge" color="#8b8bf5">
-                    크루 생성하기 ▹
+              <div className="w-full pb-4 lg:pb-0 justify-center items-center lg:w-10 absolute right:1/2 bottom-0 lg:right-1/4 lg:bottom-1/4 flex flex-col space-y-5">
+                <div className="flex flex-col">
+                  <Link to="/crew/new" data-cy="create-new-crew">
+                    <Button size="xlarge" color="#8b8bf5">
+                      크루 생성하기 ▹
+                    </Button>
+                  </Link>
+                  <Button
+                    size="xlarge"
+                    onClick={scrollDown}
+                    data-cy="join-crew"
+                    color="#3579EC"
+                    className="mt-2"
+                  >
+                    크루 가입하기 ▹
                   </Button>
-                </Link>
-                <Button
-                  size="xlarge"
-                  onClick={scrollDown}
-                  data-cy="join-crew"
-                  color="#3579EC"
-                >
-                  크루 가입하기 ▹
-                </Button>
+                </div>
               </div>
             </div>
           )}
@@ -100,7 +107,7 @@ const Crew = () => {
           <div className="my-20 flex justify-center">
             <h1 className="text-3xl ">크루 목록</h1>
           </div>
-          <div className="w-3/4 mx-auto my-0 pb-20 grid grid-cols-3 gap-y-10 justify-items-center">
+          <div className="w-3/4 mx-auto my-0 pb-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-10 justify-items-center">
             {CrewMock.crew.map((crewInformation, index) => (
               <Link
                 className="w-60 h-60 relative shadow-2xl transition ease-in-out duration-300 transform hover:scale-105 mx-3 rounded-2xl bg-white border-2"
