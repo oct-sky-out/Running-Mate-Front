@@ -82,34 +82,35 @@ const CreateNotice = () => {
               }}
               value={title}
               data-testid="title-input"
-              style={{ fontSize: '2rem' }}
+              className="text-2xl"
             />
           </div>
-          <div className="flex justify-between mb-5">
-            <div className="w-full flex flex-col justify-center space-y-5">
+          <div className="md:flex md:justify-around space-y-5 mb-5">
+            <div className="mt-10 w-full space-y-5">
               <div>
-                <div className="flex w-full items-center">
-                  <span className="whitespace-nowrap mr-5 font-bold">
-                    러닝 만남 시간 :
+                <div className="flex flex-col w-full space-y-3">
+                  <span className="whitespace-nowrap mr-5 font-bold inline-block">
+                    러닝 만남 시간
                   </span>
-                  <div className="py-1 pl-4 rounded border-solid border-2 border-indigo-400">
+                  <div className="w-full py-1 pl-4 rounded border-solid border-2 border-indigo-400">
                     <DatePicker
+                      className="w-full"
                       selected={time}
                       onChange={onChangeDatePickderState}
                       timeInputLabel="Time:"
-                      dateFormat="MM/dd/yyyy h:mm aa"
+                      dateFormat="yyyy/MM/dd hh:mm aa"
                       showTimeInput
                     />
                   </div>
                 </div>
               </div>
-              <div>
-                <span className="mr-5 font-bold mb-4">러닝 만남 장소 :</span>
+              <div className="space-y-3">
+                <span className="mr-5 font-bold mb-4">러닝 만남 장소</span>
                 <Input
                   underlined
                   bordered
                   type="text"
-                  width="50%"
+                  width="100%"
                   placeholder="만남 장소"
                   color="secondary"
                   onChange={(e) => {
@@ -121,12 +122,12 @@ const CreateNotice = () => {
                 />
               </div>
               <div>
-                <span className="mr-5 w-full font-bold">오픈 채팅 링크 :</span>
+                <span className="mr-5 w-full font-bold">오픈 채팅 링크</span>
                 <Input
                   underlined
                   bordered
                   type="text"
-                  width="50%"
+                  width="100%"
                   placeholder="오픈 채팅 링크"
                   color="secondary"
                   onChange={(e) => {
@@ -170,7 +171,7 @@ const CreateNotice = () => {
               </label>
             </div>
           </div>
-          <div className="mb-16">
+          <div className="mb-20 md:mb-16">
             <ReactQuill
               theme="snow"
               value={explain}

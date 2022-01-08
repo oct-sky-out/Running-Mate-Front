@@ -32,21 +32,25 @@ const Home = () => {
         <div className="flex justify-center w-full">
           {Object.keys(navRegion).map((region) => {
             return (
-              <MenuButton key={v4()} type="button">
+              <MenuButton
+                key={v4()}
+                type="button"
+                className="text-sm px-3 py-3 md:px-5 md:py-4 lg:px-8"
+              >
                 {navRegion[region]}
               </MenuButton>
             );
           })}
         </div>
       </div>
-      <div className="pt-7 grid grid-cols-3 mx-auto my-0 w-2/3 gap-y-10 grid-template-rows">
+      <div className="pt-7 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mx-auto my-0 mb-5 w-2/3 gap-x-20 gap-y-10 grid-template-rows">
         {BoardData.notice.map((data) => {
           return <Board key={v4()} data={data} />;
         })}
       </div>
       <button
         type="button"
-        className="fixed right-16 bottom-16 transform hover:scale-110 transition ease-in-out duration-300"
+        className="bg-white rounded-full fixed right-2 bottom-2 md:right-6 md:bottom-8 md:right-16 md:bottom-16  transform hover:scale-110 transition ease-in-out duration-300"
       >
         <Link to="/notice-create">
           <HiOutlinePlusCircle

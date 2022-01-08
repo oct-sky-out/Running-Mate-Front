@@ -17,7 +17,7 @@ const MenuButton: React.FC<IProps> = ({
   return (
     <button
       type={buttonType}
-      className={`border-b-4 border-transparent px-8 py-4 hover:border-purple hover:border-solid ${className}`}
+      className={`border-b-4 border-transparent hover:border-purple hover:border-solid ${className}`}
       {...props}
     >
       {children}
