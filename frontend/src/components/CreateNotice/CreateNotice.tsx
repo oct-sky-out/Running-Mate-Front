@@ -98,7 +98,7 @@ const CreateNotice = () => {
                       selected={time}
                       onChange={onChangeDatePickderState}
                       timeInputLabel="Time:"
-                      dateFormat="MM/dd/yyyy h:mm aa"
+                      dateFormat="yyyy/MM/dd hh:mm aa"
                       showTimeInput
                     />
                   </div>
