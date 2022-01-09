@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { SignInActions } from './modules/signIn';
+import { useSelector } from './modules';
 import CreateNotice from './components/CreateNotice/CreateNotice';
 import CreateNewCrew from './components/Crew/CreateCrew/CreateCrew';
 import Crew from './components/Crew/Crew';
@@ -15,11 +16,14 @@ import ViewNotice from './components/ViewNotice/ViewNotice';
 
 function App() {
   const dispatch = useDispatch();
+  const location = useLocation();
+  const token = useSelector((state) => state.signIn.token);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    dispatch(SignInActions.setToken(token || ''));
-  }, []);
+    const localStorageToken = localStorage.getItem('token');
+    dispatch(SignInActions.setToken(localStorageToken || ''));
+  }, [location, token]);
+
   return (
     <>
       <BrowserRouter>

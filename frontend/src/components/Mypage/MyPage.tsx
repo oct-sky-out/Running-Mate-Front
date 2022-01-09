@@ -1,31 +1,16 @@
 import React, { useEffect } from 'react';
-import { useLocation, useHistory } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useSelector } from '../../modules';
 import MyPageMenu from './MyPageMenu';
 import MyPageInformations from './MyPageInformations';
 import ChangeMyPassword from './ChangeMyPassword';
 import DetailBaseBorder from '../../common/components/DetailBaseBorder';
-import axios from '../../lib/api/axios';
 
 const MyPage = () => {
   const location = useLocation();
-  const history = useHistory();
   const token = useSelector((state) => state.signIn.token);
 
-  useEffect(() => {
-    if (!token) {
-      history.push('/guest');
-    }
-    if (token) {
-      axios
-        .get('/mypage', {
-          headers: {
-            'x-auth-token': token,
-          },
-        })
-        .then(() => {});
-    }
-  }, []);
+  useEffect(() => {}, []);
   return (
     <DetailBaseBorder>
       <div className="flex justify-center items-center font-bold h-1/5 text-3xl ">
