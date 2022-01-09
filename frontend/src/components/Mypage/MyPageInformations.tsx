@@ -11,7 +11,7 @@ type Props = {
   token: string;
 };
 
-const MyPageInformations: React.FC<Props> = (token) => {
+const MyPageInformations: React.FC<Props> = ({ token }) => {
   //* Redux
   const dispatch = useDispatch();
   const { email, nickname, address } = useSelector((state) => ({
@@ -81,16 +81,21 @@ const MyPageInformations: React.FC<Props> = (token) => {
               rounded
               color="secondary"
               className="z-0"
-              onClick={async () => {
-                await axios.post(`/user/${nickname}`, {
-                  headers: {
-                    'X-AUTH-TOKEN': token,
-                  },
-                  body: {
-                    nickName: nickname,
-                    address,
-                  },
-                });
+              onClick={() => {
+                axios
+                  .post(
+                    `/user`,
+                    {
+                      nickName: nickname,
+                      address,
+                    },
+                    {
+                      headers: {
+                        'x-auth-token': token,
+                      },
+                    }
+                  )
+                  .then(() => {});
               }}
             >
               저장하기
