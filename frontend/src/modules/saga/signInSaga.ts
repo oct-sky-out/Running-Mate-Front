@@ -1,16 +1,8 @@
 import { call, takeLatest, put } from '@redux-saga/core/effects';
-import { ISignInForm } from '../types/signInTypes';
 import { SignInActions } from '../signIn';
-import axios from '../../lib/api/axios';
+import UserService from '../../lib/api/userService';
 
-const signIn = async (signInData: ISignInForm) => {
-  try {
-    const { data } = await axios.post('/login', signInData);
-    return { ...data };
-  } catch (err: any) {
-    throw new Error('아이디 또는 비밀번호를 다시 확인해주세요.');
-  }
-};
+const userService = new UserService();
 
 const saveUserData = ({
   userData,
@@ -30,7 +22,7 @@ function* signInFetchSaga({
     const {
       userDto: { email, address, crewLeader, crewName, id, nickName },
       token,
-    } = yield call(signIn, payload);
+    } = yield call(userService.login, payload);
     const data = {
       email,
       address,

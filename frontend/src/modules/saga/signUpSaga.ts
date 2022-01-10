@@ -1,29 +1,14 @@
 import { call, takeLatest, put } from '@redux-saga/core/effects';
-import { ISignUpForm } from '../types/signUpTypes';
 import { SignUpActions } from '../signUp';
-import axios from '../../lib/api/axios';
+import UserService from '../../lib/api/userService';
 
-const signUp = async (signUpForm: ISignUpForm) => {
-  try {
-    const sendData = {
-      email: signUpForm.email,
-      password: signUpForm.password,
-      nickName: signUpForm.nickname,
-      address: signUpForm.address,
-    };
-    const { data } = await axios.post<number>('/join', sendData);
-
-    return { userId: data };
-  } catch (err: any) {
-    throw new Error('서버오류로 인해 회원가입 실패하였습니다.');
-  }
-};
+const userService = new UserService();
 
 function* signUpFetchSaga({
   payload,
 }: ReturnType<typeof SignUpActions.signUpFetch>) {
   try {
-    const { userId } = yield call(signUp, payload);
+    const { userId } = yield call(userService.signUp, payload);
     yield put(SignUpActions.signUpFetchSuccess(userId));
   } catch (error: any) {
     console.error(error);
