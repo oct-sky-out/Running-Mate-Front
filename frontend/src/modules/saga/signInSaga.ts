@@ -28,8 +28,8 @@ function* signInFetchSaga({
       address,
       crewLeader,
       crewName,
-      crewId: id,
-      nickname: nickName,
+      id,
+      nickName,
     };
     yield put(SignInActions.signInSuccess(data));
     yield call(saveUserData, { userData: JSON.stringify(data), token });

@@ -15,7 +15,7 @@ export interface ISignUp {
 
 export interface ISignUpForm {
   email: string;
-  nickname: string;
+  nickName: string;
   password: string;
   address: string;
 }

@@ -9,10 +9,10 @@ export interface ISignIn {
   };
   userData: {
     email: string;
-    nickname: string;
+    nickName: string;
     address: string;
     crewName: string | null;
-    crewId: string;
+    id: string;
     crewLeader: boolean;
   };
   signInStatus: '' | 'Fetch' | 'Success' | 'Error';

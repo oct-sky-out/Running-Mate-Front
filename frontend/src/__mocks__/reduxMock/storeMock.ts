@@ -12,10 +12,10 @@ const mockStore: RootState = {
     },
     userData: {
       email: '',
-      nickname: '',
+      nickName: '',
       address: '',
       crewName: '',
-      crewId: '',
+      id: '',
       crewLeader: false,
     },
     signInStatus: '',

@@ -1,4 +1,5 @@
 import { withRouter, useHistory, useLocation } from 'react-router-dom';
+import { v4 } from 'uuid';
 import MenuButton from '../../common/components/MenuButton';
 
 const MyPageMenu = () => {
@@ -19,9 +20,10 @@ const MyPageMenu = () => {
       {Object.keys(menuTexts).map((url) => (
         <MenuButton
           type="button"
-          className={`flex flex-left items-center text-xl font-bold ${
+          className={`flex flex-left items-center text-xl font-bold mx-2 ${
             location.pathname === url ? 'border-purple' : null
           }`}
+          key={v4()}
           onClick={() => moveURL(url)}
         >
           {menuTexts[url]}

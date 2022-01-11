@@ -12,10 +12,10 @@ const initialState: ISignIn = {
   },
   userData: {
     email: '',
-    nickname: '',
+    nickName: '',
     address: '',
     crewName: '',
-    crewId: '',
+    id: '',
     crewLeader: false,
   },
   signInStatus: '',
@@ -38,10 +38,10 @@ const signInSliceReducer = createSlice({
       },
       userData: {
         email: '',
-        nickname: '',
+        nickName: '',
         address: '',
         crewName: '',
-        crewId: '',
+        id: '',
         crewLeader: false,
       },
       signInStatus: '',
@@ -109,7 +109,7 @@ const signInSliceReducer = createSlice({
           ...state,
           userData: {
             ...state.userData,
-            nickname: action.payload,
+            nickName: action.payload,
           },
         };
       },
@@ -131,10 +131,10 @@ const signInSliceReducer = createSlice({
     signInSuccess: {
       prepare: (successData: {
         email: string;
-        nickname: string;
+        nickName: string;
         address: string;
         crewName: string;
-        crewId: string;
+        id: string;
         crewLeader: boolean;
       }) => {
         return { payload: successData };
@@ -143,10 +143,10 @@ const signInSliceReducer = createSlice({
         state,
         action: PayloadAction<{
           email: string;
-          nickname: string;
+          nickName: string;
           address: string;
           crewName: string;
-          crewId: string;
+          id: string;
           crewLeader: boolean;
         }>
       ) => {
