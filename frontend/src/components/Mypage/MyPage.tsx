@@ -1,6 +1,9 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { useSelector } from '../../modules';
+import { SignInActions } from '../../modules/signIn';
+import UserService from '../../lib/api/userService';
 import MyPageMenu from './MyPageMenu';
 import MyPageInformations from './MyPageInformations';
 import ChangeMyPassword from './ChangeMyPassword';
@@ -10,7 +13,18 @@ const MyPage = () => {
   const location = useLocation();
   const token = useSelector((state) => state.signIn.token);
 
-  useEffect(() => {}, []);
+  //* Redux
+  const dispatch = useDispatch();
+  //* API Service
+  const userService = new UserService();
+
+  useEffect(() => {
+    userService.getMyPageData(token).then((data) => {
+      if (data !== false) {
+        dispatch(SignInActions.signInSuccess(data));
+      }
+    });
+  }, [token, userService]);
   return (
     <DetailBaseBorder>
       <div className="flex justify-center items-center font-bold h-1/5 text-3xl ">

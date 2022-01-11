@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ISignIn } from './types/signInTypes';
+import { ISignIn, IUserData } from './types/signInTypes';
 
 const initialState: ISignIn = {
   loginForm: {
@@ -129,27 +129,10 @@ const signInSliceReducer = createSlice({
       },
     },
     signInSuccess: {
-      prepare: (successData: {
-        email: string;
-        nickName: string;
-        address: string;
-        crewName: string;
-        id: string;
-        crewLeader: boolean;
-      }) => {
+      prepare: (successData: IUserData) => {
         return { payload: successData };
       },
-      reducer: (
-        state,
-        action: PayloadAction<{
-          email: string;
-          nickName: string;
-          address: string;
-          crewName: string;
-          id: string;
-          crewLeader: boolean;
-        }>
-      ) => {
+      reducer: (state, action: PayloadAction<IUserData>) => {
         return {
           ...state,
           userData: action.payload,

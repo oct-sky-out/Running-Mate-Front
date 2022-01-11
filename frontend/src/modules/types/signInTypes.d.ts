@@ -20,6 +20,15 @@ export interface ISignIn {
   isLogged: boolean;
 }
 
+export interface IUserData {
+  email: string;
+  nickName: string;
+  address: string;
+  crewName: string | null;
+  id: string;
+  crewLeader: boolean;
+}
+
 export interface ISignInForm {
   email: string;
   password: string;
