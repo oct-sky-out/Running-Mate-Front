@@ -1,8 +1,4 @@
-import { useEffect } from 'react';
-import { BrowserRouter, Switch, Route, useLocation } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { SignInActions } from './modules/signIn';
-import { useSelector } from './modules';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import CreateNotice from './components/CreateNotice/CreateNotice';
 import CreateNewCrew from './components/Crew/CreateCrew/CreateCrew';
 import Crew from './components/Crew/Crew';
@@ -16,13 +12,6 @@ import ViewNotice from './components/ViewNotice/ViewNotice';
 import UserPage from './components/UserPage/Userpage';
 
 function App() {
-  const dispatch = useDispatch();
-  const token = useSelector((state) => state.signIn.token);
-
-  useEffect(() => {
-    const localStorageToken = localStorage.getItem('token');
-    dispatch(SignInActions.setToken(localStorageToken || ''));
-  }, [token]);
   return (
     <>
       <BrowserRouter>
@@ -34,6 +23,7 @@ function App() {
           <Route exact path="/crew/new" component={CreateNewCrew} />
           <Route exact path="/myPage" component={MyPage} />
           <Route exact path="/myPage/changePassword" component={MyPage} />
+          <Route exact path="/myPage/leaving" component={MyPage} />
           <Route exact path="/crew" component={Crew} />
           <Route exact path="/crew/:id" component={CrewDetail} />
           <Route exact path="/crew/:id/management" component={CrewManagement} />
