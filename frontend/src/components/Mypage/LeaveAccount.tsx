@@ -15,7 +15,7 @@ const LeaveAccount = () => {
     <div className="h-screen col-span-4 w-full pt-20">
       <div className="w-2/3 flex flex-col items-center mx-auto my-0 space-y-20">
         <span className="text-2xl font-bold">
-          사용하고계신 계정을 입력해주세요.
+          사용하고 계신 계정을 입력해주세요.
         </span>
         <div className="w-2/3 flex flex-col justify-center">
           <Input
