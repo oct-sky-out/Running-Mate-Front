@@ -12,10 +12,10 @@ const mockStore: RootState = {
     },
     userData: {
       email: '',
-      nickname: '',
+      nickName: '',
       address: '',
       crewName: '',
-      crewId: '',
+      id: '',
       crewLeader: false,
     },
     signInStatus: '',
@@ -54,7 +54,6 @@ const mockStore: RootState = {
     time: new Date(),
     openChatLink: '',
     imageOneURL: '',
-    imageTwoURL: '',
   },
 };
 

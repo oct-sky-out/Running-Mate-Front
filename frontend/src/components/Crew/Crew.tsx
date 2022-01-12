@@ -9,10 +9,10 @@ import CrewMock from '../../excuteData/CrewMock/CrewMock';
 const Crew = () => {
   //* Redux
   //! 로그인 상태로 가정했습니다.
-  const { crewName, crewId, nickname } = useSelector((state) => ({
+  const { crewName, id, nickName } = useSelector((state) => ({
     crewName: state.signIn.userData.crewName,
-    crewId: state.signIn.userData.crewId,
-    nickname: state.signIn.userData.nickname,
+    id: state.signIn.userData.id,
+    nickName: state.signIn.userData.nickName,
   }));
 
   //* useState
@@ -56,11 +56,11 @@ const Crew = () => {
             <div>
               <div className="absolute right-1/2 bottom-40">
                 <h1 className="text-3xl">
-                  {nickname}안녕님의 크루는 {crewName}오르고 달리기 입니다!
+                  {nickName}안녕님의 크루는 {crewName}오르고 달리기 입니다!
                 </h1>
               </div>
               <div className="block w-10 absolute right-1/3 bottom-20 ">
-                <Link to={`/crew/${crewId}`}>
+                <Link to={`/crew/${id}`}>
                   <Button size="xlarge">크루로 가기 ▹</Button>
                 </Link>
               </div>

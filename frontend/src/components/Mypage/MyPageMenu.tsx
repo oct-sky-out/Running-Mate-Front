@@ -1,10 +1,12 @@
 import { withRouter, useHistory, useLocation } from 'react-router-dom';
+import { v4 } from 'uuid';
 import MenuButton from '../../common/components/MenuButton';
 
 const MyPageMenu = () => {
   const menuTexts: { [key: string]: string } = {
     '/mypage': '내 정보 관리',
     '/mypage/changePassword': '비밀번호 변경',
+    '/mypage/leaving': '회원탈퇴',
   };
 
   const history = useHistory();
@@ -18,10 +20,12 @@ const MyPageMenu = () => {
     <div className="flex justify-center w-full">
       {Object.keys(menuTexts).map((url) => (
         <MenuButton
+          key={v4()}
           type="button"
-          className={`flex flex-left items-center text-xl font-bold ${
+          className={`flex flex-left items-center text-xl font-bold mx-2 ${
             location.pathname === url ? 'border-purple' : null
           }`}
+          key={v4()}
           onClick={() => moveURL(url)}
         >
           {menuTexts[url]}

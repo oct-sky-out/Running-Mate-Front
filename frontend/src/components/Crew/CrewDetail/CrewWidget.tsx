@@ -23,7 +23,7 @@ const CrewWidget: React.FC<IProps> = ({
           {Image && <Image clasName="w-12 h-12" />}
           {Icon && <Icon color={iconColor} size="48" />}
         </div>
-        <span className="block">{widgetTitle}</span>
+        <span className="block mb-2">{widgetTitle}</span>
         <span className="block">{widgetDescription}</span>
       </div>
     </div>
