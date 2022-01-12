@@ -72,7 +72,9 @@ const ViewNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
       </div>
       <div>
         <div className="grid grid-cols-1 gap-10 mb-20">
-          <img src={imageUrl} alt="map" className="w-full" />
+          <div className="flex justify-center">
+            <img src={imageUrl} alt="map" className="w-2/5" />
+          </div>
           <p className="w-full text-base md:text-2xl break-words">{explain}</p>
         </div>
         <div className="w-full space-y-3">

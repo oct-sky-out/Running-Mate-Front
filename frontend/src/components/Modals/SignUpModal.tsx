@@ -27,7 +27,7 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
   const dispatch = useDispatch();
   const {
     email,
-    nickname,
+    nickName,
     password,
     checkPassword,
     address,
@@ -35,7 +35,7 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
     error,
   } = useSelector((state) => ({
     email: state.signUp.email,
-    nickname: state.signUp.nickname,
+    nickName: state.signUp.nickname,
     password: state.signUp.password,
     checkPassword: state.signUp.checkPassword,
     address: state.signUp.address,
@@ -61,14 +61,14 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
       dispatch(
         SignUpActions.signUpFetch({
           email,
-          nickname,
+          nickName,
           password,
           address,
           signUpFetchState: 'Fetch',
         })
       );
     },
-    [email, nickname, password, checkPassword, address]
+    [email, nickName, password, checkPassword, address]
   );
 
   const changedInputs = useCallback(
@@ -78,7 +78,7 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
     ) => {
       dispatch(SignUpActions[actionName](value));
     },
-    [email, nickname, address]
+    [email, nickName, address]
   );
 
   useEffect(() => {
@@ -209,7 +209,7 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
                   !(
                     isSafedAndPasswordSame(password, checkPassword) &&
                     email &&
-                    nickname &&
+                    nickName &&
                     address
                   )
                 }

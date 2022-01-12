@@ -11,7 +11,7 @@ const UserProfile = () => {
   const [isMyMenuOpen, setIsMyMenuOpen] = useState(false);
 
   //* Any Functions
-  const moveMyPage = () => {
+  const moveChangeMyPage = () => {
     history.push('/mypage');
     setIsMyMenuOpen(false);
   };
@@ -19,6 +19,10 @@ const UserProfile = () => {
     setIsMyMenuOpen(false);
   };
 
+  const moveMyPage = () => {
+    history.push('/userInfo/');
+    setIsMyMenuOpen(false);
+  };
   return (
     <div className="flex-none flex justify-center items-center w-5 md:w-20">
       <OutsideClickHandler
@@ -37,6 +41,12 @@ const UserProfile = () => {
             <div
               className="flex h-5 md:h-10 md:py-2 justify-center items-center cursor-pointer"
               onClick={moveMyPage}
+            >
+              <button type="button">내 페이지</button>
+            </div>
+            <div
+              className="flex h-5 md:h-10 md:py-2 justify-center items-center cursor-pointer"
+              onClick={moveChangeMyPage}
             >
               <button type="button">내 정보관리</button>
             </div>
