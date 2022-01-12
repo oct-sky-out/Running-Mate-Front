@@ -5,5 +5,4 @@ export interface INotice {
   time: Date;
   openChatLink: string;
   imageOneURL: string | ArrayBuffer;
-  imageTwoURL: string | ArrayBuffer;
 }

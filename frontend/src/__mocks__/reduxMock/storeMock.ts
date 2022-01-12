@@ -54,7 +54,6 @@ const mockStore: RootState = {
     time: new Date(),
     openChatLink: '',
     imageOneURL: '',
-    imageTwoURL: '',
   },
 };
 
