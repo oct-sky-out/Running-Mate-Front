@@ -8,7 +8,6 @@ const initialState: INotice = {
   time: new Date(),
   openChatLink: '',
   imageOneURL: '',
-  imageTwoURL: '',
 };
 
 const createNoticeSliceReducer = createSlice({
@@ -23,7 +22,6 @@ const createNoticeSliceReducer = createSlice({
         time: new Date(),
         openChatLink: '',
         imageOneURL: '',
-        imageTwoURL: '',
       };
     },
     setTitle: {
@@ -72,14 +70,6 @@ const createNoticeSliceReducer = createSlice({
       },
       reducer: (state, action: PayloadAction<string | ArrayBuffer>) => {
         return { ...state, imageOneURL: action.payload };
-      },
-    },
-    setImageTwoURL: {
-      prepare: (imageTwoURL: string | ArrayBuffer) => {
-        return { payload: imageTwoURL };
-      },
-      reducer: (state, action: PayloadAction<string | ArrayBuffer>) => {
-        return { ...state, imageTwoURL: action.payload };
       },
     },
   },

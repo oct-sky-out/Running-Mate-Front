@@ -5,18 +5,21 @@ import { useSelector } from '../../modules';
 import { SignInActions } from '../../modules/signIn';
 import useModalPotal from '../../hooks/useModalPotal';
 import Address from '../address/Address';
-import axios from '../../lib/api/axios';
+import UserService from '../../lib/api/userService';
 
 type Props = {
   token: string;
 };
 
 const MyPageInformations: React.FC<Props> = ({ token }) => {
+  //* API Service
+  const userService = new UserService();
+
   //* Redux
   const dispatch = useDispatch();
-  const { email, nickname, address } = useSelector((state) => ({
+  const { email, nickName, address } = useSelector((state) => ({
     email: state.signIn.userData.email,
-    nickname: state.signIn.userData.nickname,
+    nickName: state.signIn.userData.nickName,
     address: state.signIn.userData.address,
   }));
 
@@ -27,17 +30,20 @@ const MyPageInformations: React.FC<Props> = ({ token }) => {
     const userData = localStorage.getItem('userData');
     if (userData) {
       const userDataObj = JSON.parse(userData);
+      delete userDataObj.regDate;
+      delete userDataObj.roles;
       dispatch(SignInActions.signInSuccess(userDataObj));
     }
   }, []);
-
   return (
     <>
       <div className="h-screen col-span-4 w-full pt-5 flex justify-center ">
         <div className="space-y-20">
           <div className="space-y-3">
-            <span className="text-2xl">이메일</span>
-            <span>{email}</span>
+            <span className="text-2xl mb-3">이메일</span>
+            <span className="block ml-2 w-auto pb-2 border-b-2 border-gray-200 text-gray-400">
+              {email}
+            </span>
           </div>
           <div className="space-y-3">
             <span className="text-2xl">닉네임</span>
@@ -47,7 +53,7 @@ const MyPageInformations: React.FC<Props> = ({ token }) => {
               type="text"
               width="100%"
               className="z-0"
-              value={nickname}
+              value={nickName}
               placeholder="변경할 닉네임"
               onChange={(e) => {
                 dispatch(SignInActions.setUserNicknameData(e.target.value));
@@ -81,21 +87,9 @@ const MyPageInformations: React.FC<Props> = ({ token }) => {
               rounded
               color="secondary"
               className="z-0"
-              onClick={() => {
-                axios
-                  .post(
-                    `/user`,
-                    {
-                      nickName: nickname,
-                      address,
-                    },
-                    {
-                      headers: {
-                        'x-auth-token': token,
-                      },
-                    }
-                  )
-                  .then(() => {});
+              onClick={async () => {
+                await userService.editMyPageData({ nickName, address, token });
+                await userService.getMyPageData(token);
               }}
             >
               저장하기

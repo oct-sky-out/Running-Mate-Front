@@ -9,15 +9,24 @@ export interface ISignIn {
   };
   userData: {
     email: string;
-    nickname: string;
+    nickName: string;
     address: string;
     crewName: string | null;
-    crewId: string;
+    id: string;
     crewLeader: boolean;
   };
   signInStatus: '' | 'Fetch' | 'Success' | 'Error';
   token: string;
   isLogged: boolean;
+}
+
+export interface IUserData {
+  email: string;
+  nickName: string;
+  address: string;
+  crewName: string | null;
+  id: string;
+  crewLeader: boolean;
 }
 
 export interface ISignInForm {
