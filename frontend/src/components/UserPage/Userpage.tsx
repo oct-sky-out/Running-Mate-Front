@@ -114,13 +114,15 @@ const UserPage: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
             {match.params.id || userData.nickName}
           </span>
         </div>
-        {(match.params.id || token) && (
-          <button className="text-white w-24 h-12 rounded-xl sm:absolute sm:right-10 sm:top-32 md:right-20 md:top-40 bg-indigo-400 hover:opacity-80 transition ease-in-out delay-100">
-            친구신청
-          </button>
-        )}
       </div>
       <div className="space-y-5">
+        {match.params.id && token && (
+          <div className="w-full my-5 pl-5 md:pl-0 ">
+            <button className="text-white w-24 h-12 rounded-xl sm:absolute sm:right-10 md:static sm:top-32 md:right-20 md:top-40 bg-indigo-400 hover:opacity-80 transition ease-in-out delay-100">
+              친구신청
+            </button>
+          </div>
+        )}
         <span className="pl-5 md:pl-0 text-lg">기본정보</span>
         <div className="w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 mx-auto gap-5">
           {Object.values(normalCategory).map((category) => (
