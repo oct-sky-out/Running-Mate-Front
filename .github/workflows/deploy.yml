@@ -39,7 +39,7 @@ jobs:
 
       - name: Build                 
         run: |
-          cd Running-Mate-Front/Running-Mate-Front
+          cd Running-Mate-Front/frontend
           yarn build
       
       - name: Generate Environment Variables File for Production
