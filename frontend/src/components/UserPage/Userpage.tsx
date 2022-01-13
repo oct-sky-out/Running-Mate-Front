@@ -5,16 +5,15 @@ import { GiPositionMarker } from 'react-icons/gi';
 import { v4 } from 'uuid';
 import { BiUser } from 'react-icons/bi';
 import { useSelector } from '../../modules';
+import UserService from '../../lib/api/userService';
+import useLocalStroeageData from '../../hooks/useLocalStorageData';
 import CrewWidget from '../Crew/CrewDetail/CrewWidget';
 import DetailBaseBorder from '../../common/components/DetailBaseBorder';
 import PreviousPageButton from '../../common/components/PreviousPageButton';
+import { IUserData } from '../../modules/types/signInTypes';
 
 // test data
 import userPageMock from '../../excuteData/UserPageMock/UserPageMock';
-import { IUserData } from '../../modules/types/signInTypes';
-import useLocalStroeageData from '../../hooks/useLocalStorageData';
-import axios from '../../lib/api/axios';
-import UserService from '../../lib/api/userService';
 
 interface MatchParam {
   id: string;
