@@ -38,7 +38,9 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Build                 
-        run: yarn build
+        run: |
+          cd Running-Mate-Front/Running-Mate-Front
+          yarn build
       
       - name: Generate Environment Variables File for Production
         run: |
