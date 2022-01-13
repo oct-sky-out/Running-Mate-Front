@@ -12,7 +12,7 @@ interface IProps {
 
 const FindUser: React.FC<IProps> = ({ closeModal }) => {
   //* Modal
-  const { ModalPotal, openModal } = useModalPotal();
+  const { ModalPotal } = useModalPotal();
 
   //* MockData
   const userMockData = UsersData;
@@ -35,11 +35,6 @@ const FindUser: React.FC<IProps> = ({ closeModal }) => {
     usersRefs.current[refIndex]!.innerText =
       usersRefs.current[refIndex]?.innerText === '초대' ? '요청보냄' : '초대';
   };
-
-  // 테스트를 위한 useEffect이므로 나중에 적용할 때는 지우고 적용할 수 있도록 한다.
-  useEffect(() => {
-    openModal();
-  }, []);
 
   return (
     <ModalPotal>

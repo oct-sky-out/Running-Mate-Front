@@ -56,7 +56,9 @@ const ViewNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
               alt="profile"
               className="w-10 h-10 rounded-full"
             />
-            <span>{writer}</span>
+            <span>
+              <Link to={`/userInfo/${writer}`}>{writer}</Link>
+            </span>
           </div>
           <span className="align-bottom mr-3">{date}</span>
         </div>

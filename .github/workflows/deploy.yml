@@ -1,0 +1,58 @@
+name: Deploy                    
+on:                             
+  push:
+    branches:
+      - main                        
+jobs:                           
+  build:
+    runs-on: ubuntu-latest
+    defaults : 
+      run : 
+        working-directory : ./frontend
+    
+    steps:
+      - name: Checkout source code.
+        uses: actions/checkout@v2
+      
+      - name: Setup Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: '3.x'
+
+      - name: Install AWS CLI
+        run: pip3 install awscli --upgrade --user
+        
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+          mask-aws-account-id: true
+          
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          
+      - name: Check Node v          
+        run: node -v
+      
+      - name: Install Dependencies  
+        run: yarn
+
+      - name: Build                 
+        run: yarn build
+      
+      - name: Generate Environment Variables File for Production
+        run: |
+         echo "REACT_APP_API_SERVER=$REACT_APP_API_SERVER" >> .env.production
+         echo "AWS_ACCESS_KEY=$AWS_ACCESS_KEY >> .env.production
+         echo "AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY >> .env.production
+        env:
+         REACT_APP_API_SERVER: ${{ secrets.REACT_APP_API_SERVER }}
+         AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
+         AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }}
+   
+      - name: Deploy
+        run: |
+          aws s3 cp --recursive --region ap-northeast-2 build s3://runningmate.com

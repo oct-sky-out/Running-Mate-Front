@@ -1,13 +1,17 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { INotice } from './types/createNotice';
+import { INotice, AddressType } from './types/createNotice';
 
 const initialState: INotice = {
   title: '',
-  explain: '',
-  location: '',
-  time: new Date(),
-  openChatLink: '',
-  imageOneURL: '',
+  content: '',
+  address: {
+    si: '',
+    gu: '',
+    dong: '',
+  },
+  time: '',
+  openChat: '',
+  image: '',
 };
 
 const createNoticeSliceReducer = createSlice({
@@ -17,11 +21,15 @@ const createNoticeSliceReducer = createSlice({
     setInit: (_state, _action: PayloadAction<void>) => {
       return {
         title: '',
-        explain: '',
-        location: '',
-        time: new Date(),
-        openChatLink: '',
-        imageOneURL: '',
+        content: '',
+        address: {
+          si: '',
+          gu: '',
+          dong: '',
+        },
+        time: '',
+        openChat: '',
+        image: '',
       };
     },
     setTitle: {
@@ -33,43 +41,43 @@ const createNoticeSliceReducer = createSlice({
       },
     },
     setExplain: {
-      prepare: (explain: string) => {
-        return { payload: explain };
+      prepare: (content: string) => {
+        return { payload: content };
       },
       reducer: (state, action: PayloadAction<string>) => {
-        return { ...state, explain: action.payload };
+        return { ...state, content: action.payload };
       },
     },
-    setLocation: {
-      prepare: (location: string) => {
-        return { payload: location };
+    setAddress: {
+      prepare: (address: AddressType) => {
+        return { payload: address };
       },
-      reducer: (state, action: PayloadAction<string>) => {
-        return { ...state, location: action.payload };
+      reducer: (state, action: PayloadAction<AddressType>) => {
+        return { ...state, address: action.payload };
       },
     },
     setTime: {
-      prepare: (time: Date) => {
+      prepare: (time: string) => {
         return { payload: time };
       },
-      reducer: (state, action: PayloadAction<Date>) => {
+      reducer: (state, action: PayloadAction<string>) => {
         return { ...state, time: action.payload };
       },
     },
-    setOpenChatLink: {
-      prepare: (openChatLink: string) => {
-        return { payload: openChatLink };
+    setOpenChat: {
+      prepare: (openChat: string) => {
+        return { payload: openChat };
       },
       reducer: (state, action: PayloadAction<string>) => {
-        return { ...state, openChatLink: action.payload };
+        return { ...state, openChat: action.payload };
       },
     },
-    setImageOneURL: {
-      prepare: (imageOneURL: string | ArrayBuffer) => {
-        return { payload: imageOneURL };
+    setImage: {
+      prepare: (image: string) => {
+        return { payload: image };
       },
-      reducer: (state, action: PayloadAction<string | ArrayBuffer>) => {
-        return { ...state, imageOneURL: action.payload };
+      reducer: (state, action: PayloadAction<string>) => {
+        return { ...state, image: action.payload };
       },
     },
   },

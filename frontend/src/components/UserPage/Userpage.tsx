@@ -1,12 +1,16 @@
-import React from 'react';
-import { withRouter, RouteComponentProps, useHistory } from 'react-router-dom';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { RouteComponentProps, useHistory, useLocation } from 'react-router-dom';
 import { BsPeopleFill } from 'react-icons/bs';
 import { GiPositionMarker } from 'react-icons/gi';
 import { v4 } from 'uuid';
 import { BiUser } from 'react-icons/bi';
+import { useSelector } from '../../modules';
+import UserService from '../../lib/api/userService';
+import useLocalStroeageData from '../../hooks/useLocalStorageData';
 import CrewWidget from '../Crew/CrewDetail/CrewWidget';
 import DetailBaseBorder from '../../common/components/DetailBaseBorder';
 import PreviousPageButton from '../../common/components/PreviousPageButton';
+import { IUserData } from '../../modules/types/signInTypes';
 
 // test data
 import userPageMock from '../../excuteData/UserPageMock/UserPageMock';
@@ -16,11 +20,75 @@ interface MatchParam {
 }
 
 const UserPage: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
+  //* react-router-dom
   const history = useHistory();
-  const normalCategory = [
-    { icon: BsPeopleFill, title: '소속 크루', description: '달리쉴?' },
-    { icon: GiPositionMarker, title: '러닝 지역', description: '서울 상도동' },
-  ];
+  const location = useLocation();
+
+  //* redux
+  const { userData, token } = useSelector((state) => ({
+    userData: state.signIn.userData,
+    token: state.signIn.token,
+  }));
+
+  //* useState
+  const [anotherUserData, setAnotherUserData] = useState<IUserData>({
+    address: '',
+    crewLeader: false,
+    crewName: '',
+    email: '',
+    id: '',
+    nickName: '',
+  });
+  const [normalCategory, setNormalCategory] = useState({
+    crewName: { icon: BsPeopleFill, title: '소속 크루', description: '' },
+    address: { icon: GiPositionMarker, title: '러닝 지역', description: '' },
+  });
+
+  //* custom hook
+  const { getUserData } = useLocalStroeageData();
+
+  //* useEffects
+  useEffect(() => {
+    if (!match.params.id) {
+      getUserData();
+    }
+  }, [location.pathname]);
+
+  useEffect(() => {
+    if (!match.params.id)
+      setNormalCategory({
+        crewName: {
+          ...normalCategory.crewName,
+          description: userData.crewName || '크루에 소속되어있지 않습니다.',
+        },
+        address: { ...normalCategory.address, description: userData.address },
+      });
+  }, [userData]);
+
+  useEffect(() => {
+    setNormalCategory({
+      crewName: { icon: BsPeopleFill, title: '소속 크루', description: '' },
+      address: {
+        icon: GiPositionMarker,
+        title: '러닝 지역',
+        description: '',
+      },
+    });
+    if (match.params.id && token) {
+      new UserService().getUSer(match.params.id, token).then((result) => {
+        if (result) {
+          setAnotherUserData(result);
+          setNormalCategory({
+            crewName: {
+              ...normalCategory.crewName,
+              description: result.crewName || '크루에 소속되어있지 않습니다.',
+            },
+            address: { ...normalCategory.address, description: result.address },
+          });
+        }
+      });
+    }
+  }, [token, location.pathname]);
 
   return (
     <DetailBaseBorder>
@@ -40,19 +108,23 @@ const UserPage: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
             className="w-48 h-48 rounded-full border-4 border-purple"
           />
         </div>
-        <div className="text-2xl">{match.params.id}</div>
         <div className="text-lg flex flex-col items-center">
-          <span className="mb-3 text-3xl font-bold">홍길동</span>
-          <span className="block ">동해 번쩍 서해 번쩍 러너입니다.</span>
+          <span className="mb-3 text-3xl font-bold">
+            {match.params.id || userData.nickName}
+          </span>
         </div>
-        <button className="text-white w-24 h-12 rounded-xl sm:absolute sm:right-10 sm:top-32 md:right-20 md:top-40 bg-indigo-400 hover:opacity-80 transition ease-in-out delay-100">
-          친구신청
-        </button>
       </div>
       <div className="space-y-5">
+        {match.params.id && token && (
+          <div className="w-full my-5 pl-5 md:pl-0 ">
+            <button className="text-white w-24 h-12 rounded-xl sm:absolute sm:right-10 md:static sm:top-32 md:right-20 md:top-40 bg-indigo-400 hover:opacity-80 transition ease-in-out delay-100">
+              친구신청
+            </button>
+          </div>
+        )}
         <span className="pl-5 md:pl-0 text-lg">기본정보</span>
         <div className="w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 mx-auto gap-5">
-          {normalCategory.map((category) => (
+          {Object.values(normalCategory).map((category) => (
             <div key={v4()} className="flex justify-center">
               <CrewWidget
                 Icon={category.icon}
