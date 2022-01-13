@@ -1,9 +1,6 @@
 import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useLocation, useHistory } from 'react-router-dom';
 import { useSelector } from '../../modules';
-import { SignInActions } from '../../modules/signIn';
-import UserService from '../../lib/api/userService';
 import MyPageMenu from './MyPageMenu';
 import MyPageInformations from './MyPageInformations';
 import ChangeMyPassword from './ChangeMyPassword';
@@ -13,6 +10,7 @@ import useRequireLogin from '../../hooks/useRequireLogin';
 
 const MyPage = () => {
   const location = useLocation();
+  const history = useHistory();
   const token = useSelector((state) => state.signIn.token);
   const { checkToekenAvailable } = useRequireLogin();
 
