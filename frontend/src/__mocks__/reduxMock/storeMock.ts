@@ -49,11 +49,15 @@ const mockStore: RootState = {
   },
   createNotice: {
     title: '',
-    explain: '',
-    location: '',
-    time: new Date(),
-    openChatLink: '',
-    imageOneURL: '',
+    content: '',
+    address: {
+      si: '',
+      gu: '',
+      dong: '',
+    },
+    time: '',
+    openChat: '',
+    image: '',
   },
 };
 
