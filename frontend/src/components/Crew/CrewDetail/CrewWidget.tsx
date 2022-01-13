@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { IconType } from 'react-icons/lib';
 
 interface IProps {
@@ -24,7 +24,7 @@ const CrewWidget: React.FC<IProps> = ({
           {Icon && <Icon color={iconColor} size="48" />}
         </div>
         <span className="block mb-2">{widgetTitle}</span>
-        <span className="block">{widgetDescription}</span>
+        <span className="block text-sm">{widgetDescription}</span>
       </div>
     </div>
   );

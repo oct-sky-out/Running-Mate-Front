@@ -25,7 +25,6 @@ const MyPageMenu = () => {
           className={`flex flex-left items-center text-xl font-bold mx-2 ${
             location.pathname === url ? 'border-purple' : null
           }`}
-          key={v4()}
           onClick={() => moveURL(url)}
         >
           {menuTexts[url]}

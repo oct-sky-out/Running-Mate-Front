@@ -6,7 +6,7 @@ import axios from '../../lib/api/axios';
 const LeaveAccount = () => {
   const { email, nickname, token } = useSelector((state) => ({
     email: state.signIn.userData.email,
-    nickname: state.signIn.userData.nickname,
+    nickname: state.signIn.userData.nickName,
     token: state.signIn.token,
   }));
   const [confirmEmail, setConfirmEmail] = useState('');

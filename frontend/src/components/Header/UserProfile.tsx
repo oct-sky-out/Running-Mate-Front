@@ -20,7 +20,7 @@ const UserProfile = () => {
   };
 
   const moveMyPage = () => {
-    history.push('/userInfo/');
+    history.push('/userInfo');
     setIsMyMenuOpen(false);
   };
   return (

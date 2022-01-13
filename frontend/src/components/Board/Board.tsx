@@ -29,7 +29,9 @@ const Board: React.FC<IProps & RouteComponentProps> = ({ data }) => {
         </div>
         <div className="h-2/4 flex flex-col justify-around">
           <div className="p-3">
-            <span className="block text-sm">{writer}</span>
+            <span className="block text-sm">
+              <Link to={`/userInfo/${writer}`}>{writer}</Link>
+            </span>
             <span className="block font-bold truncate" title={title}>
               {title}
             </span>

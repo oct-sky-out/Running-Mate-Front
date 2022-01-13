@@ -1,8 +1,14 @@
 export interface INotice {
   title: string;
-  explain: string;
-  location: string;
-  time: Date;
-  openChatLink: string;
-  imageOneURL: string | ArrayBuffer;
+  content: string;
+  address: AddressType;
+  time: string;
+  openChat: string;
+  image: string;
 }
+
+export type AddressType = {
+  si: string;
+  gu: string;
+  dong: string;
+};
