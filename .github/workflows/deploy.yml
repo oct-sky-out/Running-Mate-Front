@@ -6,6 +6,9 @@ on:
 jobs:                           
   build:
     runs-on: ubuntu-latest
+    defaults : 
+      run : 
+        working-directory : ./frontend
     
     steps:
       - name: Checkout source code.
@@ -38,9 +41,7 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Build                 
-        run: |
-          cd Running-Mate-Front/frontend
-          yarn build
+        run: yarn build
       
       - name: Generate Environment Variables File for Production
         run: |
