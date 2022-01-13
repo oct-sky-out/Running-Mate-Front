@@ -51,9 +51,9 @@ jobs:
          AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }}
         run: |
          touch .env.production
-         echo "REACT_APP_API_SERVER="$REACT_APP_API_SERVER" >> .env.production
-         echo "AWS_ACCESS_KEY="$AWS_ACCESS_KEY" >> .env.production
-         echo "AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY" >> .env.production
+         echo REACT_APP_API_SERVER="$REACT_APP_API_SERVER" >> .env.production
+         echo AWS_ACCESS_KEY="$AWS_ACCESS_KEY" >> .env.production
+         echo AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY" >> .env.production
  
       - name: Deploy
         run: |
