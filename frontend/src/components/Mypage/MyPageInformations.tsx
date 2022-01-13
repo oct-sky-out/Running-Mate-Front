@@ -6,6 +6,7 @@ import { SignInActions } from '../../modules/signIn';
 import useModalPotal from '../../hooks/useModalPotal';
 import Address from '../address/Address';
 import UserService from '../../lib/api/userService';
+import useLocalStroeageData from '../../hooks/useLocalStorageData';
 
 type Props = {
   token: string;
@@ -25,15 +26,10 @@ const MyPageInformations: React.FC<Props> = ({ token }) => {
 
   //* Modal
   const { ModalPotal, closeModal, openModal } = useModalPotal();
+  const { getUserData } = useLocalStroeageData();
 
   useEffect(() => {
-    const userData = localStorage.getItem('userData');
-    if (userData) {
-      const userDataObj = JSON.parse(userData);
-      delete userDataObj.regDate;
-      delete userDataObj.roles;
-      dispatch(SignInActions.signInSuccess(userDataObj));
-    }
+    getUserData();
   }, []);
   return (
     <>
