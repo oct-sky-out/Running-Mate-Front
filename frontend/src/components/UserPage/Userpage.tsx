@@ -13,16 +13,25 @@ import PreviousPageButton from '../../common/components/PreviousPageButton';
 import userPageMock from '../../excuteData/UserPageMock/UserPageMock';
 import { IUserData } from '../../modules/types/signInTypes';
 import useLocalStroeageData from '../../hooks/useLocalStorageData';
+import axios from '../../lib/api/axios';
+import UserService from '../../lib/api/userService';
 
 interface MatchParam {
   id: string;
 }
 
 const UserPage: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
+  //* react-router-dom
   const history = useHistory();
   const location = useLocation();
 
-  const userData = useSelector((state) => state.signIn.userData);
+  //* redux
+  const { userData, token } = useSelector((state) => ({
+    userData: state.signIn.userData,
+    token: state.signIn.token,
+  }));
+
+  //* useState
   const [anotherUserData, setAnotherUserData] = useState<IUserData>({
     address: '',
     crewLeader: false,
@@ -35,27 +44,52 @@ const UserPage: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
     crewName: { icon: BsPeopleFill, title: '소속 크루', description: '' },
     address: { icon: GiPositionMarker, title: '러닝 지역', description: '' },
   });
+
+  //* custom hook
   const { getUserData } = useLocalStroeageData();
 
-  //* 만약 로그인 된 유저가 아니라면 ajax로 사용자 정보 조회 후 데이터 삽입
-  //* 만약 로그인 된 상태에서 내 페이지로 이동시 리덕스의 데이터를 이용하여 가져온다.
+  //* useEffects
   useEffect(() => {
-    if (match.params.id) {
-      //* AJAX
-      //* anotherUserData에 사용자 정보 결과 삽입
+    if (!match.params.id) {
+      getUserData();
     }
-    if (!match.params.id) getUserData();
   }, [location.pathname]);
 
   useEffect(() => {
-    setNormalCategory({
-      crewName: {
-        ...normalCategory.crewName,
-        description: userData.crewName || '크루에 소속되어있지 않습니다.',
-      },
-      address: { ...normalCategory.address, description: userData.address },
-    });
+    if (!match.params.id)
+      setNormalCategory({
+        crewName: {
+          ...normalCategory.crewName,
+          description: userData.crewName || '크루에 소속되어있지 않습니다.',
+        },
+        address: { ...normalCategory.address, description: userData.address },
+      });
   }, [userData]);
+
+  useEffect(() => {
+    setNormalCategory({
+      crewName: { icon: BsPeopleFill, title: '소속 크루', description: '' },
+      address: {
+        icon: GiPositionMarker,
+        title: '러닝 지역',
+        description: '',
+      },
+    });
+    if (match.params.id && token) {
+      new UserService().getUSer(match.params.id, token).then((result) => {
+        if (result) {
+          setAnotherUserData(result);
+          setNormalCategory({
+            crewName: {
+              ...normalCategory.crewName,
+              description: result.crewName || '크루에 소속되어있지 않습니다.',
+            },
+            address: { ...normalCategory.address, description: result.address },
+          });
+        }
+      });
+    }
+  }, [token, location.pathname]);
 
   return (
     <DetailBaseBorder>
@@ -80,7 +114,7 @@ const UserPage: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
             {match.params.id || userData.nickName}
           </span>
         </div>
-        {match.params.id && (
+        {(match.params.id || token) && (
           <button className="text-white w-24 h-12 rounded-xl sm:absolute sm:right-10 sm:top-32 md:right-20 md:top-40 bg-indigo-400 hover:opacity-80 transition ease-in-out delay-100">
             친구신청
           </button>
