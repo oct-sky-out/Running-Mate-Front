@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Input, Button } from '@nextui-org/react';
 import { FormElement } from '@nextui-org/react/esm/input/input-props';
@@ -12,42 +12,50 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { CreateNoticeActions } from '../../modules/createNotice';
 import { useSelector } from '../../modules';
 
-type CreacteNoticeActionType =
-  | 'setTitle'
-  | 'setExplain'
-  | 'setLocation'
-  | 'setOpenChatLink';
+import SelecRegion from '../SelectRegion/SelcetRegion';
+import { AddressType } from '../../modules/types/createNotice';
+// API
+import NoticeService from '../../lib/api/notiveService';
+
+type CreacteNoticeActionType = 'setTitle' | 'setExplain' | 'setOpenChat';
 
 const CreateNotice = () => {
+  //* API
+  const noticeService = new NoticeService();
+
+  //* useState
+  const [seletedDate, setSelectedDate] = useState(new Date());
   //* useRef
   const imageInputRef = useRef<HTMLInputElement>(null);
   //* Redux
   const dispatch = useDispatch();
 
   //* Redux State
-  const { title, explain, time, location, openChatURL, imageOneURL } =
-    useSelector((state) => ({
+  const { title, content, address, time, openChat, image, token } = useSelector(
+    (state) => ({
       title: state.createNotice.title,
-      explain: state.createNotice.explain,
-      time: state.createNotice.time,
-      location: state.createNotice.location,
-      openChatURL: state.createNotice.openChatLink,
-      imageOneURL: state.createNotice.imageOneURL,
-    }));
+      content: state.createNotice.content,
+      address: state.createNotice.address,
+      time: state.createNotice.content,
+      openChat: state.createNotice.openChat,
+      image: state.createNotice.image,
+      token: state.signIn.token,
+    })
+  );
 
   //* event version
-  const saveFileImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files) return;
-    const file = e.target.files[0];
-    const formData = new FormData();
-    formData.append('file', file);
+  // const saveFileImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (!e.target.files) return;
+  //   const file = e.target.files[0];
+  //   const formData = new FormData();
+  //   formData.append('file', file);
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      dispatch(CreateNoticeActions.setImageOneURL(reader.result || ''));
-    };
-    reader.readAsDataURL(file);
-  };
+  //   const reader = new FileReader();
+  //   reader.onload = () => {
+  //     dispatch(CreateNoticeActions.setImage(reader.result || ''));
+  //   };
+  //   reader.readAsDataURL(file);
+  // };
 
   const onChangeInputState = (
     e: React.ChangeEvent<FormElement>,
@@ -56,10 +64,28 @@ const CreateNotice = () => {
     dispatch(CreateNoticeActions[actionName](e.currentTarget.value));
   };
 
-  const onChangeDatePickderState = (date: Date | null) => {
-    dispatch(CreateNoticeActions.setTime(date || new Date()));
+  const onChangeSelectState = (region: AddressType) => {
+    dispatch(CreateNoticeActions.setAddress(region));
   };
 
+  const onChangeDatePickderState = (date: string) => {
+    dispatch(CreateNoticeActions.setTime(date));
+  };
+
+  const onSubmit = () => {
+    noticeService
+      .createNotice(token, {
+        title,
+        content,
+        address,
+        time,
+        openChat,
+        image,
+      })
+      .then((id) => {
+        console.log(id);
+      });
+  };
   useEffect(() => {
     dispatch(CreateNoticeActions.setInit());
   }, []);
@@ -95,8 +121,13 @@ const CreateNotice = () => {
                   <div className="w-full py-1 pl-4 rounded border-solid border-2 border-indigo-400">
                     <DatePicker
                       className="w-full"
-                      selected={time}
-                      onChange={onChangeDatePickderState}
+                      selected={seletedDate}
+                      onChange={(e) => {
+                        setSelectedDate(e || new Date());
+                        onChangeDatePickderState(
+                          e ? e.toString() : new Date().toString()
+                        );
+                      }}
                       timeInputLabel="Time:"
                       dateFormat="yyyy/MM/dd hh:mm aa"
                       showTimeInput
@@ -105,20 +136,10 @@ const CreateNotice = () => {
                 </div>
               </div>
               <div className="space-y-3">
-                <span className="mr-5 font-bold mb-4">러닝 만남 장소</span>
-                <Input
-                  underlined
-                  bordered
-                  type="text"
-                  width="100%"
-                  placeholder="만남 장소"
-                  color="secondary"
-                  onChange={(e) => {
-                    onChangeInputState(e, 'setLocation');
-                  }}
-                  value={location}
-                  data-testid="location-input"
-                  style={{ fontSize: '1rem' }}
+                <span className="mr-5 font-bold mb-4">러닝 지역</span>
+                <SelecRegion
+                  submit={onChangeSelectState}
+                  className="p-1 mx-1"
                 />
               </div>
               <div>
@@ -131,9 +152,9 @@ const CreateNotice = () => {
                   placeholder="오픈 채팅 링크"
                   color="secondary"
                   onChange={(e) => {
-                    onChangeInputState(e, 'setOpenChatLink');
+                    onChangeInputState(e, 'setOpenChat');
                   }}
-                  value={openChatURL}
+                  value={openChat}
                   style={{ fontSize: '1rem' }}
                   data-testid="openChatLink-input"
                 />
@@ -141,12 +162,8 @@ const CreateNotice = () => {
             </div>
             <div className="flex flex-col items-center">
               <div className="flex flex-col justify-center items-center rounded border-solid border-2 border-indigo-400 h-60 w-60 mb-3">
-                {imageOneURL ? (
-                  <img
-                    src={imageOneURL as string}
-                    alt="map"
-                    className="w-full"
-                  />
+                {image ? (
+                  <img src={image as string} alt="map" className="w-full" />
                 ) : (
                   <div className="h-ful w-full flex flex-col justify-center items-center text-indigo-400 space-y-2">
                     <span className="block">러닝 경로 지도를</span>
@@ -166,7 +183,7 @@ const CreateNotice = () => {
                   type="file"
                   accept="image/*"
                   className="hidden"
-                  onChange={saveFileImage}
+                  // onChange={saveFileImage}
                 />
               </label>
             </div>
@@ -174,7 +191,7 @@ const CreateNotice = () => {
           <div className="mb-20 md:mb-16">
             <ReactQuill
               theme="snow"
-              value={explain}
+              value={content}
               onChange={(e) => dispatch(CreateNoticeActions.setExplain(e))}
               style={{ height: '300px' }}
               data-testid="explain-input"
@@ -183,7 +200,13 @@ const CreateNotice = () => {
           </div>
           <div className="flex justify-end">
             <div className="w-3/12 flex flex-col mb-10">
-              <Button auto color="#8b8bf5" rounded data-testid="submit-button">
+              <Button
+                auto
+                color="#8b8bf5"
+                rounded
+                data-testid="submit-button"
+                onClick={onSubmit}
+              >
                 등록
               </Button>
             </div>
