@@ -30,6 +30,18 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
           mask-aws-account-id: true
           
+      - name: Generate Environment Variables File for Production
+        shell : bash
+        env:
+         REACT_APP_API_SERVER: ${{ secrets.REACT_APP_API_SERVER }}
+         AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
+         AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }}
+        run: |
+         touch .env.production
+         echo REACT_APP_API_SERVER="$REACT_APP_API_SERVER" >> .env.production
+         echo AWS_ACCESS_KEY="$AWS_ACCESS_KEY" >> .env.production
+         echo AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY" >> .env.production   
+          
       - uses: actions/setup-node@v2
         with:
           node-version: '14'
@@ -43,16 +55,6 @@ jobs:
       - name: Build                 
         run: yarn build
       
-      - name: Generate Environment Variables File for Production
-        run: |
-         echo "REACT_APP_API_SERVER=$REACT_APP_API_SERVER" >> .env.production
-         echo "AWS_ACCESS_KEY=$AWS_ACCESS_KEY >> .env.production
-         echo "AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY >> .env.production
-        env:
-         REACT_APP_API_SERVER: ${{ secrets.REACT_APP_API_SERVER }}
-         AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
-         AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }}
-   
       - name: Deploy
         run: |
-          aws s3 cp --recursive --region ap-northeast-2 build s3://runningmate.com
+          aws s3 cp --recursive --region ap-northeast-2 build s3://runningmate
