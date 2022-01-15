@@ -15,10 +15,3 @@
     padding: 1px;
   }
 }
-@media (min-width: 1024px) {
-  #btn {
-    width: 250px;
-    height: 100px;
-    padding: 1px;
-  }
-}
