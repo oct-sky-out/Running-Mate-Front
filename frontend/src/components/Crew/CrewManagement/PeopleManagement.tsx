@@ -4,12 +4,7 @@ import PeopleList from './PeopleList';
 const PeopleManagement = () => {
   return (
     <div className="mx-auto my-0 py-10 px-20 flex flex-col space-y-10 justify-center">
-      <div className="w-full flex justify-between">
-        <div className="flex-none w-30 mr-5">
-          <Button auto rounded color="secondary" className="">
-            크루원 초대
-          </Button>
-        </div>
+      <div className="w-full flex justify-center lg:justify-end">
         <div className="w-600 flex space-x-5 justify-end">
           <Input
             width="100%"

@@ -4,7 +4,21 @@
   background-size: cover;
 }
 #btn {
-  width: 250px;
-  height: 100px;
-  margin: 5%;
+  width: 200px;
+  height: 70px;
+  margin: 0 auto;
+}
+@media (min-width: 768px) {
+  #btn {
+    width: 250px;
+    height: 100px;
+    padding: 1px;
+  }
+}
+@media (min-width: 1024px) {
+  #btn {
+    width: 250px;
+    height: 100px;
+    padding: 1px;
+  }
 }

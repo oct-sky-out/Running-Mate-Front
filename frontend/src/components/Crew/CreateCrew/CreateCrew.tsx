@@ -78,6 +78,9 @@ const CreateCrew = () => {
   ) => {
     dispatch(CreateCrewActions[actionName](e.target.value));
   };
+  const goToCrewMainPage = () => {
+    history.push('/crew');
+  };
 
   //* useEffects
   useEffect(() => {
@@ -99,14 +102,14 @@ const CreateCrew = () => {
           <PreviousPageButton
             text="뒤로가기"
             iconSize="32"
-            onClick={() => history.goBack()}
+            onClick={goToCrewMainPage}
             className="w-38"
             tailwindTextSize="text-sm md:text-2xl"
           />
         </div>
         <CreateCrewOrderMarker questionOrder={questionOrder} />
         <span
-          className="text-2xl md:text-5xl font-bold mb-20 "
+          className="text-2xl md:text-3xl font-bold lg:mb-20 p-8 text-center"
           data-testid="question-span"
         >
           {questionOrder === questions.length
@@ -126,7 +129,7 @@ const CreateCrew = () => {
           <Input
             type="text"
             width="80%"
-            className="mb-20"
+            className="lg:mb-20"
             value={reduxStates[questionOrder] || ''}
             onChange={(e) => {
               InputStateToRedux(e, ReduxActionNames[questionOrder]);
@@ -136,20 +139,29 @@ const CreateCrew = () => {
         </form>
         <div>
           <div
-            className={`${
+            className={`w-full h-32 flex flex-wrap  ${
               questionOrder === questions.length ? 'block' : 'hidden'
             } `}
           >
-            <Button
-              className="mr-20"
-              type="button"
-              data-testid="go-crew-page-button"
-            >
-              <Link to="/crew">크루 페이지로 돌아가기</Link>
-            </Button>
-            <Button type="button">
-              <Link to="/crew/crewid">크루 관리하러 가기</Link>
-            </Button>
+            <div className="w-20 lg:w-64 flex flex-grow justify-center">
+              <Link to="/crew" className="w-full flex flex-col">
+                <Button
+                  auto
+                  type="button"
+                  data-testid="go-crew-page-button"
+                  color="#8b8bf5"
+                >
+                  크루 페이지로 돌아가기
+                </Button>
+              </Link>
+            </div>
+            <div className="w-full flex flex-grow justify-center">
+              <Link to="/crew/crewid" className="w-full flex flex-col">
+                <Button auto type="button" color="#8b8bf5">
+                  크루 관리하러 가기
+                </Button>
+              </Link>
+            </div>
           </div>
           <div
             className={`${
@@ -173,7 +185,7 @@ const CreateCrew = () => {
               onClick={moveNextOrComplete}
               disabled={canComplete || !reduxStates[questionOrder]}
               data-testid="next-button"
-              className="text-white bg-purple-400 w-20 h-10 md:w-40 md:w-25 rounded-xl hover:opacity-80 transition ease-in-out delay-100"
+              className="text-white bg-purple-400 w-20 h-10 md:w-40 md:w-25 rounded-xl hover:opacity-80 transition ease-in-out delay-100 disabled:bg-gray-200"
             >
               {questionOrder === questions.length - 1 ? '완료' : '다음'}
             </button>
