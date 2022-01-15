@@ -55,7 +55,7 @@ const mockStore: RootState = {
       gu: '',
       dong: '',
     },
-    time: '',
+    meetingTime: '',
     openChat: '',
     image: '',
   },

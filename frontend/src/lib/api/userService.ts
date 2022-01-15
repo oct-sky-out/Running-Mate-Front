@@ -41,8 +41,6 @@ class UserService implements IUserService {
 
   editMyPageData = async (myPageData: MyPageType) => {
     try {
-      console.log('service test nickname = ', myPageData.nickName);
-      console.log('service test address = ', myPageData.address);
       await axios.post(
         '/user',
         {

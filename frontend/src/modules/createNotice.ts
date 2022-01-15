@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { INotice, AddressType } from './types/createNotice';
+import { INotice, AddressType } from './types/notice';
 
 const initialState: INotice = {
   title: '',
@@ -9,7 +9,7 @@ const initialState: INotice = {
     gu: '',
     dong: '',
   },
-  time: '',
+  meetingTime: '',
   openChat: '',
   image: '',
 };
@@ -27,7 +27,7 @@ const createNoticeSliceReducer = createSlice({
           gu: '',
           dong: '',
         },
-        time: '',
+        meetingTime: '',
         openChat: '',
         image: '',
       };
@@ -57,11 +57,11 @@ const createNoticeSliceReducer = createSlice({
       },
     },
     setTime: {
-      prepare: (time: string) => {
-        return { payload: time };
+      prepare: (meetingTime: string) => {
+        return { payload: meetingTime };
       },
       reducer: (state, action: PayloadAction<string>) => {
-        return { ...state, time: action.payload };
+        return { ...state, meetingTime: action.payload };
       },
     },
     setOpenChat: {

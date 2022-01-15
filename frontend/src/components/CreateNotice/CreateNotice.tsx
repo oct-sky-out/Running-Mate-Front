@@ -13,9 +13,9 @@ import { CreateNoticeActions } from '../../modules/createNotice';
 import { useSelector } from '../../modules';
 
 import SelecRegion from '../SelectRegion/SelcetRegion';
-import { AddressType } from '../../modules/types/createNotice';
+import { AddressType } from '../../modules/types/notice';
 // API
-import NoticeService from '../../lib/api/notiveService';
+import NoticeService from '../../lib/api/noticeService';
 
 type CreacteNoticeActionType = 'setTitle' | 'setExplain' | 'setOpenChat';
 
@@ -31,17 +31,16 @@ const CreateNotice = () => {
   const dispatch = useDispatch();
 
   //* Redux State
-  const { title, content, address, time, openChat, image, token } = useSelector(
-    (state) => ({
+  const { title, content, address, meetingTime, openChat, image, token } =
+    useSelector((state) => ({
       title: state.createNotice.title,
       content: state.createNotice.content,
       address: state.createNotice.address,
-      time: state.createNotice.content,
+      meetingTime: state.createNotice.meetingTime,
       openChat: state.createNotice.openChat,
       image: state.createNotice.image,
       token: state.signIn.token,
-    })
-  );
+    }));
 
   //* event version
   // const saveFileImage = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,7 +77,7 @@ const CreateNotice = () => {
         title,
         content,
         address,
-        time,
+        meetingTime,
         openChat,
         image,
       })
@@ -116,7 +115,7 @@ const CreateNotice = () => {
               <div>
                 <div className="flex flex-col w-full space-y-3">
                   <span className="whitespace-nowrap mr-5 font-bold inline-block">
-                    러닝 만남 시간
+                    모집 만감 시간
                   </span>
                   <div className="w-full py-1 pl-4 rounded border-solid border-2 border-indigo-400">
                     <DatePicker
