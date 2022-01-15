@@ -12,6 +12,7 @@ type ViewNoticesSetUpType = {
 interface INoticeService {
   createNotice(token: string, notice: INotice): void;
   viewChoiceNotices(setUp: ViewNoticesSetUpType): void;
+  deleteNotice(noticeId: number, token: string): void;
 }
 
 class NoticeService implements INoticeService {
@@ -52,6 +53,32 @@ class NoticeService implements INoticeService {
     try {
       const { data } = await axios.get(`/runs?offset=0&limit=12`);
       console.log(data);
+      return data;
+    } catch {
+      return false;
+    }
+  };
+
+  deleteNotice = async (noticeId: number, token: string) => {
+    try {
+      const data = await axios.delete(`/run/${noticeId}`, {
+        headers: {
+          'x-auth-token': token,
+        },
+      });
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+  getNotice = async (noticeId: number, token: string) => {
+    try {
+      const { data } = await axios.get(`/run/${noticeId}`, {
+        headers: {
+          'x-auth-token': token,
+        },
+      });
       return data;
     } catch {
       return false;
