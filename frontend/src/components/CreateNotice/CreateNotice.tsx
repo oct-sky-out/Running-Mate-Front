@@ -9,6 +9,8 @@ import 'react-quill/dist/quill.snow.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
+import Swal from 'sweetalert2';
+
 import { CreateNoticeActions } from '../../modules/createNotice';
 import { useSelector } from '../../modules';
 
@@ -25,6 +27,8 @@ const CreateNotice = () => {
 
   //* useState
   const [seletedDate, setSelectedDate] = useState(new Date());
+  const [timeOnOff, setTimeOnOff] = useState(false);
+
   //* useRef
   const imageInputRef = useRef<HTMLInputElement>(null);
   //* Redux
@@ -85,10 +89,27 @@ const CreateNotice = () => {
         console.log(id);
       });
   };
+
+  const checkData = () => {
+    [
+      [openChat, '오픈 채팅 주소를 입력해주세요'],
+      [content, '게시물 내용을 작성해주세요'],
+      [address.gu, '모든 주소를 선택해주세요'],
+      [title, '제목을 작성해주세요'],
+    ].forEach((str) => {
+      if (!str[0]) {
+        Swal.fire(`${str[1]}`).then(() => {
+          return false;
+        });
+      }
+    });
+    if (openChat && content && address.gu && title) return true;
+    return false;
+  };
+
   useEffect(() => {
     dispatch(CreateNoticeActions.setInit());
   }, []);
-
   return (
     <div className="mt-10">
       <div className="flex justify-center">
@@ -115,22 +136,31 @@ const CreateNotice = () => {
               <div>
                 <div className="flex flex-col w-full space-y-3">
                   <span className="whitespace-nowrap mr-5 font-bold inline-block">
-                    모집 만감 시간
+                    모집 마감 시간
                   </span>
-                  <div className="w-full py-1 pl-4 rounded border-solid border-2 border-indigo-400">
-                    <DatePicker
-                      className="w-full"
-                      selected={seletedDate}
-                      onChange={(e) => {
-                        setSelectedDate(e || new Date());
-                        onChangeDatePickderState(
-                          e ? e.toString() : new Date().toString()
-                        );
-                      }}
-                      timeInputLabel="Time:"
-                      dateFormat="yyyy/MM/dd hh:mm aa"
-                      showTimeInput
-                    />
+                  <div className="flex flex-col sm:flex-row justify-around items-center space-y-3 sm:space-y-0">
+                    <div className="w-full sm:w-1/2 py-1 pl-4 rounded border-solid border-2 border-indigo-400 flex justify-center">
+                      <DatePicker
+                        className="w-full"
+                        selected={seletedDate}
+                        onChange={(e) => {
+                          setSelectedDate(e || new Date());
+                          onChangeDatePickderState(
+                            e ? e.toString() : new Date().toString()
+                          );
+                        }}
+                        timeInputLabel="Time:"
+                        dateFormat="yyyy/MM/dd hh:mm aa"
+                        showTimeInput
+                      />
+                    </div>
+                    <div className="mr-2">
+                      {timeOnOff ? (
+                        <button type="button">제한 없애이</button>
+                      ) : (
+                        <button type="button">제한 설정하기</button>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -204,7 +234,11 @@ const CreateNotice = () => {
                 color="#8b8bf5"
                 rounded
                 data-testid="submit-button"
-                onClick={onSubmit}
+                onClick={() => {
+                  if (checkData()) {
+                    onSubmit();
+                  }
+                }}
               >
                 등록
               </Button>
