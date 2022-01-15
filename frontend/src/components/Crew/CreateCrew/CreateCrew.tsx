@@ -11,7 +11,11 @@ import CreateCrewOrderMarker from './CreateCrewOrderMarker';
 import PreviousPageButton from '../../../common/components/PreviousPageButton';
 import DetailBaseBorder from '../../../common/components/DetailBaseBorder';
 
-type CreacteCrewActionType = 'setCrewName' | 'setCrewExplain' | 'setCrewRegion';
+type CreacteCrewActionType =
+  | 'setCrewName'
+  | 'setExplanation'
+  | 'setCrewRegion'
+  | 'setOpenChat';
 
 const CreateCrew = () => {
   //* useHistory
@@ -19,17 +23,25 @@ const CreateCrew = () => {
 
   //* Redux
   const dispatch = useDispatch();
-  const { crewName, crewRegion, crewExplain } = useSelector((state) => ({
-    crewName: state.createCrew.crew.crewName,
-    crewRegion: state.createCrew.crew.crewRegion,
-    crewExplain: state.createCrew.crew.crewExplain,
-  }));
-  const reduxStates = [crewName, crewRegion, crewExplain];
-  const ReduxActionNames: string[] = [
+  const { crewName, crewRegion, explanation, openChat, token } = useSelector(
+    (state) => ({
+      crewName: state.createCrew.crew.crewName,
+      crewRegion: state.createCrew.crew.crewRegion,
+      explanation: state.createCrew.crew.explanation,
+      openChat: state.createCrew.crew.openChat,
+      token: state.signIn.token,
+    })
+  );
+
+  //* any variables
+  const reduxStates = [crewName, crewRegion, explanation, openChat];
+  const ReduxActionNames: CreacteCrewActionType[] = [
     'setCrewName',
     'setCrewRegion',
-    'setCrewExplain',
+    'setExplanation',
+    'setOpenChat',
   ];
+  const complete: string = '🎉 축하합니다. 새로운 크루를 만들었습니다!';
 
   //* useState
   const [questionOrder, setQuestionOrder] = useState(0);
@@ -39,28 +51,27 @@ const CreateCrew = () => {
     '크루이름이 무엇인가요?',
     '달리는 지역이 어딘가요?',
     '간단한 크루 소개글을 작성해주세요.',
+    '크루 오픈채팅방을 등록해주세요.',
   ];
-  const complete: string = '🎉 축하합니다. 새로운 크루를 만들었습니다!';
 
+  //* events
   const moveNextOrComplete = () => {
     if (questionOrder < questions.length) setQuestionOrder(questionOrder + 1);
+    if (questionOrder === questions.length - 1) {
+      console.log(crewName, crewRegion, explanation, openChat);
+      dispatch(
+        CreateCrewActions.newCrew({
+          createCrewData: {
+            crew: { crewName, crewRegion, explanation, openChat },
+          },
+          token,
+        })
+      );
+    }
   };
   const movePrevious = () => {
     if (questionOrder > 0) setQuestionOrder(questionOrder - 1);
   };
-
-  useEffect(() => {
-    if (questionOrder >= questions.length - 1) {
-      setCanComplete(true);
-    }
-    if (
-      questionOrder < questions.length - 1 ||
-      (crewName && crewRegion && crewExplain)
-    ) {
-      setCanComplete(false);
-    }
-  }, [questionOrder, crewName, crewRegion, crewExplain]);
-
   const InputStateToRedux = (
     e: React.ChangeEvent<FormElement>,
     actionName: CreacteCrewActionType
@@ -68,9 +79,19 @@ const CreateCrew = () => {
     dispatch(CreateCrewActions[actionName](e.target.value));
   };
 
+  //* useEffects
+  useEffect(() => {
+    if (questionOrder >= questions.length - 1) setCanComplete(true);
+    if (
+      questionOrder < questions.length - 1 ||
+      (crewName && crewRegion && explanation && openChat)
+    )
+      setCanComplete(false);
+  }, [questionOrder, crewName, crewRegion, explanation, openChat]);
   useEffect(() => {
     dispatch(CreateCrewActions.setInit());
   }, []);
+
   return (
     <DetailBaseBorder>
       <div className="flex flex-col justify-center items-center pt-10">
@@ -108,10 +129,7 @@ const CreateCrew = () => {
             className="mb-20"
             value={reduxStates[questionOrder] || ''}
             onChange={(e) => {
-              InputStateToRedux(
-                e,
-                ReduxActionNames[questionOrder] as CreacteCrewActionType
-              );
+              InputStateToRedux(e, ReduxActionNames[questionOrder]);
             }}
             data-testid="data-input"
           />

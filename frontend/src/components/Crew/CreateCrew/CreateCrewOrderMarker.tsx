@@ -1,16 +1,21 @@
+import React from 'react';
+import { v4 } from 'uuid';
+
 interface IProps {
   questionOrder: number;
 }
 
 const CreateCrewOrderMarker = ({ questionOrder }: IProps) => {
-  const QUESTIONS_LENGTH = 3;
-  const orders: string[] = ['이름', '지역', '소개'];
+  //* any variables
+  const QUESTIONS_LENGTH = 4;
+  const orders: string[] = ['이름', '지역', '소개', '오픈채팅'];
 
   return (
     <div className="flex items-center mb-20">
       {orders.map((order, index) => {
+        console.log(questionOrder);
         return (
-          <>
+          <React.Fragment key={v4()}>
             <div
               className={`w-12 h-12 md:w-20 md:h-20 rounded-full flex items-center justify-center ${
                 index > questionOrder
@@ -27,7 +32,7 @@ const CreateCrewOrderMarker = ({ questionOrder }: IProps) => {
                   : 'transition ease-in-out delay-200 bg-purple-400'
               }`}
             />
-          </>
+          </React.Fragment>
         );
       })}
       <div
