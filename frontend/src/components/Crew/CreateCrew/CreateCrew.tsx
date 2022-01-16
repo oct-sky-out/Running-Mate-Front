@@ -7,6 +7,7 @@ import { FormElement } from '@nextui-org/react/esm/input/input-props';
 
 import { CreateCrewActions } from '../../../modules/createCrew';
 import { useSelector } from '../../../modules/index';
+import UserService from '../../../lib/api/userService';
 import CreateCrewOrderMarker from './CreateCrewOrderMarker';
 import PreviousPageButton from '../../../common/components/PreviousPageButton';
 import DetailBaseBorder from '../../../common/components/DetailBaseBorder';
@@ -23,15 +24,15 @@ const CreateCrew = () => {
 
   //* Redux
   const dispatch = useDispatch();
-  const { crewName, crewRegion, explanation, openChat, token } = useSelector(
-    (state) => ({
+  const { crewName, crewRegion, explanation, openChat, token, userNickName } =
+    useSelector((state) => ({
       crewName: state.createCrew.crew.crewName,
       crewRegion: state.createCrew.crew.crewRegion,
       explanation: state.createCrew.crew.explanation,
       openChat: state.createCrew.crew.openChat,
       token: state.signIn.token,
-    })
-  );
+      userNickName: state.signIn.userData.nickName,
+    }));
 
   //* any variables
   const reduxStates = [crewName, crewRegion, explanation, openChat];
@@ -58,13 +59,13 @@ const CreateCrew = () => {
   const moveNextOrComplete = () => {
     if (questionOrder < questions.length) setQuestionOrder(questionOrder + 1);
     if (questionOrder === questions.length - 1) {
-      console.log(crewName, crewRegion, explanation, openChat);
       dispatch(
         CreateCrewActions.newCrew({
           createCrewData: {
             crew: { crewName, crewRegion, explanation, openChat },
           },
           token,
+          userNickName,
         })
       );
     }
@@ -91,6 +92,7 @@ const CreateCrew = () => {
     )
       setCanComplete(false);
   }, [questionOrder, crewName, crewRegion, explanation, openChat]);
+
   useEffect(() => {
     dispatch(CreateCrewActions.setInit());
   }, []);

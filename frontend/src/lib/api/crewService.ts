@@ -12,7 +12,7 @@ interface ICrewService {
   }: {
     token: string;
     createCrewData: Omit<ICreateCrew, 'createCrewStatus'>;
-  }) => Promise<CrewRequestType>;
+  }) => Promise<{ message: CrewRequestType }>;
   getCrewDetail: (crewName: string) => Promise<ICrewType | Error>;
 }
 
@@ -29,7 +29,7 @@ class CrewService implements ICrewService {
       { ...createCrewData.crew },
       { headers: { 'x-auth-token': token } }
     );
-    return data;
+    return { message: data };
   };
 
   getCrewDetail = async (crewName: string) => {

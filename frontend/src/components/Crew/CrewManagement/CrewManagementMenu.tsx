@@ -10,7 +10,6 @@ const CrewManagementMenu = () => {
   const { id } = useParams<{ id: string }>();
   const location = useLocation();
   const history = useHistory();
-  console.log(location.pathname.toLowerCase());
 
   const menuTexts = {
     [`/crew/${id}/management`]: '크루 정보관리',

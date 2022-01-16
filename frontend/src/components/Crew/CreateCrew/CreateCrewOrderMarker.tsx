@@ -13,7 +13,6 @@ const CreateCrewOrderMarker = ({ questionOrder }: IProps) => {
   return (
     <div className="w-11/12 md:w-full flex items-center justify-center mb-20 text-xs">
       {orders.map((order, index) => {
-        console.log(questionOrder);
         return (
           <React.Fragment key={v4()}>
             <div

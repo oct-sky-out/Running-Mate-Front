@@ -1,3 +1,5 @@
+import { IUserData } from './signInTypes';
+
 export interface ICrewType {
   id: number;
   crewLeaderId: number;
@@ -5,6 +7,8 @@ export interface ICrewType {
   openChat: string;
   crewName: string;
   explanation: string;
+  userDtos: IUserData[];
+  requestUsers: IUserData[];
 }
 
 export interface ICrews {

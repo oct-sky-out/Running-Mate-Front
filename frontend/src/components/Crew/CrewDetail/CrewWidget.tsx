@@ -3,7 +3,7 @@ import { IconType } from 'react-icons/lib';
 
 interface IProps {
   widgetTitle: string;
-  widgetDescription: string;
+  widgetDescription: string | number;
   Icon?: IconType;
   iconColor?: string;
   Image?: React.FC<any>;

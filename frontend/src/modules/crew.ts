@@ -10,6 +10,8 @@ const initialState: ICrewType & ICrews & ICrewRequestFetch = {
   explanation: '',
   crews: [],
   crewRequestFetch: '',
+  userDtos: [],
+  requestUsers: [],
 };
 
 const crewSlice = createSlice({
@@ -25,6 +27,8 @@ const crewSlice = createSlice({
       explanation: '',
       crews: [],
       crewRequestFetch: '',
+      userDtos: [],
+      requestUsers: [],
     }),
     requestCerwDetail: (state, _action: PayloadAction<string>) => ({
       ...state,
@@ -46,6 +50,8 @@ const crewSlice = createSlice({
       openChat: action.payload.openChat,
       crewName: action.payload.crewName,
       explanation: action.payload.explanation,
+      userDtos: action.payload.userDtos,
+      requestUsers: action.payload.requestUsers,
     }),
     getCrews: (state, action: PayloadAction<ICrews>) => ({
       ...state,

@@ -75,18 +75,24 @@ const UserPage: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
       },
     });
     if (match.params.id && token) {
-      new UserService().getUSer(match.params.id, token).then((result) => {
-        if (result) {
-          setAnotherUserData(result);
-          setNormalCategory({
-            crewName: {
-              ...normalCategory.crewName,
-              description: result.crewName || '크루에 소속되어있지 않습니다.',
-            },
-            address: { ...normalCategory.address, description: result.address },
-          });
-        }
-      });
+      new UserService()
+        .getUser(match.params.id, token)
+        .then((result) => {
+          if (result) {
+            setAnotherUserData(result);
+            setNormalCategory({
+              crewName: {
+                ...normalCategory.crewName,
+                description: result.crewName || '크루에 소속되어있지 않습니다.',
+              },
+              address: {
+                ...normalCategory.address,
+                description: result.address,
+              },
+            });
+          }
+        })
+        .catch((reason) => console.error(reason));
     }
   }, [token, location.pathname]);
 

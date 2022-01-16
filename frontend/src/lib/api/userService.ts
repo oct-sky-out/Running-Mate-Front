@@ -73,16 +73,8 @@ class UserService implements IUserService {
           'x-auth-token': token,
         },
       });
-      const { email, crewName, nickName, address, id, crewLeader } = {
-        email: data.email,
-        crewName: data.crewName,
-        nickName: data.nickName,
-        address: data.address,
-        id: data.id,
-        crewLeader: data.crewLeader,
-      };
       localStorage.setItem('userData', JSON.stringify(data));
-      return { email, crewName, nickName, address, id, crewLeader };
+      return data;
     } catch {
       return false;
     }
@@ -105,7 +97,7 @@ class UserService implements IUserService {
       };
       return { email, crewName, nickName, address, id, crewLeader };
     } catch {
-      return false;
+      throw new Error('유저 조회 오류');
     }
   };
 }
