@@ -116,8 +116,7 @@ const CreateCrew = () => {
             ? complete
             : questions[questionOrder]}
         </span>
-        <form
-          action=""
+        <div
           style={
             questionOrder === questions.length
               ? { visibility: 'hidden' }
@@ -136,7 +135,7 @@ const CreateCrew = () => {
             }}
             data-testid="data-input"
           />
-        </form>
+        </div>
         <div>
           <div
             className={`w-full h-32 flex flex-wrap  ${
