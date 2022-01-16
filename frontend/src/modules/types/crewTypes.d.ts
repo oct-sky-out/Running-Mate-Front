@@ -10,3 +10,7 @@ export interface ICrewType {
 export interface ICrews {
   crews: ICrewType[];
 }
+
+export interface ICrewRequestFetch {
+  crewRequestFetch: '' | 'Fetch' | 'Success' | 'Failure';
+}

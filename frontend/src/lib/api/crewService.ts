@@ -4,6 +4,7 @@ import { ICrewType } from '../../modules/types/crewTypes';
 
 //* create crew type
 export type CrewRequestType = '크루 생성 완료' | '이미 크루가 존재합니다.';
+
 interface ICrewService {
   createCrew: ({
     token,
@@ -12,7 +13,7 @@ interface ICrewService {
     token: string;
     createCrewData: Omit<ICreateCrew, 'createCrewStatus'>;
   }) => Promise<CrewRequestType>;
-  getCrew: (crewName: string) => Promise<ICrewType>;
+  getCrewDetail: (crewName: string) => Promise<ICrewType | Error>;
 }
 
 class CrewService implements ICrewService {
@@ -31,9 +32,13 @@ class CrewService implements ICrewService {
     return data;
   };
 
-  getCrew = async (crewName: string) => {
-    const { data } = await axios.get<ICrewType>(`/crew/${crewName}`);
-    return data;
+  getCrewDetail = async (crewName: string) => {
+    try {
+      const { data } = await axios.get<ICrewType>(`/crew/${crewName}`);
+      return data;
+    } catch {
+      throw new Error('크루 상세 데이터 조회실패');
+    }
   };
 }
 

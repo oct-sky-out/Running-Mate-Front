@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ICrewType, ICrews } from './types/crewTypes';
+import { ICrewType, ICrews, ICrewRequestFetch } from './types/crewTypes';
 
-const initialState: ICrewType & ICrews = {
+const initialState: ICrewType & ICrews & ICrewRequestFetch = {
   id: 0,
   crewLeaderId: 0,
   crewRegion: '',
@@ -9,6 +9,7 @@ const initialState: ICrewType & ICrews = {
   crewName: '',
   explanation: '',
   crews: [],
+  crewRequestFetch: '',
 };
 
 const crewSlice = createSlice({
@@ -23,8 +24,21 @@ const crewSlice = createSlice({
       crewName: '',
       explanation: '',
       crews: [],
+      crewRequestFetch: '',
     }),
-    getCrewDetail: (state, action: PayloadAction<ICrewType>) => ({
+    requestCerwDetail: (state, _action: PayloadAction<string>) => ({
+      ...state,
+      crewRequestFetch: 'Fetch',
+    }),
+    sucessCrewRequest: (state, _action: PayloadAction<void>) => ({
+      ...state,
+      crewRequestFetch: 'Success',
+    }),
+    failureCrewRequest: (state, _action: PayloadAction<void>) => ({
+      ...state,
+      crewRequestFetch: 'Failure',
+    }),
+    setCrewDetail: (state, action: PayloadAction<ICrewType>) => ({
       ...state,
       id: action.payload.id,
       crewLeaderId: action.payload.crewLeaderId,
