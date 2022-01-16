@@ -5,6 +5,7 @@ import { ISignUpForm } from '../../modules/types/signUpTypes';
 interface IUserService {
   signUp(signUpForm: ISignUpForm): void;
   login(signInDat: ISignInForm): void;
+  getUser(nickName: string, token: string): Promise<false | IUserData>;
 }
 
 type MyPageType = {
@@ -41,8 +42,6 @@ class UserService implements IUserService {
 
   editMyPageData = async (myPageData: MyPageType) => {
     try {
-      console.log('service test nickname = ', myPageData.nickName);
-      console.log('service test address = ', myPageData.address);
       await axios.post(
         '/user',
         {
@@ -89,7 +88,7 @@ class UserService implements IUserService {
     }
   };
 
-  getUSer = async (userNickName: string, token: string) => {
+  getUser = async (userNickName: string, token: string) => {
     try {
       const { data } = await axios.get<IUserData>(`/user/${userNickName}`, {
         headers: {
