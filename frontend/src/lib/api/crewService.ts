@@ -1,8 +1,9 @@
 import axios from './axios';
-import { ICreateCrew } from '../../modules/createCrew';
+import ICreateCrew from '../../modules/types/createCrew';
+import { ICrewType } from '../../modules/types/crewTypes';
 
+//* create crew type
 export type CrewRequestType = '크루 생성 완료' | '이미 크루가 존재합니다.';
-
 interface ICrewService {
   createCrew: ({
     token,
@@ -11,6 +12,7 @@ interface ICrewService {
     token: string;
     createCrewData: Omit<ICreateCrew, 'createCrewStatus'>;
   }) => Promise<CrewRequestType>;
+  getCrew: (crewName: string) => Promise<ICrewType>;
 }
 
 class CrewService implements ICrewService {
@@ -26,6 +28,11 @@ class CrewService implements ICrewService {
       { ...createCrewData.crew },
       { headers: { 'x-auth-token': token } }
     );
+    return data;
+  };
+
+  getCrew = async (crewName: string) => {
+    const { data } = await axios.get<ICrewType>(`/crew/${crewName}`);
     return data;
   };
 }

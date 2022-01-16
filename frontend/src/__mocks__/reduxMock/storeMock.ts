@@ -45,6 +45,15 @@ const mockStore: RootState = {
     },
     createCrewStatus: '',
   },
+  crew: {
+    id: 0,
+    crewLeaderId: 0,
+    crewRegion: '',
+    openChat: '',
+    crewName: '',
+    explanation: '',
+    crews: [],
+  },
   newPassword: {
     newPassword: '',
     checkNewPassword: '',

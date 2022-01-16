@@ -1,20 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import ICreateCrew from './types/createCrew';
 
 type CreateCrewType = {
   createCrewData: Omit<ICreateCrew, 'createCrewStatus'>;
   token: string;
 };
 type CreateCrewStatusType = '' | 'Fetch' | 'Sucecss' | 'Failure';
-
-export interface ICreateCrew {
-  crew: {
-    crewName: string;
-    explanation: string;
-    crewRegion: string;
-    openChat: string;
-  };
-  createCrewStatus: CreateCrewStatusType;
-}
 
 const initialState: ICreateCrew = {
   crew: {
