@@ -100,10 +100,10 @@ const CreateCrew = () => {
       <div className="flex flex-col justify-center items-center pt-10">
         <div className="w-full pl-4 mb:pl-4 mb-8 md:mb-16 flex justify-left">
           <PreviousPageButton
+            iconSizeClassName="text-2xl md:text-3xl lg:text-4xl"
             text="뒤로가기"
-            iconSize="32"
             onClick={goToCrewMainPage}
-            className="w-38"
+            className="w-24 md:w-32 lg:w-40 py-4 flex justify-start items-start"
             tailwindTextSize="text-sm md:text-2xl"
           />
         </div>

@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { withRouter, RouteComponentProps, useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { BsPeopleFill } from 'react-icons/bs';
 import { GiPositionMarker } from 'react-icons/gi';
 import { v4 } from 'uuid';
 import CrewWidget from './CrewWidget';
+import { crewActions } from '../../../modules/crew';
 import DetailBaseBorder from '../../../common/components/DetailBaseBorder';
 import PreviousPageButton from '../../../common/components/PreviousPageButton';
 
@@ -11,6 +13,7 @@ import PreviousPageButton from '../../../common/components/PreviousPageButton';
 import crewMock from '../../../excuteData/CrewMock/CrewMock';
 import crewRewardMock from '../../../excuteData/CrewMock/CrewRewardMock';
 import NextPageButton from '../../../common/components/NextPageButton';
+import CrewService from '../../../lib/api/crewService';
 
 interface MatchParam {
   id: string;
@@ -24,19 +27,32 @@ const CrewDetail: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
   ];
   const mockLeaderState = true;
 
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // new CrewService()
+    //   .getCrewDetail(match.params.id)
+    //   .then((data) => dispatch(crewActions.setCrewDetail(data)))
+    //   .catch((reason) => console.error(reason));
+  }, [match.params.id]);
+
   return (
     <DetailBaseBorder>
       <div className="flex items-center justify-between">
         <PreviousPageButton
           text="뒤로가기"
-          iconSize="32"
           onClick={() => history.goBack()}
-          className="w-28"
+          className="w-24 md:w-32 lg:w-40 py-4 flex justify-start items-start"
+          iconSizeClassName="text-2xl md:text-3xl lg:text-4xl"
+          tailwindTextSize="text-sm md:text-2xl"
         />
         {mockLeaderState ? (
           <NextPageButton
             text="크루 관리하기"
             nextPageURL={`/crew/${match.params.id}/management`}
+            className="w-20 md:w-44 lg:w-52 py-4 flex justify-start items-start"
+            iconSizeClassName="text-2xl md:text-3xl lg:text-4xl"
+            tailwindTextSize="text-sm md:text-2xl"
           />
         ) : null}
       </div>
@@ -50,7 +66,7 @@ const CrewDetail: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
         </div>
         <div className="text-2xl">{match.params.id}</div>
         <div className="text-lg">
-          <span>오픈 채팅 : </span>
+          <span>오픈 채팅 : {}</span>
           <span>
             <a href="http://kakao.com/openchat">http://kakao.com/openchat</a>
           </span>

@@ -1,7 +1,11 @@
 import reducer, { crewActions } from '../../modules/crew';
-import { ICrewType, ICrews } from '../../modules/types/crewTypes';
+import {
+  ICrewType,
+  ICrews,
+  ICrewRequestFetch,
+} from '../../modules/types/crewTypes';
 
-const initState: ICrewType & ICrews = {
+const initState: ICrewType & ICrews & ICrewRequestFetch = {
   id: 0,
   crewLeaderId: 0,
   crewRegion: '',
@@ -9,6 +13,7 @@ const initState: ICrewType & ICrews = {
   crewName: '',
   explanation: '',
   crews: [],
+  crewRequestFetch: '',
 };
 
 describe('크루 리덕스 테스트', () => {
@@ -16,7 +21,7 @@ describe('크루 리덕스 테스트', () => {
     expect(
       reducer(
         initState,
-        crewActions.getCrewDetail({
+        crewActions.setCrewDetail({
           id: 1,
           crewLeaderId: 12,
           crewName: 'the CREW',
@@ -33,6 +38,7 @@ describe('크루 리덕스 테스트', () => {
       explanation: '서울에 뛰는 크루',
       openChat: 'http://openchat.com',
       crews: [],
+      crewRequestFetch: '',
     });
   });
   test('크루 전체 조회API 호출 시 크루 리덕스의 상태가 바뀌는가?', () => {
@@ -117,6 +123,7 @@ describe('크루 리덕스 테스트', () => {
           openChat: 'http://openchat.com',
         },
       ],
+      crewRequestFetch: '',
     });
   });
   test('크루 정보변경을 위해 사용자가 인풋박스에 입력시 크루 이름 리덕스의 상태가 바뀌는가?', () => {
@@ -130,6 +137,7 @@ describe('크루 리덕스 테스트', () => {
       explanation: '',
       crewName: '크루이름 견본',
       crews: [],
+      crewRequestFetch: '',
     });
   });
 });
