@@ -44,5 +44,5 @@ const crewSlice = createSlice({
   },
 });
 
-const crewActions = crewSlice.actions;
+export const crewActions = crewSlice.actions;
 export default crewSlice.reducer;
