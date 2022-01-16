@@ -18,7 +18,7 @@ const initialState: ICreateCrew = {
 };
 
 const createCrewSliceReducer = createSlice({
-  name: 'creatCrew',
+  name: 'createCrew',
   initialState,
   reducers: {
     setInit: (_state, _action: PayloadAction<void>) => {

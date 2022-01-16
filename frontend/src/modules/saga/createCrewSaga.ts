@@ -16,5 +16,5 @@ function* createCrewFetchSaga({
 }
 
 export default function* watchCreateCrew() {
-  yield takeLatest('creatCrew/newCrew', createCrewFetchSaga);
+  yield takeLatest('createCrew/newCrew', createCrewFetchSaga);
 }
