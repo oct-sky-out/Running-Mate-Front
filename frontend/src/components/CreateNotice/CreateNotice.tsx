@@ -116,7 +116,15 @@ const CreateNotice = () => {
   return (
     <div className="mt-10">
       <div className="flex justify-center">
-        <form className="w-2/3 ">
+        <form
+          className="w-2/3 "
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (checkData()) {
+              onSubmit();
+            }
+          }}
+        >
           <div className="mb-5">
             <Input
               underlined
@@ -184,7 +192,7 @@ const CreateNotice = () => {
                           }
                         }}
                       >
-                        {timeOnOff ? '마감 제한 설정하기' : '마감 제한 없애이'}
+                        {timeOnOff ? '마감 제한 설정하기' : '마감 제한 없애기'}
                       </Button>
                     </div>
                   </div>
@@ -258,13 +266,9 @@ const CreateNotice = () => {
               <Button
                 auto
                 color="#8b8bf5"
+                type="submit"
                 rounded
                 data-testid="submit-button"
-                onClick={() => {
-                  if (checkData()) {
-                    onSubmit();
-                  }
-                }}
               >
                 등록
               </Button>
