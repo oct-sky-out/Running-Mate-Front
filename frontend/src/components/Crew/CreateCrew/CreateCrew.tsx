@@ -145,7 +145,7 @@ const CreateCrew = () => {
             } `}
           >
             <div className="w-20 lg:w-64 flex flex-grow justify-center">
-              <Link to="/crew" className="w-full flex flex-col">
+              <Link to="/crewList" className="w-full flex flex-col">
                 <Button
                   auto
                   type="button"
@@ -157,6 +157,7 @@ const CreateCrew = () => {
               </Link>
             </div>
             <div className="w-full flex flex-grow justify-center">
+              {/* 161번줄 크루 생성시 id매핑 시키기 */}
               <Link to="/crew/crewid" className="w-full flex flex-col">
                 <Button auto type="button" color="#8b8bf5">
                   크루 관리하러 가기

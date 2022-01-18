@@ -1,8 +1,9 @@
 import React from 'react';
-import { withRouter, useHistory, RouteComponentProps } from 'react-router-dom';
+import { Route, useHistory, RouteComponentProps } from 'react-router-dom';
 import DetailBaseBorder from '../../../common/components/DetailBaseBorder';
 import PreviousPageButton from '../../../common/components/PreviousPageButton';
 import crewMock from '../../../excuteData/CrewMock/CrewMock';
+import CrewDelete from './CrewDelete';
 import CrewManagementMenu from './CrewManagementMenu';
 import Management from './Management';
 import PeopleManagement from './PeopleManagement';
@@ -16,7 +17,7 @@ const CrewManagement: React.FC<RouteComponentProps<MatchParam>> = ({
 }) => {
   //* react router dom
   const history = useHistory();
-
+  console.log(match.path);
   return (
     <DetailBaseBorder>
       <PreviousPageButton
@@ -43,13 +44,14 @@ const CrewManagement: React.FC<RouteComponentProps<MatchParam>> = ({
         </div>
       </div>
       <CrewManagementMenu />
-      {match.path.toLowerCase().includes('peoplemanagement') ? (
-        <PeopleManagement />
-      ) : (
-        <Management />
-      )}
+      <Route path={`${match.path}/management`} component={Management} />
+      <Route
+        path={`${match.path}/peoplemanagement`}
+        component={PeopleManagement}
+      />
+      <Route path={`${match.path}/delete`} component={CrewDelete} />
     </DetailBaseBorder>
   );
 };
 
-export default withRouter(CrewManagement);
+export default CrewManagement;

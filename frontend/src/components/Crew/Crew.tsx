@@ -119,7 +119,7 @@ const Crew = () => {
             {CrewMock.crew.map((crewInformation, index) => (
               <Link
                 className="w-60 h-60 relative shadow-2xl transition ease-in-out duration-300 transform hover:scale-105 mx-3 rounded-2xl bg-white border-2"
-                to={`/crew/${crewInformation.crewName}`}
+                to={`/crewList/${crewInformation.crewName}`}
                 key={v4()}
                 data-cy={`${index}-crew-link`}
               >
