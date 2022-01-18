@@ -38,7 +38,7 @@ module.exports = {
     },
   },
   variants: {
-    extend: { animation: ['motion-reduce'] },
+    extend: { animation: ['motion-reduce'], backgroundColor: ['disabled'] },
   },
   plugins: [],
 };

@@ -1,5 +1,6 @@
 import { useDispatch } from 'react-redux';
 import { SignInActions } from '../modules/signIn';
+import { IUserData } from '../modules/types/signInTypes';
 
 const useLocalStroeageData = () => {
   const dispatch = useDispatch();
@@ -11,7 +12,21 @@ const useLocalStroeageData = () => {
     }
   };
 
-  return { getUserData };
+  const getToken = () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const userToken = JSON.parse(token);
+      dispatch(SignInActions.setToken(userToken));
+    }
+  };
+
+  const setUserData = (userData: IUserData) =>
+    localStorage.setItem('userData', JSON.stringify(userData));
+
+  const setToken = (token: string) =>
+    localStorage.setItem('token', JSON.stringify(token));
+
+  return { getUserData, getToken, setUserData, setToken };
 };
 
 export default useLocalStroeageData;

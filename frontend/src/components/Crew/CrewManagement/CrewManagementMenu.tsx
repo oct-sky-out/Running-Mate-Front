@@ -10,7 +10,6 @@ const CrewManagementMenu = () => {
   const { id } = useParams<{ id: string }>();
   const location = useLocation();
   const history = useHistory();
-  console.log(location.pathname.toLowerCase());
 
   const menuTexts = {
     [`/crew/${id}/management`]: '크루 정보관리',
@@ -22,7 +21,7 @@ const CrewManagementMenu = () => {
       {Object.keys(menuTexts).map((url) => (
         <MenuButton
           type="button"
-          className={`flex flex-left items-center text-xl font-bold ${
+          className={`flex flex-left items-center text-xl font-bold px-3 md:px-5 md:py-4 ${
             location.pathname.toLowerCase() === url ? 'border-purple' : null
           }`}
           onClick={() => history.push(url)}

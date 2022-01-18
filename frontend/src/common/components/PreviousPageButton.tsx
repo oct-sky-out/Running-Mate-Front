@@ -4,7 +4,6 @@ import { GrFormPrevious } from 'react-icons/gr';
 interface IProps extends React.HTMLAttributes<HTMLDivElement> {
   text: string;
   tailwindTextSize?: string;
-  iconSize: string;
   iconSizeClassName?: string;
   className?: string;
 }
@@ -12,7 +11,6 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 const PreviousPageButton: React.FC<IProps> = ({
   text,
   tailwindTextSize,
-  iconSize = 'text-base',
   iconSizeClassName = 'text-base',
   className,
   ...props

@@ -43,7 +43,7 @@ const Crew = () => {
               imageOrder === index && (
                 <div key={v4()} className="w-full h-full bg-white opacity-50">
                   <div
-                    className="w-full h-full transition-opacity bg-fixed bg-cover bg-center bg-no-repeat"
+                    className="w-full h-full transition-opacity bg-contain sm:bg-cover sm:bg-fixed bg-center bg-no-repeat"
                     style={{ backgroundImage: `url(${url})` }}
                   />
                 </div>
@@ -76,22 +76,30 @@ const Crew = () => {
                   크루에 들어가서 같이 뛰실래요?
                 </h1>
               </div>
-              <div className="w-full pb-4 lg:pb-0 justify-center items-center lg:w-10 absolute right:1/2 bottom-0 lg:right-1/4 lg:bottom-1/4 flex flex-col space-y-5">
-                <div className="flex flex-col">
-                  <Link to="/crew/new" data-cy="create-new-crew">
-                    <Button size="xlarge" color="#8b8bf5">
-                      크루 생성하기 ▹
-                    </Button>
-                  </Link>
-                  <Button
-                    size="xlarge"
-                    onClick={scrollDown}
-                    data-cy="join-crew"
-                    color="#3579EC"
-                    className="mt-2"
-                  >
-                    크루 가입하기 ▹
-                  </Button>
+              <div className="w-full pb-4 lg:pb-0 justify-center items-center lg:w-10 absolute right:1/2 bottom-0 lg:right-1/4 lg:bottom-1/4 flex flex-col items-center space-y-5">
+                <div className="w-full flex items-center justify-center md:w-200 lg:w-300">
+                  <div className="w-40 md:w-full lg:h-32 ">
+                    <Link
+                      to="/crew/new"
+                      data-cy="create-new-crew"
+                      className="block w-full flex flex-col md:justify-center lg:h-1/2"
+                    >
+                      <Button auto color="#8b8bf5">
+                        크루 생성하기 ▹
+                      </Button>
+                    </Link>
+                    <div className="w-full flex flex-col md:justify-center lg:h-1/2">
+                      <Button
+                        auto
+                        onClick={scrollDown}
+                        data-cy="join-crew"
+                        color="#3579EC"
+                        className="mt-2"
+                      >
+                        크루 가입하기 ▹
+                      </Button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

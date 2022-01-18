@@ -2,8 +2,8 @@ import { Button, Input } from '@nextui-org/react';
 
 const Management = () => {
   return (
-    <div className="mx-auto my-0 w-500 py-10 flex flex-col space-y-10 justify-center">
-      <div className="w-500 flex flex-col">
+    <div className="mx-auto my-0 w-500 py-10 flex flex-wrap space-y-10 justify-center">
+      <div className="w-300 md:w-full flex flex-col">
         <Input
           size="large"
           color="secondary"
@@ -12,16 +12,16 @@ const Management = () => {
           labelPlaceholder="크루명"
         />
       </div>
-      <div className="w-500 flex flex-col">
+      <div className="w-300 md:w-full flex flex-col">
         <Input
-          size="large"
+          width="100%"
           color="secondary"
           bordered
           clearable
           labelPlaceholder="오픈채팅방 URL"
         />
       </div>
-      <div>
+      <div className="flex-none space-y-3">
         <span>크루 이미지</span>
         <label
           htmlFor="crew-image"
@@ -36,7 +36,7 @@ const Management = () => {
           />
         </label>
       </div>
-      <div className="w-500 flex flex-col">
+      <div className="w-300 md:w-500 flex flex-col">
         <Button rounded size="large" color="secondary">
           변경
         </Button>

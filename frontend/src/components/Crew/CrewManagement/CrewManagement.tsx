@@ -14,15 +14,17 @@ interface MatchParam {
 const CrewManagement: React.FC<RouteComponentProps<MatchParam>> = ({
   match,
 }) => {
+  //* react router dom
   const history = useHistory();
-  console.log(match.path.toLowerCase().includes('peoplemanagement'));
+
   return (
     <DetailBaseBorder>
       <PreviousPageButton
         text="뒤로가기"
-        iconSize="32"
         onClick={() => history.goBack()}
-        className="w-28"
+        className="w-24 md:w-32 lg:w-40 py-4 flex justify-start items-start"
+        iconSizeClassName="text-2xl md:text-3xl lg:text-4xl"
+        tailwindTextSize="text-sm md:text-2xl"
       />
       <div className="w-full mx-auto my-0 py-5 flex flex-col flex-wrap justify-center items-center space-y-5">
         <div className="w-full flex justify-center items-center">
