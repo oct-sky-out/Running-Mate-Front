@@ -15,27 +15,25 @@ const LeaveAccount = () => {
 
   const [confirmEmail, setConfirmEmail] = useState('');
 
-  const clickLeaveAccountButton = () => {
-    new UserService()
-      .leaveAccount(token, nickname)
-      .then(({ message }) => {
-        Swal.fire({
-          title: message,
-          icon: 'success',
-          confirmButtonText: '게스트 페이지로 돌아가기',
-          confirmButtonColor: '#d33',
-        });
-      })
-      .then(() => history.push('/guest'))
-      .catch((reason) => {
-        console.error(reason);
-        Swal.fire({
-          title: '삭제 실패',
-          text: '삭제에 실패하였습니다. 죄송합니다.',
-          icon: 'error',
-          confirmButtonText: '확인',
-        });
+  const clickLeaveAccountButton = async () => {
+    try {
+      const { message } = await new UserService().leaveAccount(token, nickname);
+      await Swal.fire({
+        title: message,
+        icon: 'success',
+        confirmButtonText: '게스트 페이지로 돌아가기',
+        confirmButtonColor: '#d33',
       });
+      history.push('/guest');
+    } catch (err: any) {
+      console.error(err);
+      Swal.fire({
+        title: '삭제 실패',
+        text: '삭제에 실패하였습니다. 죄송합니다.',
+        icon: 'error',
+        confirmButtonText: '확인',
+      });
+    }
   };
 
   return (

@@ -1,6 +1,43 @@
+import { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Button, Input } from '@nextui-org/react';
+import Swal from 'sweetalert2';
+import { useSelector } from '../../../modules';
+import CrewService from '../../../lib/api/crewService';
+
+// import useLocalStroeageData from '../../../hooks/useLocalStorageData';
 
 const Management = () => {
+  const history = useHistory();
+  const crewName = useSelector((state) => state.crew.crewName);
+  const [newCrewName, setnewCrewName] = useState('');
+
+  //* 이부분도 토큰 필요한지 알아보기
+  // const { getToken } = useLocalStroeageData();
+
+  const chnageCrewInformation = async () => {
+    try {
+      //* 이부분도 토큰 필요한지 알아보기
+      const { message } = await new CrewService().changeNewCrewName(
+        crewName,
+        newCrewName
+      );
+      await Swal.fire({
+        title: message,
+        icon: 'success',
+        confirmButtonText: '크루 정보페이지로 돌아가기.',
+      });
+      history.push(`/crewList/${newCrewName}`);
+    } catch (err) {
+      console.error(err);
+      Swal.fire({
+        title: '정보 변경에 실패하였습니다.',
+        icon: 'error',
+        confirmButtonText: '확인',
+      });
+    }
+  };
+
   return (
     <div className="mx-auto my-0 w-500 py-10 flex flex-wrap space-y-10 justify-center">
       <div className="w-300 md:w-full flex flex-col">
@@ -9,6 +46,9 @@ const Management = () => {
           color="secondary"
           bordered
           clearable
+          defaultValue={crewName}
+          value={newCrewName}
+          onChange={(e) => setnewCrewName(e.target.value)}
           labelPlaceholder="크루명"
         />
       </div>
@@ -19,6 +59,8 @@ const Management = () => {
           bordered
           clearable
           labelPlaceholder="오픈채팅방 URL"
+          value="아직 미완성 작업중 🚧"
+          disabled
         />
       </div>
       <div className="flex-none space-y-3">
@@ -33,11 +75,18 @@ const Management = () => {
             type="file"
             accept="image/*"
             className="hidden"
+            value="아직 미완성 작업중 🚧"
+            disabled
           />
         </label>
       </div>
       <div className="w-300 md:w-500 flex flex-col">
-        <Button rounded size="large" color="secondary">
+        <Button
+          rounded
+          size="large"
+          color="secondary"
+          onClick={chnageCrewInformation}
+        >
           변경
         </Button>
       </div>
