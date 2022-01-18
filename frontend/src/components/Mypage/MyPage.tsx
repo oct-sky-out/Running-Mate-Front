@@ -6,7 +6,7 @@ import MyPageInformations from './MyPageInformations';
 import ChangeMyPassword from './ChangeMyPassword';
 import LeaveAccount from './LeaveAccount';
 import DetailBaseBorder from '../../common/components/DetailBaseBorder';
-import useRequireLogin from '../../hooks/useRequireLogin';
+import useRequireLogin from '../../hooks/useValidToken';
 
 const MyPage = () => {
   const location = useLocation();
@@ -15,7 +15,6 @@ const MyPage = () => {
   const { checkToekenAvailable } = useRequireLogin();
 
   useEffect(() => {
-    console.log(location.pathname);
     checkToekenAvailable(token)((result) => {
       if (!result.tokenState) {
         console.error(result.message);

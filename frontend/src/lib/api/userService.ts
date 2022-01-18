@@ -2,17 +2,23 @@ import axios from './axios';
 import { ISignInForm, IUserData } from '../../modules/types/signInTypes';
 import { ISignUpForm } from '../../modules/types/signUpTypes';
 
-interface IUserService {
-  signUp(signUpForm: ISignUpForm): void;
-  login(signInDat: ISignInForm): void;
-  getUser(nickName: string, token: string): Promise<false | IUserData>;
-}
+type CheckTokenResultType = { tokenState: boolean; message: string };
 
 type MyPageType = {
   nickName: string;
   address: string;
   token: string;
 };
+interface IUserService {
+  signUp(signUpForm: ISignUpForm): void;
+  login(signInDat: ISignInForm): void;
+  getUser(nickName: string, token: string): Promise<false | IUserData>;
+  leaveAccount(
+    nickName: string,
+    token: string
+  ): Promise<Error | { message: '삭제 완료' }>;
+  tokenValid(token: string | null): Promise<CheckTokenResultType>;
+}
 
 class UserService implements IUserService {
   signUp = async (signUpForm: ISignUpForm) => {
@@ -43,7 +49,7 @@ class UserService implements IUserService {
   editMyPageData = async (myPageData: MyPageType) => {
     try {
       await axios.post(
-        '/user',
+        `/user/${myPageData.nickName}`,
         {
           nickName: myPageData.nickName,
           address: myPageData.address,
@@ -60,6 +66,17 @@ class UserService implements IUserService {
     }
   };
 
+  leaveAccount = async (token: string, nickName: string) => {
+    try {
+      const { data } = await axios.delete<'삭제 완료'>(`/users/${nickName}`, {
+        headers: { 'X-AUTH-PATH': token },
+      });
+      return { message: data };
+    } catch {
+      throw Error('삭제 실패');
+    }
+  };
+
   /*
    * getMyPgaeData가 필요할 경우는 유저 데이터를 업데이트하는 목적만 있으므로 바로 LocalStorage에 저장한다.
    * 나중에 필요할 시 수정.
@@ -68,7 +85,7 @@ class UserService implements IUserService {
     token: string
   ) => {
     try {
-      const { data } = await axios.get<IUserData>('/mypage', {
+      const { data } = await axios.get<IUserData>('/user', {
         headers: {
           'x-auth-token': token,
         },
@@ -82,7 +99,7 @@ class UserService implements IUserService {
 
   getUser = async (userNickName: string, token: string) => {
     try {
-      const { data } = await axios.get<IUserData>(`/user/${userNickName}`, {
+      const { data } = await axios.get<IUserData>(`/users/${userNickName}`, {
         headers: {
           'x-auth-token': token,
         },
@@ -98,6 +115,30 @@ class UserService implements IUserService {
       return { email, crewName, nickName, address, id, crewLeader };
     } catch {
       throw new Error('유저 조회 오류');
+    }
+  };
+
+  tokenValid = async (token: string) => {
+    try {
+      if (!token) throw Error('token is not find please check token');
+
+      const { data } = await axios.get<'ok' | '토큰 만료'>(
+        '/user/token/validate',
+        {
+          headers: { 'x-auth-token': token },
+        }
+      );
+      if (data === '토큰 만료')
+        throw Error('token have been expired please check token');
+      return {
+        tokenState: true,
+        message: 'token is alive',
+      };
+    } catch (error: any) {
+      return {
+        tokenState: false,
+        message: error.message,
+      };
     }
   };
 }
