@@ -82,6 +82,9 @@ const CreateCrew = () => {
   const goToCrewMainPage = () => {
     history.push('/crew');
   };
+  const goToCrewDetail = () => {
+    history.push(`crewList/${crewName}`);
+  };
 
   //* useEffects
   useEffect(() => {
@@ -152,17 +155,19 @@ const CreateCrew = () => {
                   data-testid="go-crew-page-button"
                   color="#8b8bf5"
                 >
-                  크루 페이지로 돌아가기
+                  모여요 페이지로 돌아가기
                 </Button>
               </Link>
             </div>
             <div className="w-full flex flex-grow justify-center">
-              {/* 161번줄 크루 생성시 id매핑 시키기 */}
-              <Link to="/crew/crewid" className="w-full flex flex-col">
-                <Button auto type="button" color="#8b8bf5">
-                  크루 관리하러 가기
-                </Button>
-              </Link>
+              <Button
+                auto
+                type="button"
+                color="#8b8bf5"
+                onClick={goToCrewDetail}
+              >
+                내 크루로 가기
+              </Button>
             </div>
           </div>
           <div
