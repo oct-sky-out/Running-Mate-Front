@@ -63,7 +63,9 @@ jobs:
     name: Deploy(Dev)
     needs: build
     runs-on: ubuntu-latest
-    environment: Development
+    environment: 
+      name: Development
+      url: http://runningmate.s3-website.ap-northeast-2.amazonaws.com
     steps:
       - uses: actions/checkout@v2
       - run: echo 'Developement deployment'
@@ -71,7 +73,9 @@ jobs:
   deploy-production:
     name: Deploy(Production)
     needs: deploy-dev
-    environment: Production
+    environment: 
+      name: Production
+      url: http://runningmate.s3-website.ap-northeast-2.amazonaws.com
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
