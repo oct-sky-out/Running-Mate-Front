@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import CreateNotice from './components/CreateNotice/CreateNotice';
 import CreateNewCrew from './components/Crew/CreateCrew/CreateCrew';
@@ -10,8 +12,15 @@ import Home from './components/Home/Home';
 import MyPage from './components/Mypage/MyPage';
 import ViewNotice from './components/ViewNotice/ViewNotice';
 import UserPage from './components/UserPage/Userpage';
+import { SignInActions } from './modules/signIn';
 
 function App() {
+  const dispatch = useDispatch();
+  const token = localStorage.getItem('token');
+
+  useEffect(() => {
+    dispatch(SignInActions.setToken(token || ''));
+  }, [token]);
   return (
     <>
       <BrowserRouter>

@@ -1,52 +1,71 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { v4 } from 'uuid';
 import { HiOutlinePlusCircle } from 'react-icons/hi';
+import { useDispatch } from 'react-redux';
+import NoticeService from '../../lib/api/noticeService';
 import Board from '../Board/Board';
-import BoardData from '../../excuteData/BoardMock/BoardMock';
-import MenuButton from '../../common/components/MenuButton';
+import SelcetRegion from '../SelectRegion/SelcetRegion';
 
-interface INavRegion {
-  [key: string]: string;
-  seoul: string;
-  gyeonggi: string;
-  deajeon: string;
-  busan: string;
-  gwangju: string;
-  else: string;
-}
 const Home = () => {
-  const navRegion: INavRegion = {
-    seoul: '서울',
-    gyeonggi: '경기',
-    deajeon: '대전',
-    busan: '부산',
-    gwangju: '광주',
-    else: '기타',
+  //* API
+  const noticeService = new NoticeService();
+
+  //* Redux
+  const dispatch = useDispatch();
+
+  const token = localStorage.getItem('token');
+  const [region, setRegion] = useState({
+    si: '',
+    gu: '',
+    dong: '',
+  });
+  const [notices, setNotices] = useState(null);
+
+  const search = () => {
+    noticeService
+      .viewChoiceNotices({
+        ...region,
+        limit: '5',
+        offset: '0',
+      })
+      .then((data) => {
+        setNotices(data);
+      });
   };
+
+  useEffect(() => {
+    noticeService.viewAllNotices().then((data) => {
+      setNotices(data);
+    });
+  }, []);
+
   return (
     <div>
       <div className="shadow-md">
-        <div className="justify-center text-center font-bold py-16 text-3xl">
+        <div className="justify-center text-center font-bold py-14 text-3xl">
           <span>뛰 어 요</span>
         </div>
-        <div className="flex justify-center w-full">
-          {Object.keys(navRegion).map((region) => {
-            return (
-              <MenuButton
-                key={v4()}
-                type="button"
-                className="text-sm px-3 py-3 md:px-5 md:py-4 lg:px-8"
-              >
-                {navRegion[region]}
-              </MenuButton>
-            );
-          })}
+        <div className="flex w-full justify-center items-center">
+          <SelcetRegion submit={setRegion} className="p-2 m-2" />
+          <button
+            disabled={!region.si}
+            className={`text-white w-16 h-10 md:w-20 md:w-25 rounded-xl hover:opacity-80 transition ease-in-out delay-100 ml-4 mb-2 outline-none ${
+              region.gu
+                ? 'bg-indigo-400 cursor-pointer'
+                : 'bg-gray-400 cursor-not-allowed'
+            }`}
+            onClick={search}
+          >
+            검색
+          </button>
         </div>
       </div>
-      <div className="pt-7 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mx-auto my-0 mb-5 w-2/3 gap-x-20 gap-y-10 grid-template-rows">
-        {BoardData.notice.map((data) => {
-          return <Board key={v4()} data={data} />;
-        })}
+      <div className="pt-7 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mx-auto my-0 mb-5 w-2/3 gap-x-20 gap-y-10 grid-template-rows">
+        {notices &&
+          Object.keys(notices).map((key) => {
+            return <Board key={v4()} data={notices[key]} />;
+          })}
       </div>
       <button
         type="button"

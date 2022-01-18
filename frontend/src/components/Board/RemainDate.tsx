@@ -1,17 +1,20 @@
-import React from 'react';
-import { BiTime } from 'react-icons/bi';
+import { readyException } from 'cypress/types/jquery';
+import React, { useEffect, useState } from 'react';
 import remainDateParser from '../../common/functions/remainDateParser';
 
 interface IProps {
   end: string;
+  setFinished: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const RemainDate: React.FC<IProps> = ({ end }) => {
-  const remainDate = remainDateParser(+end);
+const RemainDate: React.FC<IProps> = ({ end, setFinished }) => {
+  const remainDate = remainDateParser(Date.parse(end));
 
+  if (remainDate === '기간만료') {
+    setFinished(true);
+  }
   return (
     <span className="flex items-center ">
-      <BiTime className="mr-1" />
       <span className="pb-0.5">{remainDate}</span>
     </span>
   );
