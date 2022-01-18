@@ -55,7 +55,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/react-dom", "npm:17.0.10"],
             ["@types/react-outside-click-handler", "npm:1.3.0"],
             ["@types/react-redux", "npm:7.1.20"],
-            ["@types/react-router-dom", "npm:5.3.1"],
+            ["@types/react-router-dom", "npm:5.3.2"],
             ["@types/redux-saga", "npm:0.10.5"],
             ["@types/testing-library__jest-dom", "npm:5.14.2"],
             ["@types/uuid", "npm:8.3.1"],
@@ -5820,10 +5820,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["@types/react-router-dom", [
-        ["npm:5.3.1", {
-          "packageLocation": "./.yarn/cache/@types-react-router-dom-npm-5.3.1-ac4e931eb2-44621f53c1.zip/node_modules/@types/react-router-dom/",
+        ["npm:5.3.2", {
+          "packageLocation": "./.yarn/cache/@types-react-router-dom-npm-5.3.2-85c77b2709-90f052dc5a.zip/node_modules/@types/react-router-dom/",
           "packageDependencies": [
-            ["@types/react-router-dom", "npm:5.3.1"],
+            ["@types/react-router-dom", "npm:5.3.2"],
             ["@types/history", "npm:4.7.9"],
             ["@types/react", "npm:17.0.31"],
             ["@types/react-router", "npm:5.1.17"]
@@ -12413,7 +12413,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/react-dom", "npm:17.0.10"],
             ["@types/react-outside-click-handler", "npm:1.3.0"],
             ["@types/react-redux", "npm:7.1.20"],
-            ["@types/react-router-dom", "npm:5.3.1"],
+            ["@types/react-router-dom", "npm:5.3.2"],
             ["@types/redux-saga", "npm:0.10.5"],
             ["@types/testing-library__jest-dom", "npm:5.14.2"],
             ["@types/uuid", "npm:8.3.1"],
