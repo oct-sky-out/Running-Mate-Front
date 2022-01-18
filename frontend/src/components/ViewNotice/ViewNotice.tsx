@@ -38,10 +38,9 @@ const ViewNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
     <DetailBaseBorder>
       <PreviousPageButton
         text="뒤로가기"
-        iconSize="0"
-        iconSizeClassName="text-2xl md:text-3xl lg:text-4xl"
-        tailwindTextSize="text-lg md:text-2xl lg:text-3xl"
         className="w-24 md:w-32 lg:w-40 py-4 flex justify-start items-start"
+        iconSizeClassName="text-2xl md:text-3xl lg:text-4xl"
+        tailwindTextSize="text-sm md:text-2xl"
         data-cy="back"
         onClick={() => {
           history.goBack();

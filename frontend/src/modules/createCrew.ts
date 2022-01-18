@@ -1,34 +1,42 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import ICreateCrew from './types/createCrew';
 
-export interface ICreateCrew {
-  crew: {
-    crewName: string;
-    crewExplain: string;
-    crewRegion: string;
-  };
-}
+type CreateCrewType = {
+  createCrewData: Omit<ICreateCrew, 'createCrewStatus'>;
+  token: string;
+};
+type CreateCrewStatusType = '' | 'Fetch' | 'Sucecss' | 'Failure';
 
 const initialState: ICreateCrew = {
   crew: {
     crewName: '',
-    crewExplain: '',
+    explanation: '',
     crewRegion: '',
+    openChat: '',
   },
+  createCrewStatus: '',
 };
 
 const createCrewSliceReducer = createSlice({
-  name: 'creatCrew',
+  name: 'createCrew',
   initialState,
   reducers: {
     setInit: (_state, _action: PayloadAction<void>) => {
       return {
         crew: {
           crewName: '',
-          crewExplain: '',
+          explanation: '',
           crewRegion: '',
-          isCrewLeader: '',
+          openChat: '',
         },
+        createCrewStatus: '',
       };
+    },
+    newCrew: (
+      state,
+      _action: PayloadAction<CreateCrewType & { userNickName: string }>
+    ) => {
+      return { ...state, createCrewStatus: 'Fetch' };
     },
     setCrewName: {
       prepare: (crewName: string) => {
@@ -41,14 +49,14 @@ const createCrewSliceReducer = createSlice({
         };
       },
     },
-    setCrewExplain: {
-      prepare: (crewExplain: string) => {
-        return { payload: crewExplain };
+    setExplanation: {
+      prepare: (explanation: string) => {
+        return { payload: explanation };
       },
       reducer: (state, action: PayloadAction<string>) => {
         return {
           ...state,
-          crew: { ...state.crew, crewExplain: action.payload },
+          crew: { ...state.crew, explanation: action.payload },
         };
       },
     },
@@ -63,6 +71,17 @@ const createCrewSliceReducer = createSlice({
         };
       },
     },
+    setOpenChat: {
+      prepare: (openChat: string) => ({ payload: openChat }),
+      reducer: (state, action: PayloadAction<string>) => ({
+        ...state,
+        crew: { ...state.crew, openChat: action.payload },
+      }),
+    },
+    setCreateOpenChatStatus: (
+      state,
+      action: PayloadAction<CreateCrewStatusType>
+    ) => ({ ...state, createCrewStatus: action.payload }),
   },
 });
 

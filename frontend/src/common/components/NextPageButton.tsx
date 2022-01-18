@@ -5,16 +5,16 @@ import { GrFormNext } from 'react-icons/gr';
 interface IProps extends React.HTMLAttributes<HTMLDivElement> {
   text: string;
   tailwindTextSize?: string;
+  iconSizeClassName?: string;
   nextPageURL: string;
-  iconSize?: string;
   className?: string;
 }
 
 const NextPageButton: React.FC<IProps> = ({
   text,
   tailwindTextSize,
+  iconSizeClassName,
   nextPageURL,
-  iconSize = '32',
   className,
   ...props
 }) => {
@@ -27,7 +27,7 @@ const NextPageButton: React.FC<IProps> = ({
         {...props}
       >
         <span className={tailwindTextSize}>{text}</span>
-        <GrFormNext size={iconSize} />
+        <GrFormNext className={iconSizeClassName} />
       </div>
     </Link>
   );

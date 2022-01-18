@@ -9,13 +9,15 @@ import 'react-quill/dist/quill.snow.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
+import Swal from 'sweetalert2';
+
 import { CreateNoticeActions } from '../../modules/createNotice';
 import { useSelector } from '../../modules';
 
 import SelecRegion from '../SelectRegion/SelcetRegion';
-import { AddressType } from '../../modules/types/createNotice';
+import { AddressType } from '../../modules/types/notice';
 // API
-import NoticeService from '../../lib/api/notiveService';
+import NoticeService from '../../lib/api/noticeService';
 
 type CreacteNoticeActionType = 'setTitle' | 'setExplain' | 'setOpenChat';
 
@@ -24,24 +26,27 @@ const CreateNotice = () => {
   const noticeService = new NoticeService();
 
   //* useState
-  const [seletedDate, setSelectedDate] = useState(new Date());
+  const enoughDeadLine = new Date();
+  enoughDeadLine.setDate(enoughDeadLine.getDate() + 3);
+  const [seletedDate, setSelectedDate] = useState(enoughDeadLine);
+  const [timeOnOff, setTimeOnOff] = useState(true);
+
   //* useRef
   const imageInputRef = useRef<HTMLInputElement>(null);
   //* Redux
   const dispatch = useDispatch();
 
   //* Redux State
-  const { title, content, address, time, openChat, image, token } = useSelector(
-    (state) => ({
+  const { title, content, address, meetingTime, openChat, image, token } =
+    useSelector((state) => ({
       title: state.createNotice.title,
       content: state.createNotice.content,
       address: state.createNotice.address,
-      time: state.createNotice.content,
+      meetingTime: state.createNotice.meetingTime,
       openChat: state.createNotice.openChat,
       image: state.createNotice.image,
       token: state.signIn.token,
-    })
-  );
+    }));
 
   //* event version
   // const saveFileImage = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,7 +83,7 @@ const CreateNotice = () => {
         title,
         content,
         address,
-        time,
+        meetingTime,
         openChat,
         image,
       })
@@ -86,6 +91,24 @@ const CreateNotice = () => {
         console.log(id);
       });
   };
+
+  const checkData = () => {
+    [
+      [openChat, '오픈 채팅 주소를 입력해주세요'],
+      [content, '게시물 내용을 작성해주세요'],
+      [address.gu, '모든 주소를 선택해주세요'],
+      [title, '제목을 작성해주세요'],
+    ].forEach((str) => {
+      if (!str[0]) {
+        Swal.fire(`${str[1]}`).then(() => {
+          return false;
+        });
+      }
+    });
+    if (openChat && content && address.gu && title) return true;
+    return false;
+  };
+
   useEffect(() => {
     dispatch(CreateNoticeActions.setInit());
   }, []);
@@ -93,7 +116,15 @@ const CreateNotice = () => {
   return (
     <div className="mt-10">
       <div className="flex justify-center">
-        <form className="w-2/3 ">
+        <form
+          className="w-2/3 "
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (checkData()) {
+              onSubmit();
+            }
+          }}
+        >
           <div className="mb-5">
             <Input
               underlined
@@ -116,22 +147,54 @@ const CreateNotice = () => {
               <div>
                 <div className="flex flex-col w-full space-y-3">
                   <span className="whitespace-nowrap mr-5 font-bold inline-block">
-                    러닝 만남 시간
+                    모집 마감 시간
                   </span>
-                  <div className="w-full py-1 pl-4 rounded border-solid border-2 border-indigo-400">
-                    <DatePicker
-                      className="w-full"
-                      selected={seletedDate}
-                      onChange={(e) => {
-                        setSelectedDate(e || new Date());
-                        onChangeDatePickderState(
-                          e ? e.toString() : new Date().toString()
-                        );
-                      }}
-                      timeInputLabel="Time:"
-                      dateFormat="yyyy/MM/dd hh:mm aa"
-                      showTimeInput
-                    />
+                  <div className="flex flex-col sm:flex-row justify-around items-center space-y-3 sm:space-y-0">
+                    <div
+                      className={`w-full sm:w-1/2 py-1 ${
+                        !timeOnOff && 'pl-4'
+                      } rounded border-solid border-2 border-indigo-400 flex justify-center`}
+                    >
+                      {timeOnOff ? (
+                        <span>마감 제한 없음</span>
+                      ) : (
+                        <DatePicker
+                          className="w-full"
+                          selected={seletedDate}
+                          onChange={(e) => {
+                            setSelectedDate(e || new Date());
+                            onChangeDatePickderState(
+                              e ? e.toString() : new Date().toString()
+                            );
+                          }}
+                          timeInputLabel="Time:"
+                          dateFormat="yyyy/MM/dd hh:mm aa"
+                          showTimeInput
+                        />
+                      )}
+                    </div>
+                    <div className="mr-2">
+                      <Button
+                        type="button"
+                        color="#8b8bf5"
+                        onClick={() => {
+                          if (timeOnOff) {
+                            dispatch(
+                              CreateNoticeActions.setTime(
+                                enoughDeadLine.toString()
+                              )
+                            );
+                            setTimeOnOff(false);
+                          }
+                          if (!timeOnOff) {
+                            dispatch(CreateNoticeActions.setTime(''));
+                            setTimeOnOff(true);
+                          }
+                        }}
+                      >
+                        {timeOnOff ? '마감 제한 설정하기' : '마감 제한 없애기'}
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -203,9 +266,9 @@ const CreateNotice = () => {
               <Button
                 auto
                 color="#8b8bf5"
+                type="submit"
                 rounded
                 data-testid="submit-button"
-                onClick={onSubmit}
               >
                 등록
               </Button>

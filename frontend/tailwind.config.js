@@ -3,6 +3,9 @@ module.exports = {
   darkMode: 'media', // or 'media' or 'class'
   theme: {
     extend: {
+      fontSize: {
+        '2xs': '7px',
+      },
       width: {
         '100px': '100px',
         200: '200px',
@@ -38,7 +41,7 @@ module.exports = {
     },
   },
   variants: {
-    extend: { animation: ['motion-reduce'] },
+    extend: { animation: ['motion-reduce'], backgroundColor: ['disabled'] },
   },
   plugins: [],
 };

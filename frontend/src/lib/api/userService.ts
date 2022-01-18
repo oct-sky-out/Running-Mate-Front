@@ -5,6 +5,7 @@ import { ISignUpForm } from '../../modules/types/signUpTypes';
 interface IUserService {
   signUp(signUpForm: ISignUpForm): void;
   login(signInDat: ISignInForm): void;
+  getUser(nickName: string, token: string): Promise<false | IUserData>;
 }
 
 type MyPageType = {
@@ -41,8 +42,6 @@ class UserService implements IUserService {
 
   editMyPageData = async (myPageData: MyPageType) => {
     try {
-      console.log('service test nickname = ', myPageData.nickName);
-      console.log('service test address = ', myPageData.address);
       await axios.post(
         '/user',
         {
@@ -74,22 +73,14 @@ class UserService implements IUserService {
           'x-auth-token': token,
         },
       });
-      const { email, crewName, nickName, address, id, crewLeader } = {
-        email: data.email,
-        crewName: data.crewName,
-        nickName: data.nickName,
-        address: data.address,
-        id: data.id,
-        crewLeader: data.crewLeader,
-      };
       localStorage.setItem('userData', JSON.stringify(data));
-      return { email, crewName, nickName, address, id, crewLeader };
+      return data;
     } catch {
       return false;
     }
   };
 
-  getUSer = async (userNickName: string, token: string) => {
+  getUser = async (userNickName: string, token: string) => {
     try {
       const { data } = await axios.get<IUserData>(`/user/${userNickName}`, {
         headers: {
@@ -106,7 +97,7 @@ class UserService implements IUserService {
       };
       return { email, crewName, nickName, address, id, crewLeader };
     } catch {
-      return false;
+      throw new Error('유저 조회 오류');
     }
   };
 }

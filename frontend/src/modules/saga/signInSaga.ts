@@ -32,6 +32,7 @@ function* signInFetchSaga({
       nickName,
     };
     yield put(SignInActions.signInSuccess(data));
+    yield put(SignInActions.setToken(token));
     yield call(saveUserData, { userData: JSON.stringify(data), token });
   } catch (error: any | Error) {
     console.error(error);

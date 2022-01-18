@@ -16,13 +16,18 @@ const useRequireLogin = () => {
     }
     if (token) {
       try {
-        await axios.get('/mypage', {
-          headers: { 'x-auth-token': token },
-        });
+        const { data } = await axios.get<'ok' | '토큰 만료'>(
+          '/user/token/validate',
+          {
+            headers: { 'x-auth-token': token },
+          }
+        );
+        if (data === '토큰 만료')
+          throw Error('token have been expired please check token');
       } catch (error: any) {
         return {
           tokenState: false,
-          message: 'token have been expired please check token',
+          message: error.message,
         };
       }
     }
@@ -33,8 +38,14 @@ const useRequireLogin = () => {
   };
 
   const checkToekenAvailable =
-    (token: string) => (callback: (result: CheckTokenResultType) => any) =>
-      checkToekenApi(token).then(callback);
+    (token: string) =>
+    (
+      successCallback: (result: CheckTokenResultType) => any,
+      failureCallback?: (reason: any) => any
+    ) =>
+      checkToekenApi(token)
+        .then(successCallback)
+        .catch(failureCallback || null);
 
   return { checkToekenAvailable };
 };

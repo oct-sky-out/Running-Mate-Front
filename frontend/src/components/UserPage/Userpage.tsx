@@ -75,18 +75,24 @@ const UserPage: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
       },
     });
     if (match.params.id && token) {
-      new UserService().getUSer(match.params.id, token).then((result) => {
-        if (result) {
-          setAnotherUserData(result);
-          setNormalCategory({
-            crewName: {
-              ...normalCategory.crewName,
-              description: result.crewName || '크루에 소속되어있지 않습니다.',
-            },
-            address: { ...normalCategory.address, description: result.address },
-          });
-        }
-      });
+      new UserService()
+        .getUser(match.params.id, token)
+        .then((result) => {
+          if (result) {
+            setAnotherUserData(result);
+            setNormalCategory({
+              crewName: {
+                ...normalCategory.crewName,
+                description: result.crewName || '크루에 소속되어있지 않습니다.',
+              },
+              address: {
+                ...normalCategory.address,
+                description: result.address,
+              },
+            });
+          }
+        })
+        .catch((reason) => console.error(reason));
     }
   }, [token, location.pathname]);
 
@@ -95,9 +101,10 @@ const UserPage: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
       <div className="flex items-center justify-between">
         <PreviousPageButton
           text="뒤로가기"
-          iconSize="32"
           onClick={() => history.goBack()}
-          className="w-28"
+          className="w-24 md:w-32 lg:w-40 py-4 flex justify-start items-start"
+          iconSizeClassName="text-2xl md:text-3xl lg:text-4xl"
+          tailwindTextSize="text-sm md:text-2xl"
         />
       </div>
       <div className="w-full mx-auto my-0 py-5 flex flex-col flex-wrap justify-center items-center space-y-5 my-10">
