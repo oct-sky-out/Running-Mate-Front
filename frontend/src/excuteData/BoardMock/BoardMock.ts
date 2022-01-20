@@ -18,6 +18,7 @@ const BoardData: { [key: string]: GetNoticesType } = {
     title: '서울 여의도 한강공원에 오늘밤 7시에 뛰사람 구합니다.',
     meetingTime: 'August 19, 2022 23:15:30',
     id: 0,
+    author: '지드래곤',
   },
   1: {
     address: {
@@ -36,6 +37,7 @@ const BoardData: { [key: string]: GetNoticesType } = {
     title: '서울 여의도 한강공원에 오늘밤 7시에 뛰사람 구합니다.',
     meetingTime: 'August 19, 1975 23:15:30',
     id: 1,
+    author: '지드래곤',
   },
   2: {
     address: {
@@ -54,6 +56,7 @@ const BoardData: { [key: string]: GetNoticesType } = {
     title: '서울 여의도 한강공원에 오늘밤 7시에 뛰사람 구합니다.',
     meetingTime: 'August 19, 2022 23:15:30',
     id: 2,
+    author: '지드래곤',
   },
   3: {
     address: {
@@ -72,6 +75,7 @@ const BoardData: { [key: string]: GetNoticesType } = {
     title: '서울 여의도 한강공원에 오늘밤 7시에 뛰사람 구합니다.',
     meetingTime: 'August 19, 1975 23:15:30',
     id: 3,
+    author: '지드래곤',
   },
   4: {
     address: {
@@ -90,6 +94,7 @@ const BoardData: { [key: string]: GetNoticesType } = {
     title: '서울 여의도 한강공원에 오늘밤 7시에 뛰사람 구합니다.',
     meetingTime: 'August 19, 2022 23:15:30',
     id: 4,
+    author: '지드래곤',
   },
   5: {
     address: {
@@ -108,6 +113,7 @@ const BoardData: { [key: string]: GetNoticesType } = {
     title: '서울 여의도 한강공원에 오늘밤 7시에 뛰사람 구합니다.',
     meetingTime: 'August 19, 2022 23:15:30',
     id: 5,
+    author: '지드래곤',
   },
   6: {
     address: {
@@ -126,6 +132,7 @@ const BoardData: { [key: string]: GetNoticesType } = {
     title: '서울 여의도 한강공원에 오늘밤 7시에 뛰사람 구합니다.',
     meetingTime: 'August 19, 2022 23:15:30',
     id: 6,
+    author: '지드래곤',
   },
   7: {
     address: {
@@ -144,6 +151,7 @@ const BoardData: { [key: string]: GetNoticesType } = {
     title: '서울 여의도 한강공원에 오늘밤 7시에 뛰사람 구합니다.',
     meetingTime: 'August 19, 2022 23:15:30',
     id: 7,
+    author: '지드래곤',
   },
   8: {
     address: {
@@ -162,6 +170,7 @@ const BoardData: { [key: string]: GetNoticesType } = {
     title: '서울 여의도 한강공원에 오늘밤 7시에 뛰사람 구합니다.',
     meetingTime: 'August 19, 2022 23:15:30',
     id: 8,
+    author: '지드래곤',
   },
   9: {
     address: {
@@ -180,6 +189,7 @@ const BoardData: { [key: string]: GetNoticesType } = {
     title: '서울 여의도 한강공원에 오늘밤 7시에 뛰사람 구합니다.',
     meetingTime: 'August 19, 2022 23:15:30',
     id: 9,
+    author: '지드래곤',
   },
   10: {
     address: {
@@ -198,6 +208,7 @@ const BoardData: { [key: string]: GetNoticesType } = {
     title: '서울 여의도 한강공원에 오늘밤 7시에 뛰사람 구합니다.',
     meetingTime: 'August 19, 2022 23:15:30',
     id: 10,
+    author: '이지은',
   },
   11: {
     address: {
@@ -216,6 +227,7 @@ const BoardData: { [key: string]: GetNoticesType } = {
     title: '서울 여의도 한강공원에 오늘밤 7시에 뛰사람 구합니다.',
     meetingTime: 'August 19, 2022 23:15:30',
     id: 11,
+    author: '이지은',
   },
   12: {
     address: {
@@ -234,6 +246,7 @@ const BoardData: { [key: string]: GetNoticesType } = {
     title: '서울 여의도 한강공원에 오늘밤 7시에 뛰사람 구합니다.',
     meetingTime: 'August 19, 2022 23:15:30',
     id: 12,
+    author: '이지은',
   },
   13: {
     address: {
@@ -252,6 +265,7 @@ const BoardData: { [key: string]: GetNoticesType } = {
     title: '서울 여의도 한강공원에 오늘밤 7시에 뛰사람 구합니다.',
     meetingTime: 'August 19, 2022 23:15:30',
     id: 13,
+    author: '이지은',
   },
   14: {
     address: {
@@ -270,6 +284,7 @@ const BoardData: { [key: string]: GetNoticesType } = {
     title: '서울 여의도 한강공원에 오늘밤 7시에 뛰사람 구합니다.',
     meetingTime: 'August 19, 2022 23:15:30',
     id: 14,
+    author: '이지은',
   },
   15: {
     address: {
@@ -288,6 +303,7 @@ const BoardData: { [key: string]: GetNoticesType } = {
     title: '서울 여의도 한강공원에 오늘밤 7시에 뛰사람 구합니다.',
     meetingTime: 'August 19, 2022 23:15:30',
     id: 15,
+    author: '이지은',
   },
   16: {
     address: {
@@ -306,6 +322,7 @@ const BoardData: { [key: string]: GetNoticesType } = {
     title: '서울 여의도 한강공원에 오늘밤 7시에 뛰사람 구합니다.',
     meetingTime: 'August 19, 2022 23:15:30',
     id: 16,
+    author: '이지은',
   },
   17: {
     address: {
@@ -324,6 +341,7 @@ const BoardData: { [key: string]: GetNoticesType } = {
     title: '서울 여의도 한강공원에 오늘밤 7시에 뛰사람 구합니다.',
     meetingTime: 'August 19, 2022 23:15:30',
     id: 17,
+    author: '이지은',
   },
   18: {
     address: {
@@ -342,6 +360,7 @@ const BoardData: { [key: string]: GetNoticesType } = {
     title: '서울 여의도 한강공원에 오늘밤 7시에 뛰사람 구합니다.',
     meetingTime: 'August 19, 2022 23:15:30',
     id: 18,
+    author: '이지은',
   },
   19: {
     address: {
@@ -360,6 +379,7 @@ const BoardData: { [key: string]: GetNoticesType } = {
     title: '서울 여의도 한강공원에 오늘밤 7시에 뛰사람 구합니다.',
     meetingTime: 'August 19, 2022 23:15:30',
     id: 19,
+    author: '이지은',
   },
   20: {
     address: {
@@ -378,6 +398,7 @@ const BoardData: { [key: string]: GetNoticesType } = {
     title: '서울 여의도 한강공원에 오늘밤 7시에 뛰사람 구합니다.',
     meetingTime: 'August 19, 2022 23:15:30',
     id: 20,
+    author: '이지은',
   },
   21: {
     address: {
@@ -396,6 +417,7 @@ const BoardData: { [key: string]: GetNoticesType } = {
     title: '서울 여의도 한강공원에 오늘밤 7시에 뛰사람 구합니다.',
     meetingTime: 'August 19, 2022 23:15:30',
     id: 21,
+    author: '이지은',
   },
   22: {
     address: {
@@ -414,6 +436,7 @@ const BoardData: { [key: string]: GetNoticesType } = {
     title: '서울 여의도 한강공원에 오늘밤 7시에 뛰사람 구합니다.',
     meetingTime: 'August 19, 2022 23:15:30',
     id: 22,
+    author: '이지은',
   },
   23: {
     address: {
@@ -432,6 +455,7 @@ const BoardData: { [key: string]: GetNoticesType } = {
     title: '서울 여의도 한강공원에 오늘밤 7시에 뛰사람 구합니다.',
     meetingTime: 'August 19, 2022 23:15:30',
     id: 23,
+    author: '이지은',
   },
   24: {
     address: {
@@ -450,6 +474,7 @@ const BoardData: { [key: string]: GetNoticesType } = {
     title: '서울 여의도 한강공원에 오늘밤 7시에 뛰사람 구합니다.',
     meetingTime: 'August 19, 2022 23:15:30',
     id: 24,
+    author: '이지은',
   },
   25: {
     address: {
@@ -468,6 +493,7 @@ const BoardData: { [key: string]: GetNoticesType } = {
     title: '서울 여의도 한강공원에 오늘밤 7시에 뛰사람 구합니다.',
     meetingTime: 'August 19, 2022 23:15:30',
     id: 25,
+    author: '이지은',
   },
   26: {
     address: {
@@ -486,6 +512,7 @@ const BoardData: { [key: string]: GetNoticesType } = {
     title: '서울 여의도 한강공원에 오늘밤 7시에 뛰사람 구합니다.',
     meetingTime: 'August 19, 2022 23:15:30',
     id: 26,
+    author: '이지은',
   },
   27: {
     address: {
@@ -504,6 +531,7 @@ const BoardData: { [key: string]: GetNoticesType } = {
     title: '서울 여의도 한강공원에 오늘밤 7시에 뛰사람 구합니다.',
     meetingTime: 'August 19, 2022 23:15:30',
     id: 27,
+    author: '이지은',
   },
   28: {
     address: {
@@ -522,6 +550,7 @@ const BoardData: { [key: string]: GetNoticesType } = {
     title: '서울 여의도 한강공원에 오늘밤 7시에 뛰사람 구합니다.',
     meetingTime: 'August 19, 2022 23:15:30',
     id: 28,
+    author: '이지은',
   },
   29: {
     address: {
@@ -540,6 +569,7 @@ const BoardData: { [key: string]: GetNoticesType } = {
     title: '서울 여의도 한강공원에 오늘밤 7시에 뛰사람 구합니다.',
     meetingTime: 'August 19, 2022 23:15:30',
     id: 29,
+    author: '이지은',
   },
   30: {
     address: {
@@ -558,6 +588,7 @@ const BoardData: { [key: string]: GetNoticesType } = {
     title: '서울 여의도 한강공원에 오늘밤 7시에 뛰사람 구합니다.',
     meetingTime: 'August 19, 2022 23:15:30',
     id: 30,
+    author: '이지은',
   },
 };
 

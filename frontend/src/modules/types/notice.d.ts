@@ -24,4 +24,9 @@ export type GetNoticesType = {
   openChat: string | null;
   regDate: string;
   title: string | null;
+  author: string;
+};
+
+export type NoticesType = {
+  [key in string]: GetNoticesType;
 };
