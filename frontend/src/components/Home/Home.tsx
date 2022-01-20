@@ -1,28 +1,39 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { v4 } from 'uuid';
 import { HiOutlinePlusCircle } from 'react-icons/hi';
-import { useDispatch } from 'react-redux';
+import { useInView } from 'react-intersection-observer';
 import NoticeService from '../../lib/api/noticeService';
 import Board from '../Board/Board';
 import SelcetRegion from '../SelectRegion/SelcetRegion';
+import { GetNoticesType } from '../../modules/types/notice';
 
 const Home = () => {
+  //* CONST
+  const PAGING_LIMIT_NOTICES: number = 6;
+
   //* API
   const noticeService = new NoticeService();
 
-  //* Redux
-  const dispatch = useDispatch();
-
-  const token = localStorage.getItem('token');
+  //* useState
+  const [offset, setOffset] = useState(0);
   const [region, setRegion] = useState({
+    dou: '',
     si: '',
     gu: '',
-    dong: '',
   });
-  const [notices, setNotices] = useState(null);
+  const [infiniteFetchStop, setInfiniteFetchStop] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const search = () => {
+  const [notices, setNotices] = useState<{
+    [key: string]: GetNoticesType;
+  }>();
+
+  //* usuInView
+  const [viewRef, InView] = useInView();
+
+  //* functions
+  const searchRegionNotices = () => {
     noticeService
       .viewChoiceNotices({
         ...region,
@@ -34,11 +45,62 @@ const Home = () => {
       });
   };
 
+  //* 실제 api 사용
+  const fetchAllRegionNoticeDataAndUpdate = async () => {
+    // wait의 역할: 과도한 API 요청을 방지해준다.
+    const wait = (delay: number) =>
+      new Promise((resolve) => setTimeout(resolve, delay * 1000));
+    await wait(0.5);
+    await noticeService
+      .viewAllNotices(offset, PAGING_LIMIT_NOTICES)
+      .then((data) => {
+        if (data) {
+          setNotices({ ...notices, ...data });
+          setOffset(offset + PAGING_LIMIT_NOTICES);
+        } else {
+          setInfiniteFetchStop(true);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  //* 무한 스크롤 테스트 가상 api
+  const fetchTestAllRegionNoticeDataAndUpdate = async () => {
+    const updateAllRegionBoards = noticeService.getTestNotices(
+      offset,
+      PAGING_LIMIT_NOTICES
+    );
+    const wait = (delay: number) =>
+      new Promise((resolve) => setTimeout(resolve, delay * 1000));
+    await wait(1);
+    if (updateAllRegionBoards) {
+      setNotices({ ...notices, ...updateAllRegionBoards });
+      setOffset(offset + PAGING_LIMIT_NOTICES);
+    } else {
+      setInfiniteFetchStop(true);
+    }
+    setIsLoading(false);
+  };
+
   useEffect(() => {
-    noticeService.viewAllNotices().then((data) => {
-      setNotices(data);
-    });
+    setIsLoading(true);
+    fetchAllRegionNoticeDataAndUpdate();
   }, []);
+
+  useEffect(() => {
+    if (!infiniteFetchStop && InView && !isLoading) {
+      setIsLoading(true);
+      fetchAllRegionNoticeDataAndUpdate();
+    }
+  }, [
+    infiniteFetchStop,
+    InView,
+    setIsLoading,
+    isLoading,
+    fetchAllRegionNoticeDataAndUpdate,
+  ]);
 
   return (
     <div>
@@ -55,7 +117,7 @@ const Home = () => {
                 ? 'bg-indigo-400 cursor-pointer'
                 : 'bg-gray-400 cursor-not-allowed'
             }`}
-            onClick={search}
+            onClick={searchRegionNotices}
           >
             검색
           </button>
@@ -67,6 +129,7 @@ const Home = () => {
             return <Board key={v4()} data={notices[key]} />;
           })}
       </div>
+      <div ref={viewRef}>{}</div>
       <button
         type="button"
         className="bg-white rounded-full fixed right-2 bottom-2 md:right-6 md:bottom-8 md:right-16 md:bottom-16  transform hover:scale-110 transition ease-in-out duration-300"

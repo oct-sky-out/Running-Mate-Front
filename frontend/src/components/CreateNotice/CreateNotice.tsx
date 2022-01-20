@@ -37,16 +37,25 @@ const CreateNotice = () => {
   const dispatch = useDispatch();
 
   //* Redux State
-  const { title, content, address, meetingTime, openChat, image, token } =
-    useSelector((state) => ({
-      title: state.createNotice.title,
-      content: state.createNotice.content,
-      address: state.createNotice.address,
-      meetingTime: state.createNotice.meetingTime,
-      openChat: state.createNotice.openChat,
-      image: state.createNotice.image,
-      token: state.signIn.token,
-    }));
+  const {
+    title,
+    content,
+    address,
+    meetingTime,
+    openChat,
+    image,
+    token,
+    author,
+  } = useSelector((state) => ({
+    title: state.createNotice.title,
+    content: state.createNotice.content,
+    address: state.createNotice.address,
+    meetingTime: state.createNotice.meetingTime,
+    openChat: state.createNotice.openChat,
+    image: state.createNotice.image,
+    author: state.signIn.userData.nickName,
+    token: state.signIn.token,
+  }));
 
   //* event version
   // const saveFileImage = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -86,10 +95,12 @@ const CreateNotice = () => {
         meetingTime,
         openChat,
         image,
+        author,
       })
-      .then((id) => {
-        console.log(id);
-      });
+      .then((data) => {
+        console.log(data);
+      })
+      .catch(() => {});
   };
 
   const checkData = () => {

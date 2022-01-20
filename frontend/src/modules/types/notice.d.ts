@@ -8,9 +8,9 @@ export interface INotice {
 }
 
 export type AddressType = {
+  dou: string;
   si: string;
   gu: string;
-  dong: string;
 };
 
 export type GetNoticesType = {

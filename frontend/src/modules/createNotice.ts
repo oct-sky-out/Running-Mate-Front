@@ -5,9 +5,9 @@ const initialState: INotice = {
   title: '',
   content: '',
   address: {
+    dou: '',
     si: '',
     gu: '',
-    dong: '',
   },
   meetingTime: '',
   openChat: '',
@@ -23,9 +23,9 @@ const createNoticeSliceReducer = createSlice({
         title: '',
         content: '',
         address: {
+          dou: '',
           si: '',
           gu: '',
-          dong: '',
         },
         meetingTime: '',
         openChat: '',

@@ -67,7 +67,7 @@ const mockStore: RootState = {
     address: {
       si: '',
       gu: '',
-      dong: '',
+      dou: '',
     },
     meetingTime: '',
     openChat: '',
