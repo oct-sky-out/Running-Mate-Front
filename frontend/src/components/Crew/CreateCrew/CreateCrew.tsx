@@ -83,7 +83,7 @@ const CreateCrew = () => {
     history.push('/crew');
   };
   const goToCrewDetail = () => {
-    history.push(`crewList/${crewName}`);
+    history.push(`/crewList/${crewName}`);
   };
 
   //* useEffects
@@ -160,14 +160,17 @@ const CreateCrew = () => {
               </Link>
             </div>
             <div className="w-full flex flex-grow justify-center">
-              <Button
-                auto
-                type="button"
-                color="#8b8bf5"
-                onClick={goToCrewDetail}
-              >
-                내 크루로 가기
-              </Button>
+              <div className="w-full flex flex-col">
+                <Button
+                  auto
+                  className=""
+                  type="button"
+                  color="#8b8bf5"
+                  onClick={goToCrewDetail}
+                >
+                  내 크루로 가기
+                </Button>
+              </div>
             </div>
           </div>
           <div

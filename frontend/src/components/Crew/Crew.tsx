@@ -137,7 +137,7 @@ const Crew = () => {
                 imageUrl=""
               />
             ))}
-            {crewCards.length || (
+            {crewCards.length === 0 && (
               <div className="w-full h-10 col-span-3">
                 <span className="text-2xl"> 크루 데이터가 비어있습니다.</span>
               </div>
