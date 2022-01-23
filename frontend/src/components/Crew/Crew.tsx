@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Link, withRouter } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
 import { v4 } from 'uuid';
 import { Button, Loading } from '@nextui-org/react';
@@ -8,7 +7,6 @@ import { useSelector } from '../../modules';
 import CrewService from '../../lib/api/crewService';
 import CrewImageSlider from './CrewImageSlider';
 import CrewCard from './CrewCard';
-import CrewMock from '../../excuteData/CrewMock/CrewMock';
 import { ICrewsData } from '../../modules/types/crewTypes';
 
 const Crew = () => {

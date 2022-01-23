@@ -8,14 +8,11 @@ import { v4 } from 'uuid';
 import { useSelector } from '../../../modules';
 import { crewActions } from '../../../modules/crew';
 import CrewService from '../../../lib/api/crewService';
+import useLocalStroeageData from '../../../hooks/useLocalStorageData';
 import CrewWidget from './CrewWidget';
 import DetailBaseBorder from '../../../common/components/DetailBaseBorder';
 import PreviousPageButton from '../../../common/components/PreviousPageButton';
 import NextPageButton from '../../../common/components/NextPageButton';
-
-// test data
-import crewMock from '../../../excuteData/CrewMock/CrewMock';
-import useLocalStroeageData from '../../../hooks/useLocalStorageData';
 
 interface MatchParam {
   id: string;
@@ -83,7 +80,7 @@ const CrewDetail: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
       <div className="w-full mx-auto my-0 py-5 flex flex-col flex-wrap justify-center items-center space-y-5">
         <div className="w-full flex justify-center items-center">
           <img
-            src={crewMock.crew[0].imageUrl}
+            src=""
             alt=""
             className="w-48 rounded-full border-4 border-purple "
           />
