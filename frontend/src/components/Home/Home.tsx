@@ -7,7 +7,7 @@ import { useInView } from 'react-intersection-observer';
 import NoticeService from '../../lib/api/noticeService';
 import Board from '../Board/Board';
 import SelcetRegion from '../SelectRegion/SelcetRegion';
-import { GetNoticesType } from '../../modules/types/notice';
+import { GetNoticesType, AddressType } from '../../modules/types/notice';
 // import LoadingModal from '../../common/components/LoadingModal';
 
 const Home = () => {
@@ -19,7 +19,7 @@ const Home = () => {
 
   //* useState
   const [offset, setOffset] = useState(0);
-  const [region, setRegion] = useState({
+  const [region, setRegion] = useState<AddressType>({
     dou: '',
     si: '',
     gu: '',
@@ -44,6 +44,7 @@ const Home = () => {
       })
       .then((data) => {
         setNotices(data);
+        setInfiniteFetchStop(false);
       });
   };
 
@@ -103,8 +104,8 @@ const Home = () => {
   ]);
 
   useEffect(() => {
-    console.log(InView);
-  }, [InView]);
+    console.log('region = ', region);
+  }, [region]);
 
   return (
     <div>
@@ -117,7 +118,7 @@ const Home = () => {
           <button
             disabled={!region.si}
             className={`text-white w-16 h-10 md:w-20 md:w-25 rounded-xl hover:opacity-80 transition ease-in-out delay-100 ml-4 mb-2 outline-none ${
-              region.gu
+              region.si
                 ? 'bg-indigo-400 cursor-pointer'
                 : 'bg-gray-400 cursor-not-allowed'
             }`}
