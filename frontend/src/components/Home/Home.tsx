@@ -1,12 +1,14 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { v4 } from 'uuid';
+import { isEmpty } from 'lodash';
 import { HiOutlinePlusCircle } from 'react-icons/hi';
 import { useInView } from 'react-intersection-observer';
 import NoticeService from '../../lib/api/noticeService';
 import Board from '../Board/Board';
 import SelcetRegion from '../SelectRegion/SelcetRegion';
 import { GetNoticesType } from '../../modules/types/notice';
+// import LoadingModal from '../../common/components/LoadingModal';
 
 const Home = () => {
   //* CONST
@@ -54,7 +56,7 @@ const Home = () => {
     await noticeService
       .viewAllNotices(offset, PAGING_LIMIT_NOTICES)
       .then((data) => {
-        if (data) {
+        if (!isEmpty(data)) {
           setNotices({ ...notices, ...data });
           setOffset(offset + PAGING_LIMIT_NOTICES);
         } else {
@@ -62,7 +64,7 @@ const Home = () => {
         }
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
   };
 
@@ -75,7 +77,7 @@ const Home = () => {
     const wait = (delay: number) =>
       new Promise((resolve) => setTimeout(resolve, delay * 1000));
     await wait(1);
-    if (updateAllRegionBoards) {
+    if (!isEmpty(updateAllRegionBoards)) {
       setNotices({ ...notices, ...updateAllRegionBoards });
       setOffset(offset + PAGING_LIMIT_NOTICES);
     } else {
@@ -87,12 +89,14 @@ const Home = () => {
   useEffect(() => {
     setIsLoading(true);
     fetchAllRegionNoticeDataAndUpdate();
+    // fetchTestAllRegionNoticeDataAndUpdate(); // TEST API
   }, []);
 
   useEffect(() => {
     if (!infiniteFetchStop && InView && !isLoading) {
       setIsLoading(true);
       fetchAllRegionNoticeDataAndUpdate();
+      // fetchTestAllRegionNoticeDataAndUpdate(); // TEST API
     }
   }, [
     infiniteFetchStop,
@@ -134,7 +138,7 @@ const Home = () => {
         type="button"
         className="bg-white rounded-full fixed right-2 bottom-2 md:right-6 md:bottom-8 md:right-16 md:bottom-16  transform hover:scale-110 transition ease-in-out duration-300"
       >
-        <Link to="/notice-create">
+        <Link to="/boards/run/create">
           <HiOutlinePlusCircle
             className="text-5xl"
             color="#8b8bf5"
