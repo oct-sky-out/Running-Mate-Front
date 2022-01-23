@@ -75,8 +75,6 @@ const Management = () => {
             type="file"
             accept="image/*"
             className="hidden"
-            value="아직 미완성 작업중 🚧"
-            disabled
           />
         </label>
       </div>

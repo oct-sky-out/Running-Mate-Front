@@ -93,9 +93,10 @@ const CrewDetail: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
           <span>{explanation}</span>
         </div>
         <div className="text-lg">
-          <span>오픈 채팅 : {openChat}</span>
           <span>
-            <a href={openChat}>{openChat}</a>
+            <a href={openChat} target="_blank" rel="noreferrer">
+              오픈 채팅 : {openChat}
+            </a>
           </span>
         </div>
       </div>

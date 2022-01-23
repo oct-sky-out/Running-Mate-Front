@@ -88,7 +88,7 @@ class CrewService implements ICrewService {
     try {
       const { data } = await axios.post<'이름 변경 완료'>(
         `/crews/${currentCrewName}`,
-        { crewName: currentCrewName, newName: newCrewName },
+        newCrewName,
         {
           headers: {
             'x-auth-token': token || '',

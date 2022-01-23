@@ -17,7 +17,6 @@ const CrewManagement: React.FC<RouteComponentProps<MatchParam>> = ({
 }) => {
   //* react router dom
   const history = useHistory();
-  console.log(match.path);
   return (
     <DetailBaseBorder>
       <PreviousPageButton
