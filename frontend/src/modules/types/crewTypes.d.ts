@@ -12,7 +12,23 @@ export interface ICrewType {
 }
 
 export interface ICrews {
-  crews: ICrewType[];
+  crews: {
+    id: number;
+    crewLeaderId: number;
+    crewRegion: string;
+    openChat: string;
+    crewName: string;
+    explanation: string;
+  }[];
+}
+
+export interface ICrewsData {
+  id: number;
+  crewLeaderId: number;
+  crewRegion: string;
+  openChat: string;
+  crewName: string;
+  explanation: string;
 }
 
 export interface ICrewRequestFetch {

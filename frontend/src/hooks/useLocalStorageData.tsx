@@ -15,7 +15,7 @@ const useLocalStroeageData = () => {
   const getToken = () => {
     const token = localStorage.getItem('token');
     if (token) {
-      const userToken = JSON.parse(token);
+      const userToken = token;
       dispatch(SignInActions.setToken(userToken));
     }
   };
