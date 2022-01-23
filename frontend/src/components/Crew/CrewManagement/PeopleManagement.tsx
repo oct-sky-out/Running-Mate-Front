@@ -1,7 +1,10 @@
 import { Button, Input } from '@nextui-org/react';
+import { v4 } from 'uuid';
+import { useSelector } from '../../../modules';
 import PeopleList from './PeopleList';
 
 const PeopleManagement = () => {
+  const crewMembers = useSelector((state) => state.crew.userDtos);
   return (
     <div className="mx-auto my-0 py-10 px-20 flex flex-col space-y-10 justify-center">
       <div className="w-full flex justify-center lg:justify-end">
@@ -21,11 +24,13 @@ const PeopleManagement = () => {
         </div>
       </div>
       <div className="border-2 border-purple rounded-lg flex flex-col divide-y divide-purple">
-        <PeopleList />
-        <PeopleList />
-        <PeopleList />
-        <PeopleList />
-        <PeopleList />
+        {crewMembers.map((member) => (
+          <PeopleList
+            key={v4()}
+            memberNickName={member.nickName}
+            memberUserId={member.id}
+          />
+        ))}
       </div>
     </div>
   );

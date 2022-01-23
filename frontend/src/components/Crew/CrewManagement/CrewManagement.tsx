@@ -22,6 +22,7 @@ const CrewManagement: React.FC<RouteComponentProps<MatchParam>> = ({
   const history = useHistory();
   const dispatch = useDispatch();
   const crewId = useSelector((state) => state.crew.id);
+
   useEffect(() => {
     if (crewId === 0)
       new CrewService()
@@ -29,6 +30,7 @@ const CrewManagement: React.FC<RouteComponentProps<MatchParam>> = ({
         .then((data) => dispatch(crewActions.setCrewDetail(data)))
         .catch((reason) => console.error(reason));
   }, []);
+
   return (
     <DetailBaseBorder>
       <PreviousPageButton

@@ -28,7 +28,7 @@ const CrewDelete = () => {
   };
 
   useEffect(() => {
-    if (deleteFetchState === 'Success')
+    if (deleteFetchState === 'Success') {
       Swal.fire({
         title: '삭제 성공!',
         icon: 'success',
@@ -37,14 +37,17 @@ const CrewDelete = () => {
       }).then(() => {
         history.push('/crewList');
       });
-    if (deleteFetchState === 'Failure')
+      dispatch(crewActions.initCrewRequestFetch());
+    }
+    if (deleteFetchState === 'Failure') {
       Swal.fire({
         title: '삭제 실패',
         text: '삭제에 실패하였습니다. 죄송합니다.',
         icon: 'error',
         confirmButtonText: '확인',
       });
-    dispatch(crewActions.initRequestCerwDetail());
+      dispatch(crewActions.initCrewRequestFetch());
+    }
   }, [deleteFetchState]);
 
   return (
