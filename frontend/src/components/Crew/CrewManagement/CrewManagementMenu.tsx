@@ -25,7 +25,7 @@ const CrewManagementMenu = () => {
           key={v4()}
           type="button"
           className={`flex flex-left items-center text-xl font-bold px-3 md:px-5 md:py-4 ${
-            location.pathname.toLowerCase() === url && 'border-purple'
+            location.pathname === url && 'border-purple'
           }`}
           onClick={() => history.push(url)}
         >

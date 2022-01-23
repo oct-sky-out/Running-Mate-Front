@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Route, useHistory, RouteComponentProps } from 'react-router-dom';
 import DetailBaseBorder from '../../../common/components/DetailBaseBorder';
 import PreviousPageButton from '../../../common/components/PreviousPageButton';
+import CrewService from '../../../lib/api/crewService';
+import { useSelector } from '../../../modules';
+import { crewActions } from '../../../modules/crew';
 import CrewDelete from './CrewDelete';
 import CrewManagementMenu from './CrewManagementMenu';
 import Management from './Management';
@@ -16,6 +20,15 @@ const CrewManagement: React.FC<RouteComponentProps<MatchParam>> = ({
 }) => {
   //* react router dom
   const history = useHistory();
+  const dispatch = useDispatch();
+  const crewId = useSelector((state) => state.crew.id);
+  useEffect(() => {
+    if (crewId === 0)
+      new CrewService()
+        .getCrewDetail(match.params.id)
+        .then((data) => dispatch(crewActions.setCrewDetail(data)))
+        .catch((reason) => console.error(reason));
+  }, []);
   return (
     <DetailBaseBorder>
       <PreviousPageButton
