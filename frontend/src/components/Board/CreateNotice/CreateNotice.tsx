@@ -1,5 +1,6 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
+import { withRouter, useHistory } from 'react-router-dom';
 import { Input, Button } from '@nextui-org/react';
 import { FormElement } from '@nextui-org/react/esm/input/input-props';
 // Quill
@@ -11,19 +12,22 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 import Swal from 'sweetalert2';
 
-import { CreateNoticeActions } from '../../modules/createNotice';
-import { useSelector } from '../../modules';
+import { CreateNoticeActions } from '../../../modules/createNotice';
+import { useSelector } from '../../../modules';
 
-import SelecRegion from '../SelectRegion/SelcetRegion';
-import { AddressType } from '../../modules/types/notice';
+import SelecRegion from '../../SelectRegion/SelcetRegion';
+import { AddressType } from '../../../modules/types/notice';
 // API
-import NoticeService from '../../lib/api/noticeService';
+import NoticeService from '../../../lib/api/noticeService';
 
-type CreacteNoticeActionType = 'setTitle' | 'setExplain' | 'setOpenChat';
+type CreacteNoticeActionType = 'setTitle' | 'setContent' | 'setOpenChat';
 
 const CreateNotice = () => {
   //* API
   const noticeService = new NoticeService();
+
+  //* useHistory
+  const history = useHistory();
 
   //* useState
   const enoughDeadLine = new Date();
@@ -83,12 +87,12 @@ const CreateNotice = () => {
   };
 
   const onChangeDatePickderState = (date: string) => {
-    dispatch(CreateNoticeActions.setTime(date));
+    dispatch(CreateNoticeActions.setMeetingTime(date));
   };
 
   const onSubmit = () => {
     noticeService
-      .createNotice(token, {
+      .createAndEditNotice(token, {
         title,
         content,
         address,
@@ -97,8 +101,17 @@ const CreateNotice = () => {
         image,
         author,
       })
-      .then((data) => {
-        console.log(data);
+      .then((id) => {
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Your work has been saved',
+          showConfirmButton: false,
+          timer: 1500,
+        }).then(() => {
+          history.push(`/boards/run/${id}`);
+        });
+        console.log('id = ', id);
       })
       .catch(() => {});
   };
@@ -107,7 +120,7 @@ const CreateNotice = () => {
     [
       [openChat, '오픈 채팅 주소를 입력해주세요'],
       [content, '게시물 내용을 작성해주세요'],
-      [address.gu, '모든 주소를 선택해주세요'],
+      [address.si, '모든 주소를 선택해주세요'],
       [title, '제목을 작성해주세요'],
     ].forEach((str) => {
       if (!str[0]) {
@@ -116,7 +129,7 @@ const CreateNotice = () => {
         });
       }
     });
-    if (openChat && content && address.gu && title) return true;
+    if (openChat && content && address.si && title) return true;
     return false;
   };
 
@@ -191,14 +204,14 @@ const CreateNotice = () => {
                         onClick={() => {
                           if (timeOnOff) {
                             dispatch(
-                              CreateNoticeActions.setTime(
+                              CreateNoticeActions.setMeetingTime(
                                 enoughDeadLine.toString()
                               )
                             );
                             setTimeOnOff(false);
                           }
                           if (!timeOnOff) {
-                            dispatch(CreateNoticeActions.setTime(''));
+                            dispatch(CreateNoticeActions.setMeetingTime(''));
                             setTimeOnOff(true);
                           }
                         }}
@@ -241,7 +254,7 @@ const CreateNotice = () => {
                 ) : (
                   <div className="h-ful w-full flex flex-col justify-center items-center text-indigo-400 space-y-2">
                     <span className="block">러닝 경로 지도를</span>
-                    <span className="block">등록해주세요</span>
+                    <span className="block">등록해주세요(필수X)</span>
                     <span className="block">(네이버지도 or 카카오 지도)</span>
                   </div>
                 )}
@@ -265,8 +278,8 @@ const CreateNotice = () => {
           <div className="mb-20 md:mb-16">
             <ReactQuill
               theme="snow"
-              value={content}
-              onChange={(e) => dispatch(CreateNoticeActions.setExplain(e))}
+              defaultValue={content}
+              onChange={(e) => dispatch(CreateNoticeActions.setContent(e))}
               style={{ height: '300px' }}
               data-testid="explain-input"
               placeholder="공지 설명글을 작성해주세요 : )"
@@ -291,4 +304,4 @@ const CreateNotice = () => {
   );
 };
 
-export default CreateNotice;
+export default withRouter(CreateNotice);

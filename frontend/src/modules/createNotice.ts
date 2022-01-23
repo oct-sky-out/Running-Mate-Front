@@ -40,7 +40,7 @@ const createNoticeSliceReducer = createSlice({
         return { ...state, title: action.payload };
       },
     },
-    setExplain: {
+    setContent: {
       prepare: (content: string) => {
         return { payload: content };
       },
@@ -56,7 +56,7 @@ const createNoticeSliceReducer = createSlice({
         return { ...state, address: action.payload };
       },
     },
-    setTime: {
+    setMeetingTime: {
       prepare: (meetingTime: string) => {
         return { payload: meetingTime };
       },

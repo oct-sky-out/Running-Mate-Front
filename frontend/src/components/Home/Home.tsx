@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, memo } from 'react';
 import { Link } from 'react-router-dom';
 import { v4 } from 'uuid';
 import { isEmpty } from 'lodash';
@@ -56,6 +56,7 @@ const Home = () => {
     await noticeService
       .viewAllNotices(offset, PAGING_LIMIT_NOTICES)
       .then((data) => {
+        console.log(data);
         if (!isEmpty(data)) {
           setNotices({ ...notices, ...data });
           setOffset(offset + PAGING_LIMIT_NOTICES);
@@ -87,13 +88,8 @@ const Home = () => {
   };
 
   useEffect(() => {
-    setIsLoading(true);
-    fetchAllRegionNoticeDataAndUpdate();
-    // fetchTestAllRegionNoticeDataAndUpdate(); // TEST API
-  }, []);
-
-  useEffect(() => {
     if (!infiniteFetchStop && InView && !isLoading) {
+      console.log('실행횟수');
       setIsLoading(true);
       fetchAllRegionNoticeDataAndUpdate();
       // fetchTestAllRegionNoticeDataAndUpdate(); // TEST API
@@ -105,6 +101,10 @@ const Home = () => {
     isLoading,
     fetchAllRegionNoticeDataAndUpdate,
   ]);
+
+  useEffect(() => {
+    console.log(InView);
+  }, [InView]);
 
   return (
     <div>
@@ -133,12 +133,12 @@ const Home = () => {
             return <Board key={v4()} data={notices[key]} />;
           })}
       </div>
-      <div ref={viewRef}>{}</div>
+      <div ref={viewRef} />
       <button
         type="button"
         className="bg-white rounded-full fixed right-2 bottom-2 md:right-6 md:bottom-8 md:right-16 md:bottom-16  transform hover:scale-110 transition ease-in-out duration-300"
       >
-        <Link to="/boards/run/create">
+        <Link to="/boards/create/run">
           <HiOutlinePlusCircle
             className="text-5xl"
             color="#8b8bf5"
@@ -150,4 +150,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default memo(Home);

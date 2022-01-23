@@ -20,16 +20,16 @@ const Board: React.FC<IProps & RouteComponentProps> = ({ data }) => {
   const { address, closed, count, id, image, meetingTime, title } = data;
 
   const dispatchViewNoticeData = () => {
-    dispatch(noticeActions.setOneViewNotice(data));
+    dispatch(noticeActions.setInitViewNoticeData());
   };
   return (
-    <div
-      className={`relation w-60 h-80 shadow-2xl transition ease-in-out duration-300 transform hover:scale-105 mx-auto my-0 rounded-2xl bg-white border-2 ${
-        finished && 'opacity-70'
-      }`}
-      onClick={dispatchViewNoticeData}
-    >
-      <Link to={{ pathname: `/notice/${id}`, state: { data } }}>
+    <Link to={{ pathname: `/boards/run/${id}`, state: { data } }}>
+      <div
+        className={`relation w-60 h-80 shadow-2xl transition ease-in-out duration-300 transform hover:scale-105 mx-auto my-0 rounded-2xl bg-white border-2 ${
+          finished && 'opacity-70'
+        }`}
+        onClick={dispatchViewNoticeData}
+      >
         <div className="h-2/4 border-b-2 rounded-t-xl flex-grow bg-indigo-200">
           {image ? (
             <img
@@ -75,8 +75,8 @@ const Board: React.FC<IProps & RouteComponentProps> = ({ data }) => {
             </div>
           </div>
         </div>
-      </Link>
-    </div>
+      </div>
+    </Link>
   );
 };
 

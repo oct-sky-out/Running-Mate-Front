@@ -11,7 +11,11 @@ type ViewNoticesSetUpType = {
 };
 
 interface INoticeService {
-  createNotice(token: string, notice: INotice): void;
+  createAndEditNotice(
+    token: string,
+    notice: INotice,
+    boardId?: number
+  ): Promise<GetNoticesType>;
   viewChoiceNotices(
     setUp: ViewNoticesSetUpType
   ): Promise<{ [key: string]: GetNoticesType }>;
@@ -23,13 +27,15 @@ interface INoticeService {
 }
 
 class NoticeService implements INoticeService {
-  createNotice = async (
+  createAndEditNotice = async (
     token: string,
-    notice: INotice & { author: string }
+    notice: INotice & { author: string },
+    boardId?: number
   ) => {
     try {
-      const boardData = await axios.post(
-        '/boards',
+      const url = boardId ? `/boards/${boardId}` : '/boards';
+      const { data } = await axios.post(
+        url,
         {
           ...notice,
           boardCategory: 'RUN',
@@ -40,8 +46,11 @@ class NoticeService implements INoticeService {
           },
         }
       );
-      return boardData;
+      return data;
     } catch (error) {
+      if (boardId) {
+        throw new Error('게시판 수정 실패');
+      }
       throw new Error('게시판 생성 실패');
     }
   };
@@ -78,13 +87,36 @@ class NoticeService implements INoticeService {
           'x-auth-token': token,
         },
       });
-      return true;
+      return data;
     } catch {
       throw new Error('게시판 삭제 실패');
     }
   };
 
-  getNotice = async (boardId: number, token: string) => {
+  editNotice = async (
+    boardId: number,
+    token: string,
+    changedData: INotice & { author: string }
+  ) => {
+    try {
+      const data = await axios.post(
+        `boards/${boardId}`,
+        {
+          ...changedData,
+        },
+        {
+          headers: {
+            'x-auth-token': token,
+          },
+        }
+      );
+      return data;
+    } catch {
+      throw new Error('수정에 실패하였습니다.');
+    }
+  };
+
+  getNotice = async (boardId: string, token: string) => {
     try {
       const { data } = await axios.get(`/boards/${boardId}`, {
         headers: {
