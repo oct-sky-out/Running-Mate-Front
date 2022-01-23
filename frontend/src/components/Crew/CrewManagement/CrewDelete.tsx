@@ -1,39 +1,51 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { Button, Input } from '@nextui-org/react';
 import Swal from 'sweetalert2';
-import CrewService from '../../../lib/api/crewService';
 import { useSelector } from '../../../modules';
+import { crewActions } from '../../../modules/crew';
 
 // import useLocalStroeageData from '../../../hooks/useLocalStorageData';
 
 const CrewDelete = () => {
   const history = useHistory();
-  const crewName = useSelector((state) => state.crew.crewName);
+  const dispatch = useDispatch();
+  const { crewName, token, userNickName, deleteFetchState } = useSelector(
+    (state) => ({
+      crewName: state.crew.crewName,
+      token: state.signIn.token,
+      userNickName: state.signIn.userData.nickName,
+      deleteFetchState: state.crew.crewRequestFetch,
+    })
+  );
   const [deleteCrewName, setDeleteCrewName] = useState('');
 
   // const { getToken } = useLocalStroeageData();
 
-  const deleteCrew = async () => {
-    try {
-      const { message } = await new CrewService().deleteCrew(crewName);
-      await Swal.fire({
-        title: message,
+  const deleteCrew = () => {
+    dispatch(crewActions.deleteCrew({ crewName, token, userNickName }));
+  };
+
+  useEffect(() => {
+    if (deleteFetchState === 'Success')
+      Swal.fire({
+        title: '삭제 성공!',
         icon: 'success',
         confirmButtonText: '뛰어요 페이지로 돌아가기.',
         confirmButtonColor: '#d33',
+      }).then(() => {
+        history.push('/crewList');
       });
-      history.push('/crewList');
-    } catch (err: any) {
-      console.error(err);
+    if (deleteFetchState === 'Failure')
       Swal.fire({
         title: '삭제 실패',
         text: '삭제에 실패하였습니다. 죄송합니다.',
         icon: 'error',
         confirmButtonText: '확인',
       });
-    }
-  };
+    dispatch(crewActions.initRequestCerwDetail());
+  }, [deleteFetchState]);
 
   return (
     <div className="h-screen col-span-4 w-full pt-20">
@@ -47,7 +59,7 @@ const CrewDelete = () => {
             color="secondary"
             size="xlarge"
             width="100%"
-            value={crewName}
+            value={deleteCrewName}
             onChange={(e) => setDeleteCrewName(e.target.value)}
             labelPlaceholder="크루 이름 확인"
             type="text"

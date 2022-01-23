@@ -71,7 +71,7 @@ class CrewService implements ICrewService {
   deleteCrew = async (crewName: string, token?: string) => {
     try {
       // 토큰은 정확히 알아보고 난 후 정함.
-      const { data } = await axios.delete<'삭제완료'>(`/crews/${crewName}`, {
+      const { data } = await axios.delete<'삭제 완료'>(`/crews/${crewName}`, {
         headers: { 'x-auth-token': token || '' },
       });
       return { message: data };

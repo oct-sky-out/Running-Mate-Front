@@ -6,7 +6,7 @@ import useLocalStroeageData from '../../hooks/useLocalStorageData';
 import { SignInActions } from '../signIn';
 import { IUserData } from '../types/signInTypes';
 
-const refreshUserDataAndRefreshLocalStorage = async (
+export const refreshUserDataAndRefreshLocalStorage = async (
   token: string,
   userNickName: string
 ): Promise<IUserData | { result: false }> => {

@@ -30,6 +30,10 @@ const crewSlice = createSlice({
       userDtos: [],
       requestUsers: [],
     }),
+    initRequestCerwDetail: (state, _action: PayloadAction<void>) => ({
+      ...state,
+      crewRequestFetch: '',
+    }),
     requestCerwDetail: (state, _action: PayloadAction<string>) => ({
       ...state,
       crewRequestFetch: 'Fetch',
@@ -60,6 +64,17 @@ const crewSlice = createSlice({
     setCrewName: (state, action: PayloadAction<string>) => ({
       ...state,
       crewName: action.payload,
+    }),
+    deleteCrew: (
+      state,
+      _action: PayloadAction<{
+        crewName: string;
+        token: string;
+        userNickName: string;
+      }>
+    ) => ({
+      ...state,
+      crewRequestFetch: 'Fetch',
     }),
   },
 });
