@@ -95,9 +95,9 @@ const EditNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
     dispatch(noticeActions.setMeetingTime(date));
   };
 
-  const editNotice = () => {
-    noticeService
-      .editNotice(id, token, {
+  const editNotice = async () => {
+    try {
+      await noticeService.editNotice(id, token, {
         title,
         content,
         address,
@@ -105,20 +105,22 @@ const EditNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
         openChat,
         image,
         author,
-      })
-      .then((data) => {
-        Swal.fire(
-          '수정 성공',
-          '게시물을 성공적으로 변경하였습니다.',
-          'success'
-        ).then(() => {
-          history.push(`/boards/run/${id}`);
-        });
-      })
-      .catch((error) => {
-        history.push('/');
-        console.log(error);
       });
+      Swal.fire(
+        '수정 성공',
+        '게시물을 성공적으로 변경하였습니다.',
+        'success'
+      ).then(() => {
+        history.push(`/boards/run/${id}`);
+      });
+    } catch (error) {
+      Swal.fire('수정 실패', '게시물을 변경을 실패하였습니다.', 'error').then(
+        () => {
+          history.push(`/boards/run/${id}`);
+        }
+      );
+      console.log(error);
+    }
   };
 
   const checkData = () => {

@@ -90,9 +90,9 @@ const CreateNotice = () => {
     dispatch(CreateNoticeActions.setMeetingTime(date));
   };
 
-  const onSubmit = () => {
-    noticeService
-      .createAndEditNotice(token, {
+  const onSubmit = async () => {
+    try {
+      const boardId = await noticeService.createNotice(token, {
         title,
         content,
         address,
@@ -100,20 +100,24 @@ const CreateNotice = () => {
         openChat,
         image,
         author,
-      })
-      .then((id) => {
-        Swal.fire({
-          position: 'top-end',
-          icon: 'success',
-          title: 'Your work has been saved',
-          showConfirmButton: false,
-          timer: 1500,
-        }).then(() => {
-          history.push(`/boards/run/${id}`);
-        });
-        console.log('id = ', id);
-      })
-      .catch(() => {});
+      });
+      await Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'Your work has been saved',
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      history.push(`/boards/run/${boardId}`);
+    } catch (error) {
+      await Swal.fire({
+        title: '게시물 생성 실패',
+        text: '게시물 생성에 실패하였습니다. 죄송합니다.',
+        icon: 'error',
+        confirmButtonText: '확인',
+      });
+      history.push('/');
+    }
   };
 
   const checkData = () => {

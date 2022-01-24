@@ -6,16 +6,12 @@ type ViewNoticesSetUpType = {
   dou: string;
   si: string;
   gu: string;
-  offset: string;
-  limit: string;
+  offset: number;
+  limit: number;
 };
 
 interface INoticeService {
-  createAndEditNotice(
-    token: string,
-    notice: INotice,
-    boardId?: number
-  ): Promise<GetNoticesType>;
+  createNotice(token: string, notice: INotice): Promise<GetNoticesType>;
   viewChoiceNotices(
     setUp: ViewNoticesSetUpType
   ): Promise<{ [key: string]: GetNoticesType }>;
@@ -27,15 +23,13 @@ interface INoticeService {
 }
 
 class NoticeService implements INoticeService {
-  createAndEditNotice = async (
+  createNotice = async (
     token: string,
-    notice: INotice & { author: string },
-    boardId?: number
+    notice: INotice & { author: string }
   ) => {
     try {
-      const url = boardId ? `/boards/${boardId}` : '/boards';
       const { data } = await axios.post(
-        url,
+        '/boards',
         {
           ...notice,
           boardCategory: 'RUN',
@@ -48,16 +42,13 @@ class NoticeService implements INoticeService {
       );
       return data;
     } catch (error) {
-      if (boardId) {
-        throw new Error('게시판 수정 실패');
-      }
       throw new Error('게시판 생성 실패');
     }
   };
 
   viewChoiceNotices = async (query: ViewNoticesSetUpType) => {
     try {
-      const { data } = await axios.get(
+      const { data } = await axios.get<{ [key: string]: GetNoticesType }>(
         `/boards?dou=${query.dou}&si=${query.si}&gu=${query.gu}&offset=${query.offset}&limit=${query.limit}`
       );
       return data;
@@ -99,7 +90,7 @@ class NoticeService implements INoticeService {
     changedData: INotice & { author: string }
   ) => {
     try {
-      const data = await axios.post(
+      const { data } = await axios.post<GetNoticesType>(
         `boards/${boardId}`,
         {
           ...changedData,
@@ -118,7 +109,7 @@ class NoticeService implements INoticeService {
 
   getNotice = async (boardId: string, token: string) => {
     try {
-      const { data } = await axios.get(`/boards/${boardId}`, {
+      const { data } = await axios.get<GetNoticesType>(`/boards/${boardId}`, {
         headers: {
           'x-auth-token': token,
         },
