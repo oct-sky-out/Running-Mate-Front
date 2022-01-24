@@ -1,5 +1,6 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
+import { RouteComponentProps, useHistory } from 'react-router-dom';
 import { Input, Button } from '@nextui-org/react';
 import { FormElement } from '@nextui-org/react/esm/input/input-props';
 // Quill
@@ -11,17 +12,21 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 import Swal from 'sweetalert2';
 
-import { CreateNoticeActions } from '../../modules/createNotice';
-import { useSelector } from '../../modules';
+import { noticeActions } from '../../../modules/notice';
+import { useSelector } from '../../../modules';
 
-import SelecRegion from '../SelectRegion/SelcetRegion';
-import { AddressType } from '../../modules/types/notice';
+import SelecRegion from '../../SelectRegion/SelcetRegion';
+import { AddressType } from '../../../modules/types/notice';
 // API
-import NoticeService from '../../lib/api/noticeService';
+import NoticeService from '../../../lib/api/noticeService';
 
-type CreacteNoticeActionType = 'setTitle' | 'setExplain' | 'setOpenChat';
+type NoticeActionType = 'setTitle' | 'setContent' | 'setOpenChat';
 
-const CreateNotice = () => {
+interface MatchParam {
+  id: string;
+}
+
+const EditNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
   //* API
   const noticeService = new NoticeService();
 
@@ -33,20 +38,33 @@ const CreateNotice = () => {
 
   //* useRef
   const imageInputRef = useRef<HTMLInputElement>(null);
+
+  const history = useHistory();
   //* Redux
   const dispatch = useDispatch();
 
   //* Redux State
-  const { title, content, address, meetingTime, openChat, image, token } =
-    useSelector((state) => ({
-      title: state.createNotice.title,
-      content: state.createNotice.content,
-      address: state.createNotice.address,
-      meetingTime: state.createNotice.meetingTime,
-      openChat: state.createNotice.openChat,
-      image: state.createNotice.image,
-      token: state.signIn.token,
-    }));
+  const {
+    title,
+    content,
+    address,
+    meetingTime,
+    openChat,
+    id,
+    image,
+    token,
+    author,
+  } = useSelector((state) => ({
+    title: state.viewNotice.viewNoticeData.title,
+    content: state.viewNotice.viewNoticeData.content,
+    address: state.viewNotice.viewNoticeData.address,
+    id: state.viewNotice.viewNoticeData.id,
+    meetingTime: state.viewNotice.viewNoticeData.meetingTime,
+    openChat: state.viewNotice.viewNoticeData.openChat,
+    image: state.viewNotice.viewNoticeData.image,
+    author: state.signIn.userData.nickName,
+    token: state.signIn.token,
+  }));
 
   //* event version
   // const saveFileImage = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -64,39 +82,52 @@ const CreateNotice = () => {
 
   const onChangeInputState = (
     e: React.ChangeEvent<FormElement>,
-    actionName: CreacteNoticeActionType
+    actionName: NoticeActionType
   ) => {
-    dispatch(CreateNoticeActions[actionName](e.currentTarget.value));
+    dispatch(noticeActions[actionName](e.currentTarget.value));
   };
 
   const onChangeSelectState = (region: AddressType) => {
-    dispatch(CreateNoticeActions.setAddress(region));
+    dispatch(noticeActions.setAddress(region));
   };
 
   const onChangeDatePickderState = (date: string) => {
-    dispatch(CreateNoticeActions.setTime(date));
+    dispatch(noticeActions.setMeetingTime(date));
   };
 
-  const onSubmit = () => {
-    noticeService
-      .createNotice(token, {
+  const editNotice = async () => {
+    try {
+      await noticeService.editNotice(id, token, {
         title,
         content,
         address,
         meetingTime,
         openChat,
         image,
-      })
-      .then((id) => {
-        console.log(id);
+        author,
       });
+      Swal.fire(
+        '수정 성공',
+        '게시물을 성공적으로 변경하였습니다.',
+        'success'
+      ).then(() => {
+        history.push(`/boards/run/${id}`);
+      });
+    } catch (error) {
+      Swal.fire('수정 실패', '게시물을 변경을 실패하였습니다.', 'error').then(
+        () => {
+          history.push(`/boards/run/${id}`);
+        }
+      );
+      console.log(error);
+    }
   };
 
   const checkData = () => {
     [
       [openChat, '오픈 채팅 주소를 입력해주세요'],
       [content, '게시물 내용을 작성해주세요'],
-      [address.gu, '모든 주소를 선택해주세요'],
+      [address.si, '모든 주소를 선택해주세요'],
       [title, '제목을 작성해주세요'],
     ].forEach((str) => {
       if (!str[0]) {
@@ -105,12 +136,14 @@ const CreateNotice = () => {
         });
       }
     });
-    if (openChat && content && address.gu && title) return true;
+    if (openChat && content && address.si && title) return true;
     return false;
   };
 
   useEffect(() => {
-    dispatch(CreateNoticeActions.setInit());
+    if (meetingTime) {
+      setTimeOnOff(false);
+    }
   }, []);
 
   return (
@@ -121,7 +154,7 @@ const CreateNotice = () => {
           onSubmit={(e) => {
             e.preventDefault();
             if (checkData()) {
-              onSubmit();
+              editNotice();
             }
           }}
         >
@@ -180,14 +213,14 @@ const CreateNotice = () => {
                         onClick={() => {
                           if (timeOnOff) {
                             dispatch(
-                              CreateNoticeActions.setTime(
+                              noticeActions.setMeetingTime(
                                 enoughDeadLine.toString()
                               )
                             );
                             setTimeOnOff(false);
                           }
                           if (!timeOnOff) {
-                            dispatch(CreateNoticeActions.setTime(''));
+                            dispatch(noticeActions.setMeetingTime(''));
                             setTimeOnOff(true);
                           }
                         }}
@@ -203,6 +236,7 @@ const CreateNotice = () => {
                 <SelecRegion
                   submit={onChangeSelectState}
                   className="p-1 mx-1"
+                  initRegion={address}
                 />
               </div>
               <div>
@@ -230,7 +264,7 @@ const CreateNotice = () => {
                 ) : (
                   <div className="h-ful w-full flex flex-col justify-center items-center text-indigo-400 space-y-2">
                     <span className="block">러닝 경로 지도를</span>
-                    <span className="block">등록해주세요</span>
+                    <span className="block">등록해주세요(필수X)</span>
                     <span className="block">(네이버지도 or 카카오 지도)</span>
                   </div>
                 )}
@@ -254,8 +288,11 @@ const CreateNotice = () => {
           <div className="mb-20 md:mb-16">
             <ReactQuill
               theme="snow"
-              value={content}
-              onChange={(e) => dispatch(CreateNoticeActions.setExplain(e))}
+              defaultValue={content}
+              onChange={(e) => {
+                console.log(e);
+                dispatch(noticeActions.setContent(e));
+              }}
               style={{ height: '300px' }}
               data-testid="explain-input"
               placeholder="공지 설명글을 작성해주세요 : )"
@@ -280,4 +317,4 @@ const CreateNotice = () => {
   );
 };
 
-export default CreateNotice;
+export default EditNotice;

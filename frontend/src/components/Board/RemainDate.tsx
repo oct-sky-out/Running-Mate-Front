@@ -1,5 +1,4 @@
-import { readyException } from 'cypress/types/jquery';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import remainDateParser from '../../common/functions/remainDateParser';
 
 interface IProps {
