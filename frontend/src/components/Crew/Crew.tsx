@@ -1,34 +1,68 @@
-import { useEffect, useRef, useState } from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useInView } from 'react-intersection-observer';
 import { v4 } from 'uuid';
-import { Button } from '@nextui-org/react';
+import { Button, Loading } from '@nextui-org/react';
 import { useSelector } from '../../modules';
-import imageURL from '../../lib/URL/Image';
-import CrewMock from '../../excuteData/CrewMock/CrewMock';
+import CrewService from '../../lib/api/crewService';
+import CrewImageSlider from './CrewImageSlider';
+import CrewCard from './CrewCard';
+import { ICrewsData } from '../../modules/types/crewTypes';
 
 const Crew = () => {
   //* Redux
-  //! 로그인 상태로 가정했습니다.
   const { crewName, id, nickName } = useSelector((state) => ({
     crewName: state.signIn.userData.crewName,
     id: state.signIn.userData.id,
     nickName: state.signIn.userData.nickName,
   }));
 
+  //* customHook (무한스크롤 hook)
+  const [inViewRef, inView] = useInView();
+
   //* useState
-  const [imageOrder, setImageOrder] = useState(0);
+  const [offset, setOffset] = useState(0);
+  const [crewCards, setCrewCards] = useState<ICrewsData[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [isSamePreviousData, setIsSamePreviousData] = useState(true);
 
   //* useRef
   const crewBoardTop = useRef<undefined | number>(undefined);
 
-  //* useEffect
-  useEffect(() => {
-    const changeImage = setInterval(() => {
-      setImageOrder(imageOrder === 2 ? 0 : imageOrder + 1);
-    }, 5000);
+  const getCrews = useCallback(async () => {
+    setLoading(true);
+    try {
+      const crewsData = await new CrewService().getCrewRange(offset, 10);
 
-    return () => clearInterval(changeImage);
-  }, [imageOrder]);
+      if (crewsData.length === 0) setIsSamePreviousData(true);
+      if (crewsData.length !== 0) {
+        setIsSamePreviousData(false);
+        setCrewCards((previousCrewCards) => [
+          ...previousCrewCards,
+          ...crewsData,
+        ]);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+    setLoading(false);
+  }, [offset]);
+
+  const observerInView = useCallback(() => {
+    if (!loading && inView && !isSamePreviousData) {
+      setOffset(offset + 10);
+    }
+  }, [inView, loading, offset, isSamePreviousData]);
+
+  //* useEffects
+  useEffect(() => {
+    getCrews();
+  }, [getCrews]);
+
+  useEffect(() => {
+    //* 여기가 페이지 가장 마지막 요소를 인식하여 다음 ajax요청하는 구간
+    observerInView();
+  }, [inView]);
 
   const scrollDown = () => {
     window.scrollTo({ top: crewBoardTop.current, behavior: 'smooth' });
@@ -37,20 +71,7 @@ const Crew = () => {
   return (
     <div className="relative h-screen" style={{ height: '100vh' }}>
       <div className="w-full h-1/3">
-        <div className="h-full flex justify-center align-center">
-          {imageURL.map((url, index) => {
-            return (
-              imageOrder === index && (
-                <div key={v4()} className="w-full h-full bg-white opacity-50">
-                  <div
-                    className="w-full h-full transition-opacity bg-contain sm:bg-cover sm:bg-fixed bg-center bg-no-repeat"
-                    style={{ backgroundImage: `url(${url})` }}
-                  />
-                </div>
-              )
-            );
-          })}
-        </div>
+        <CrewImageSlider />
         <div className="absolute w-full h-1/3 inset-y-0">
           {crewName && (
             <div>
@@ -106,45 +127,36 @@ const Crew = () => {
           )}
         </div>
         <div
-          ref={(ref: any) => {
-            crewBoardTop.current = ref?.offsetTop;
+          ref={(divRef: any) => {
+            crewBoardTop.current = divRef?.offsetTop;
           }}
           className="w-full"
-          style={{ height: '600px' }}
         >
           <div className="my-20 flex justify-center">
             <h1 className="text-3xl ">크루 목록</h1>
           </div>
           <div className="w-3/4 mx-auto my-0 pb-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-10 justify-items-center">
-            {CrewMock.crew.map((crewInformation, index) => (
-              <Link
-                className="w-60 h-60 relative shadow-2xl transition ease-in-out duration-300 transform hover:scale-105 mx-3 rounded-2xl bg-white border-2"
-                to={`/crew/${crewInformation.crewName}`}
+            {crewCards.map((crewInformation) => (
+              <CrewCard
                 key={v4()}
-                data-cy={`${index}-crew-link`}
-              >
-                <div className="">
-                  <img
-                    src={crewInformation.imageUrl}
-                    alt={`${crewInformation.crewName}_image`}
-                    className="w-full h-full rounded-2xl object-cover"
-                  />
-                </div>
-                <div className="opacity-0 hover:block absolute inset-y-0 w-full rounded-2xl border-2 border-purple hover:bg-white hover:opacity-80">
-                  <div className="h-full flex flex-col justify-center items-center">
-                    <span className="flex items-center justify-shirink inline-block font-bold">
-                      크루이름 : {crewInformation.crewName}
-                    </span>
-                    <span className="flex items-center inline-block font-bold">
-                      리더 : {crewInformation.crewLeader}
-                    </span>
-                    <span className="flex items-center inline-block font-bold">
-                      지역 : {crewInformation.crewArea}
-                    </span>
-                  </div>
-                </div>
-              </Link>
+                crewArea={crewInformation.crewRegion}
+                crewName={crewInformation.crewName}
+                imageUrl=""
+              />
             ))}
+            {crewCards.length === 0 && (
+              <div className="w-full h-10 col-span-3">
+                <span className="text-2xl"> 크루 데이터가 비어있습니다.</span>
+              </div>
+            )}
+            {loading && (
+              <div className="w-full h-10 col-span-3">
+                <div className="w-32 h-full mx-auto my-0 flex justify-center">
+                  <Loading size="large" color="#8b8bf5" type="points" />
+                </div>
+              </div>
+            )}
+            <div className="w-full h-10" ref={inViewRef} />
           </div>
         </div>
       </div>
@@ -152,4 +164,4 @@ const Crew = () => {
   );
 };
 
-export default withRouter(Crew);
+export default React.memo(Crew);

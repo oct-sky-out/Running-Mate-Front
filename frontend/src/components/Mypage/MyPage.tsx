@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
-import { useLocation, useHistory } from 'react-router-dom';
+import { Route, useLocation, useHistory } from 'react-router-dom';
 import { useSelector } from '../../modules';
 import MyPageMenu from './MyPageMenu';
 import MyPageInformations from './MyPageInformations';
 import ChangeMyPassword from './ChangeMyPassword';
 import LeaveAccount from './LeaveAccount';
 import DetailBaseBorder from '../../common/components/DetailBaseBorder';
-import useRequireLogin from '../../hooks/useRequireLogin';
+import useRequireLogin from '../../hooks/useValidToken';
 
 const MyPage = () => {
   const location = useLocation();
@@ -34,9 +34,13 @@ const MyPage = () => {
       <div className="my-10">
         <MyPageMenu />
       </div>
-      {location.pathname === '/mypage' && <MyPageInformations token={token} />}
-      {location.pathname === '/mypage/changePassword' && <ChangeMyPassword />}
-      {location.pathname === '/mypage/leaving' && <LeaveAccount />}
+      <Route
+        exact
+        path="/mypage"
+        render={() => <MyPageInformations token={token} />}
+      />
+      <Route exact path="/mypage/changePassword" component={ChangeMyPassword} />
+      <Route exact path="/mypage/leaving" component={LeaveAccount} />
     </DetailBaseBorder>
   );
 };

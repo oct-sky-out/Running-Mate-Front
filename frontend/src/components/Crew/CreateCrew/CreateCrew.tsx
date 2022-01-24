@@ -82,6 +82,9 @@ const CreateCrew = () => {
   const goToCrewMainPage = () => {
     history.push('/crew');
   };
+  const goToCrewDetail = () => {
+    history.push(`/crewList/${crewName}`);
+  };
 
   //* useEffects
   useEffect(() => {
@@ -145,23 +148,29 @@ const CreateCrew = () => {
             } `}
           >
             <div className="w-20 lg:w-64 flex flex-grow justify-center">
-              <Link to="/crew" className="w-full flex flex-col">
+              <Link to="/crewList" className="w-full flex flex-col">
                 <Button
                   auto
                   type="button"
                   data-testid="go-crew-page-button"
                   color="#8b8bf5"
                 >
-                  크루 페이지로 돌아가기
+                  모여요 페이지로 돌아가기
                 </Button>
               </Link>
             </div>
             <div className="w-full flex flex-grow justify-center">
-              <Link to="/crew/crewid" className="w-full flex flex-col">
-                <Button auto type="button" color="#8b8bf5">
-                  크루 관리하러 가기
+              <div className="w-full flex flex-col">
+                <Button
+                  auto
+                  className=""
+                  type="button"
+                  color="#8b8bf5"
+                  onClick={goToCrewDetail}
+                >
+                  내 크루로 가기
                 </Button>
-              </Link>
+              </div>
             </div>
           </div>
           <div

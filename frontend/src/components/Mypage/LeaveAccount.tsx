@@ -1,15 +1,40 @@
 import { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Button, Input } from '@nextui-org/react';
+import Swal from 'sweetalert2';
 import { useSelector } from '../../modules';
-import axios from '../../lib/api/axios';
+import UserService from '../../lib/api/userService';
 
 const LeaveAccount = () => {
+  const history = useHistory();
   const { email, nickname, token } = useSelector((state) => ({
     email: state.signIn.userData.email,
     nickname: state.signIn.userData.nickName,
     token: state.signIn.token,
   }));
+
   const [confirmEmail, setConfirmEmail] = useState('');
+
+  const clickLeaveAccountButton = async () => {
+    try {
+      const { message } = await new UserService().leaveAccount(token, nickname);
+      await Swal.fire({
+        title: message,
+        icon: 'success',
+        confirmButtonText: '게스트 페이지로 돌아가기',
+        confirmButtonColor: '#d33',
+      });
+      history.push('/guest');
+    } catch (err: any) {
+      console.error(err);
+      Swal.fire({
+        title: '삭제 실패',
+        text: '삭제에 실패하였습니다. 죄송합니다.',
+        icon: 'error',
+        confirmButtonText: '확인',
+      });
+    }
+  };
 
   return (
     <div className="h-screen col-span-4 w-full pt-20">
@@ -31,17 +56,22 @@ const LeaveAccount = () => {
             }}
           />
         </div>
+        <Button
+          rounded
+          color="secondary"
+          size="xlarge"
+          disabled={!(email === confirmEmail)}
+          onClick={() => {}}
+        >
+          회원탈퇴
+        </Button>
         <div>
           <Button
             rounded
             color="secondary"
             size="xlarge"
             disabled={!(email === confirmEmail)}
-            onClick={async () => {
-              await axios.delete(`/user/delete`, {
-                headers: { 'X-AUTH-PATH': token },
-              });
-            }}
+            onClick={clickLeaveAccountButton}
           >
             회원탈퇴
           </Button>

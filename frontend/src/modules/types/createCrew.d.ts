@@ -1,4 +1,6 @@
-interface ICreateCrew {
+export type CreateCrewStatusType = '' | 'Fetch' | 'Sucecss' | 'Failure';
+
+export interface ICreateCrew {
   crew: {
     crewName: string;
     explanation: string;
@@ -7,5 +9,3 @@ interface ICreateCrew {
   };
   createCrewStatus: CreateCrewStatusType;
 }
-
-export default ICreateCrew;
