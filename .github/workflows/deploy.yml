@@ -58,21 +58,10 @@ jobs:
       - name: Deploy
         run: |
           aws s3 cp --recursive --region ap-northeast-2 build s3://runningmate
-  
-  deploy-dev:
-    name: Deploy(Dev)
-    needs: build
-    runs-on: ubuntu-latest
-    environment: 
-      name: Development
-      url: http://runningmate.s3-website.ap-northeast-2.amazonaws.com
-    steps:
-      - uses: actions/checkout@v2
-      - run: echo 'Developement deployment'
 
   deploy-production:
     name: Deploy(Production)
-    needs: deploy-dev
+    needs: build
     environment: 
       name: Production
       url: http://runningmate.s3-website.ap-northeast-2.amazonaws.com
