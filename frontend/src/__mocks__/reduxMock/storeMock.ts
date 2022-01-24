@@ -68,11 +68,31 @@ const mockStore: RootState = {
     address: {
       si: '',
       gu: '',
-      dong: '',
+      dou: '',
     },
     meetingTime: '',
     openChat: '',
     image: '',
+  },
+  viewNotice: {
+    viewNoticeData: {
+      address: {
+        dou: '',
+        si: '',
+        gu: '',
+      },
+      closed: false,
+      content: '',
+      count: 0,
+      id: 0,
+      image: '',
+      meetingTime: '',
+      openChat: '',
+      regDate: '',
+      title: '',
+      author: '',
+    },
+    notices: {},
   },
 };
 

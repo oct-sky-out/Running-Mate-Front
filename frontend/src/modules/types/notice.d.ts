@@ -8,20 +8,25 @@ export interface INotice {
 }
 
 export type AddressType = {
+  dou: string;
   si: string;
   gu: string;
-  dong: string;
 };
 
 export type GetNoticesType = {
   address: AddressType;
   closed: boolean;
-  content: string | null;
+  content: string;
   count: number;
   id: number;
-  image: string | null;
-  meetingTime: string | null;
-  openChat: string | null;
+  image: string;
+  meetingTime: string;
+  openChat: string;
   regDate: string;
-  title: string | null;
+  title: string;
+  author: string;
+};
+
+export type NoticesType = {
+  [key in string]: GetNoticesType;
 };
