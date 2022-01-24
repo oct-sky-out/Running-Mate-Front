@@ -54,9 +54,9 @@ const Header = () => {
             <span>뛰어요</span>
           </Link>
           <Link
-            to="/crew"
+            to="/crewList"
             className={
-              location.pathname === '/crew'
+              location.pathname === '/crewList'
                 ? 'text-purple'
                 : 'hover:text-purple'
             }
@@ -80,4 +80,4 @@ const Header = () => {
   );
 };
 
-export default withRouter(Header);
+export default Header;

@@ -1,8 +1,12 @@
-import React from 'react';
-import { withRouter, useHistory, RouteComponentProps } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { Route, useHistory, RouteComponentProps } from 'react-router-dom';
 import DetailBaseBorder from '../../../common/components/DetailBaseBorder';
 import PreviousPageButton from '../../../common/components/PreviousPageButton';
-import crewMock from '../../../excuteData/CrewMock/CrewMock';
+import CrewService from '../../../lib/api/crewService';
+import { useSelector } from '../../../modules';
+import { crewActions } from '../../../modules/crew';
+import CrewDelete from './CrewDelete';
 import CrewManagementMenu from './CrewManagementMenu';
 import Management from './Management';
 import PeopleManagement from './PeopleManagement';
@@ -16,6 +20,16 @@ const CrewManagement: React.FC<RouteComponentProps<MatchParam>> = ({
 }) => {
   //* react router dom
   const history = useHistory();
+  const dispatch = useDispatch();
+  const crewId = useSelector((state) => state.crew.id);
+
+  useEffect(() => {
+    if (crewId === 0)
+      new CrewService()
+        .getCrewDetail(match.params.id)
+        .then((data) => dispatch(crewActions.setCrewDetail(data)))
+        .catch((reason) => console.error(reason));
+  }, []);
 
   return (
     <DetailBaseBorder>
@@ -29,7 +43,7 @@ const CrewManagement: React.FC<RouteComponentProps<MatchParam>> = ({
       <div className="w-full mx-auto my-0 py-5 flex flex-col flex-wrap justify-center items-center space-y-5">
         <div className="w-full flex justify-center items-center">
           <img
-            src={crewMock.crew[0].imageUrl}
+            src=""
             alt=""
             className="w-48 rounded-full border-4 border-purple "
           />
@@ -43,13 +57,14 @@ const CrewManagement: React.FC<RouteComponentProps<MatchParam>> = ({
         </div>
       </div>
       <CrewManagementMenu />
-      {match.path.toLowerCase().includes('peoplemanagement') ? (
-        <PeopleManagement />
-      ) : (
-        <Management />
-      )}
+      <Route path={`${match.path}/management`} component={Management} />
+      <Route
+        path={`${match.path}/peoplemanagement`}
+        component={PeopleManagement}
+      />
+      <Route path={`${match.path}/delete`} component={CrewDelete} />
     </DetailBaseBorder>
   );
 };
 
-export default withRouter(CrewManagement);
+export default CrewManagement;

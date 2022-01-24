@@ -9,10 +9,27 @@ export interface ICrewType {
   explanation: string;
   userDtos: IUserData[];
   requestUsers: IUserData[];
+  crewRequested: boolean;
 }
 
 export interface ICrews {
-  crews: ICrewType[];
+  crews: {
+    id: number;
+    crewLeaderId: number;
+    crewRegion: string;
+    openChat: string;
+    crewName: string;
+    explanation: string;
+  }[];
+}
+
+export interface ICrewsData {
+  id: number;
+  crewLeaderId: number;
+  crewRegion: string;
+  openChat: string;
+  crewName: string;
+  explanation: string;
 }
 
 export interface ICrewRequestFetch {

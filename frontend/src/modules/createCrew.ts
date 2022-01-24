@@ -1,11 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import ICreateCrew from './types/createCrew';
+import { ICreateCrew, CreateCrewStatusType } from './types/createCrew';
 
 type CreateCrewType = {
   createCrewData: Omit<ICreateCrew, 'createCrewStatus'>;
   token: string;
 };
-type CreateCrewStatusType = '' | 'Fetch' | 'Sucecss' | 'Failure';
 
 const initialState: ICreateCrew = {
   crew: {
