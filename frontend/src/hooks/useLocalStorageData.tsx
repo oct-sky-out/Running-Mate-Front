@@ -23,8 +23,7 @@ const useLocalStroeageData = () => {
   const setUserData = (userData: IUserData) =>
     localStorage.setItem('userData', JSON.stringify(userData));
 
-  const setToken = (token: string) =>
-    localStorage.setItem('token', JSON.stringify(token));
+  const setToken = (token: string) => localStorage.setItem('token', token);
 
   return { getUserData, getToken, setUserData, setToken };
 };

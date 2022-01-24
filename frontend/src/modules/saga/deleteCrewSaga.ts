@@ -14,23 +14,21 @@ function* deleteCrewSaga({
     );
     if (message === '삭제 완료') {
       yield put(crewActions.sucessCrewRequest());
-      const { email, crewName, nickName, address, id, crewLeader, reuslt } =
-        yield call(
-          refreshUserDataAndRefreshLocalStorage,
-          payload.token,
-          payload.userNickName
-        );
-      if (reuslt === undefined)
-        yield put(
-          SignInActions.signInSuccess({
-            email,
-            crewName,
-            nickName,
-            address,
-            id,
-            crewLeader,
-          })
-        );
+      const { email, crewName, nickName, address, id, crewLeader } = yield call(
+        refreshUserDataAndRefreshLocalStorage,
+        payload.token,
+        payload.userNickName
+      );
+      yield put(
+        SignInActions.signInSuccess({
+          email,
+          crewName,
+          nickName,
+          address,
+          id,
+          crewLeader,
+        })
+      );
     }
   } catch {
     yield put(crewActions.failureCrewRequest());

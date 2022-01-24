@@ -23,32 +23,36 @@ export const refreshUserDataAndRefreshLocalStorage = async (
 function* createCrewFetchSaga({
   payload,
 }: ReturnType<typeof CreateCrewActions.newCrew>) {
-  const { message } = yield call(new CrewService().createCrew, {
-    token: payload.token,
-    createCrewData: payload.createCrewData,
-  });
-  if (message === '크루 생성 완료') {
-    yield put(CreateCrewActions.setCreateOpenChatStatus('Sucecss'));
-    const { email, crewName, nickName, address, id, crewLeader, reuslt } =
-      yield call(
-        refreshUserDataAndRefreshLocalStorage,
-        payload.token,
-        payload.userNickName
-      );
-    if (reuslt === undefined)
-      yield put(
-        SignInActions.signInSuccess({
-          email,
-          crewName,
-          nickName,
-          address,
-          id,
-          crewLeader,
-        })
-      );
-  }
-  if (message === '이미 크루가 존재합니다.')
+  try {
+    const { message } = yield call(new CrewService().createCrew, {
+      token: payload.token,
+      createCrewData: payload.createCrewData,
+    });
+    if (message === '크루 생성 완료') {
+      yield put(CreateCrewActions.setCreateOpenChatStatus('Sucecss'));
+      const { email, crewName, nickName, address, id, crewLeader, reuslt } =
+        yield call(
+          refreshUserDataAndRefreshLocalStorage,
+          payload.token,
+          payload.userNickName
+        );
+      if (reuslt === undefined)
+        yield put(
+          SignInActions.signInSuccess({
+            email,
+            crewName,
+            nickName,
+            address,
+            id,
+            crewLeader,
+          })
+        );
+    }
+    if (message === '이미 크루가 존재합니다.')
+      yield put(CreateCrewActions.setCreateOpenChatStatus('Failure'));
+  } catch {
     yield put(CreateCrewActions.setCreateOpenChatStatus('Failure'));
+  }
 }
 
 export default function* watchCreateCrew() {

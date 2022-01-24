@@ -31,12 +31,19 @@ const Crew = () => {
 
   const getCrews = useCallback(async () => {
     setLoading(true);
-    const crewsData = await new CrewService().getCrewRange(offset, 10);
+    try {
+      const crewsData = await new CrewService().getCrewRange(offset, 10);
 
-    if (crewsData.length === 0) setIsSamePreviousData(true);
-    if (crewsData.length !== 0) {
-      setIsSamePreviousData(false);
-      setCrewCards((previousCrewCards) => [...previousCrewCards, ...crewsData]);
+      if (crewsData.length === 0) setIsSamePreviousData(true);
+      if (crewsData.length !== 0) {
+        setIsSamePreviousData(false);
+        setCrewCards((previousCrewCards) => [
+          ...previousCrewCards,
+          ...crewsData,
+        ]);
+      }
+    } catch (err) {
+      console.error(err);
     }
     setLoading(false);
   }, [offset]);
