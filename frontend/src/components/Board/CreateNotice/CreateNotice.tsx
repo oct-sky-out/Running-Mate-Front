@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { withRouter, useHistory } from 'react-router-dom';
+// Next UI
 import { Input, Button } from '@nextui-org/react';
 import { FormElement } from '@nextui-org/react/esm/input/input-props';
 // Quill
@@ -9,16 +10,20 @@ import 'react-quill/dist/quill.snow.css';
 // DatePicker
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-
+// Sweetalert
 import Swal from 'sweetalert2';
-
-import { CreateNoticeActions } from '../../../modules/createNotice';
+// Action
 import { useSelector } from '../../../modules';
-
+import { CreateNoticeActions } from '../../../modules/createNotice';
+// Component
 import SelecRegion from '../../SelectRegion/SelcetRegion';
+import ImageButtons from '../../../common/components/ImageButtons';
+// Type
 import { AddressType } from '../../../modules/types/notice';
+
 // API
 import NoticeService from '../../../lib/api/noticeService';
+import { ImageUploader, ImageDelete } from '../../../lib/api/imageUploader';
 
 type CreacteNoticeActionType = 'setTitle' | 'setContent' | 'setOpenChat';
 
@@ -34,6 +39,9 @@ const CreateNotice = () => {
   enoughDeadLine.setDate(enoughDeadLine.getDate() + 3);
   const [seletedDate, setSelectedDate] = useState(enoughDeadLine);
   const [timeOnOff, setTimeOnOff] = useState(true);
+  const [previewImageFile, setPreviewImageFile] = useState<
+    string | ArrayBuffer | null
+  >();
 
   //* useRef
   const imageInputRef = useRef<HTMLInputElement>(null);
@@ -61,19 +69,81 @@ const CreateNotice = () => {
     token: state.signIn.token,
   }));
 
-  //* event version
-  // const saveFileImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   if (!e.target.files) return;
-  //   const file = e.target.files[0];
-  //   const formData = new FormData();
-  //   formData.append('file', file);
+  const setPreviewImage = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      setPreviewImageFile(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
 
-  //   const reader = new FileReader();
-  //   reader.onload = () => {
-  //     dispatch(CreateNoticeActions.setImage(reader.result || ''));
-  //   };
-  //   reader.readAsDataURL(file);
-  // };
+  const saveImageFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    try {
+      if (!e.target.files) return;
+      const file = e.target.files[0];
+      const location = await ImageUploader(file, 'boardImage');
+      dispatch(CreateNoticeActions.setImage(location));
+      // 미리보기 이미지
+      setPreviewImage(file);
+    } catch (error) {
+      await Swal.fire({
+        title: '이미지 업로드 실패',
+        text: '이미지 업로드에 실패하였습니다. 다시 시도해주세요.',
+        icon: 'error',
+        confirmButtonText: '확인',
+      });
+      console.error(error);
+    }
+  };
+  const deleteImageFile = async () => {
+    try {
+      const imageURLArr = image.split('/');
+      const fileName = `${imageURLArr[imageURLArr.length - 2]}/${
+        imageURLArr[imageURLArr.length - 1]
+      }`;
+      await ImageDelete(fileName);
+      dispatch(CreateNoticeActions.setImage(''));
+      // 미리보기 이미지
+      setPreviewImageFile(null);
+    } catch (error) {
+      await Swal.fire({
+        title: '이미지 삭제 실패',
+        text: '이미지 삭제에 실패하였습니다. 다시 시도해주세요.',
+        icon: 'error',
+        confirmButtonText: '확인',
+      });
+      console.error(error);
+    }
+  };
+
+  const editImageFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    try {
+      if (!e.target.files) return;
+      // 삭제
+      if (image) {
+        const imageURLArr = image.split('/');
+        const fileName = `${imageURLArr[imageURLArr.length - 2]}/${
+          imageURLArr[imageURLArr.length - 1]
+        }`;
+        await ImageDelete(fileName);
+      }
+      // 업로드
+      const file = e.target.files[0];
+      const location = await ImageUploader(file, 'boardImage');
+      dispatch(CreateNoticeActions.setImage(location));
+
+      // 미리보기 이미지
+      setPreviewImage(file);
+    } catch (error) {
+      await Swal.fire({
+        title: '이미지 변경 실패',
+        text: '이미지 변경에 실패하였습니다. 다시 시도해주세요.',
+        icon: 'error',
+        confirmButtonText: '확인',
+      });
+      console.error(error);
+    }
+  };
 
   const onChangeInputState = (
     e: React.ChangeEvent<FormElement>,
@@ -253,8 +323,12 @@ const CreateNotice = () => {
             </div>
             <div className="flex flex-col items-center">
               <div className="flex flex-col justify-center items-center rounded border-solid border-2 border-indigo-400 h-60 w-60 mb-3">
-                {image ? (
-                  <img src={image as string} alt="map" className="w-full" />
+                {previewImageFile ? (
+                  <img
+                    src={previewImageFile as string}
+                    alt="map"
+                    className="w-full"
+                  />
                 ) : (
                   <div className="h-ful w-full flex flex-col justify-center items-center text-indigo-400 space-y-2">
                     <span className="block">러닝 경로 지도를</span>
@@ -263,20 +337,16 @@ const CreateNotice = () => {
                   </div>
                 )}
               </div>
-              <label
-                htmlFor="notice-image"
-                className="w-64 flex flex-col items-center px-4 py-3 bg-white rounded-md shadow-md tracking-wide uppercase border border-blue cursor-pointer hover:bg-purple-600 hover:text-white text-purple ease-linear transition-all duration-150"
-              >
-                러닝 경로 지도 등록
-                <input
-                  ref={imageInputRef}
-                  id="notice-image"
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  // onChange={saveFileImage}
-                />
-              </label>
+              <ImageButtons
+                containerClassName="flex w-64"
+                condition={image}
+                deleteButtonEvent={deleteImageFile}
+                deleteButtonName="사진 삭제"
+                editButtonEvent={editImageFile}
+                editButtonName="사진 변경"
+                uploadButtonEvent={saveImageFile}
+                uploadButtonName="러닝 사진 등록"
+              />
             </div>
           </div>
           <div className="mb-20 md:mb-16">
