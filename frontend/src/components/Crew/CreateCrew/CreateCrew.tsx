@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-
-import { Input, Button } from '@nextui-org/react';
+import { Input, Button, Loading } from '@nextui-org/react';
 import { FormElement } from '@nextui-org/react/esm/input/input-props';
-
+import Swal from 'sweetalert2';
 import { CreateCrewActions } from '../../../modules/createCrew';
 import { useSelector } from '../../../modules/index';
-import UserService from '../../../lib/api/userService';
 import CreateCrewOrderMarker from './CreateCrewOrderMarker';
 import PreviousPageButton from '../../../common/components/PreviousPageButton';
 import DetailBaseBorder from '../../../common/components/DetailBaseBorder';
@@ -24,15 +22,23 @@ const CreateCrew = () => {
 
   //* Redux
   const dispatch = useDispatch();
-  const { crewName, crewRegion, explanation, openChat, token, userNickName } =
-    useSelector((state) => ({
-      crewName: state.createCrew.crew.crewName,
-      crewRegion: state.createCrew.crew.crewRegion,
-      explanation: state.createCrew.crew.explanation,
-      openChat: state.createCrew.crew.openChat,
-      token: state.signIn.token,
-      userNickName: state.signIn.userData.nickName,
-    }));
+  const {
+    crewName,
+    crewRegion,
+    explanation,
+    openChat,
+    createCrewFetchStatus,
+    token,
+    userNickName,
+  } = useSelector((state) => ({
+    crewName: state.createCrew.crew.crewName,
+    crewRegion: state.createCrew.crew.crewRegion,
+    explanation: state.createCrew.crew.explanation,
+    openChat: state.createCrew.crew.openChat,
+    createCrewFetchStatus: state.createCrew.createCrewStatus,
+    token: state.signIn.token,
+    userNickName: state.signIn.userData.nickName,
+  }));
 
   //* any variables
   const reduxStates = [crewName, crewRegion, explanation, openChat];
@@ -42,11 +48,12 @@ const CreateCrew = () => {
     'setExplanation',
     'setOpenChat',
   ];
-  const complete: string = '🎉 축하합니다. 새로운 크루를 만들었습니다!';
 
   //* useState
   const [questionOrder, setQuestionOrder] = useState(0);
   const [canComplete, setCanComplete] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [createResult, setCreateResult] = useState('');
 
   const questions: string[] = [
     '크루이름이 무엇인가요?',
@@ -59,6 +66,7 @@ const CreateCrew = () => {
   const moveNextOrComplete = () => {
     if (questionOrder < questions.length) setQuestionOrder(questionOrder + 1);
     if (questionOrder === questions.length - 1) {
+      setLoading(true);
       dispatch(
         CreateCrewActions.newCrew({
           createCrewData: {
@@ -70,6 +78,7 @@ const CreateCrew = () => {
       );
     }
   };
+
   const movePrevious = () => {
     if (questionOrder > 0) setQuestionOrder(questionOrder - 1);
   };
@@ -80,11 +89,22 @@ const CreateCrew = () => {
     dispatch(CreateCrewActions[actionName](e.target.value));
   };
   const goToCrewMainPage = () => {
-    history.push('/crew');
+    history.push('/crewList');
   };
   const goToCrewDetail = () => {
     history.push(`/crewList/${crewName}`);
   };
+
+  //* useMemo
+  const creatingFetchResult = useMemo(() => {
+    if (questionOrder === questions.length) {
+      if (loading) {
+        return <Loading type="points" size="xlarge" color="#8b8bf5" />;
+      }
+      return createResult;
+    }
+    return questions[questionOrder];
+  }, [questionOrder, createResult, loading]);
 
   //* useEffects
   useEffect(() => {
@@ -95,6 +115,24 @@ const CreateCrew = () => {
     )
       setCanComplete(false);
   }, [questionOrder, crewName, crewRegion, explanation, openChat]);
+
+  useEffect(() => {
+    if (createCrewFetchStatus === 'Sucecss')
+      setCreateResult('🎉 축하합니다. 새로운 크루를 만들었습니다!');
+    if (createCrewFetchStatus === 'Failure')
+      Swal.fire({
+        icon: 'error',
+        title: '크루 생성 실패',
+        text: '오류로 인하여 크루 생성에 실패하였습니다.',
+      }).then(() => setCreateResult('크루 생성에 실패하였습니다.'));
+    if (
+      createCrewFetchStatus === 'Sucecss' ||
+      createCrewFetchStatus === 'Failure'
+    ) {
+      setLoading(false);
+      dispatch(CreateCrewActions.setCreateCrewStatus(''));
+    }
+  }, [createCrewFetchStatus]);
 
   useEffect(() => {
     dispatch(CreateCrewActions.setInit());
@@ -117,60 +155,56 @@ const CreateCrew = () => {
           className="text-2xl md:text-3xl font-bold lg:mb-20 p-8 text-center"
           data-testid="question-span"
         >
-          {questionOrder === questions.length
-            ? complete
-            : questions[questionOrder]}
+          {creatingFetchResult}
         </span>
-        <div
-          style={
-            questionOrder === questions.length
-              ? { visibility: 'hidden' }
-              : { visibility: 'visible' }
-          }
-          onSubmit={(e) => e.preventDefault}
-          className="w-3/5 text-center mb-10"
-        >
-          <Input
-            type="text"
-            width="80%"
-            className="lg:mb-20"
-            value={reduxStates[questionOrder] || ''}
-            onChange={(e) => {
-              InputStateToRedux(e, ReduxActionNames[questionOrder]);
-            }}
-            data-testid="data-input"
-          />
-        </div>
+        {questionOrder !== questions.length && (
+          <div
+            onSubmit={(e) => e.preventDefault}
+            className="w-3/5 text-center mb-10"
+          >
+            <Input
+              type="text"
+              width="80%"
+              className="lg:mb-20"
+              value={reduxStates[questionOrder] || ''}
+              onChange={(e) => {
+                InputStateToRedux(e, ReduxActionNames[questionOrder]);
+              }}
+              data-testid="data-input"
+            />
+          </div>
+        )}
         <div>
           <div
-            className={`w-full h-32 flex flex-wrap  ${
+            className={`w-full h-32 flex flex-wrap space-x-3 ${
               questionOrder === questions.length ? 'block' : 'hidden'
             } `}
           >
-            <div className="w-20 lg:w-64 flex flex-grow justify-center">
-              <Link to="/crewList" className="w-full flex flex-col">
-                <Button
-                  auto
-                  type="button"
-                  data-testid="go-crew-page-button"
-                  color="#8b8bf5"
-                >
-                  모여요 페이지로 돌아가기
-                </Button>
-              </Link>
+            <div className="w-20 lg:w-64 flex flex-col justify-center">
+              <Button
+                auto
+                type="button"
+                data-testid="go-crew-page-button"
+                color="#8b8bf5"
+                onClick={goToCrewMainPage}
+                disabled={loading}
+              >
+                모여요 페이지로 돌아가기
+              </Button>
             </div>
-            <div className="w-full flex flex-grow justify-center">
-              <div className="w-full flex flex-col">
-                <Button
-                  auto
-                  className=""
-                  type="button"
-                  color="#8b8bf5"
-                  onClick={goToCrewDetail}
-                >
-                  내 크루로 가기
-                </Button>
-              </div>
+            <div className="w-20 lg:w-64 flex flex-col justify-center">
+              <Button
+                auto
+                className=""
+                type="button"
+                color="#8b8bf5"
+                onClick={goToCrewDetail}
+                disabled={
+                  loading || createResult === '크루 생성에 실패하였습니다.'
+                }
+              >
+                내 크루로 가기
+              </Button>
             </div>
           </div>
           <div
