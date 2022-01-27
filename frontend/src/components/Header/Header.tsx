@@ -1,12 +1,17 @@
 import { useState, useEffect } from 'react';
 import { useLocation, Link, withRouter, useHistory } from 'react-router-dom';
 import { ReactComponent as Logo } from '../../assets/logo_mini.svg';
+import { useSelector } from '../../modules';
+import SignInAndSignUpButtons from './SignInAndSignUpButtons';
 import UserProfile from './UserProfile';
 
 const Header = () => {
   //* react-router
   const location = useLocation();
   const history = useHistory();
+
+  //* redux
+  const isLogged = useSelector((state) => state.signIn.isLogged);
 
   //* useState
   const [scrollBottomLine, setScrollBottomLine] = useState('');
@@ -36,7 +41,7 @@ const Header = () => {
   return (
     <div className="z-2 w-screen h-16 md:h-24 sticky top-0 bg-white">
       <div
-        className={`bg-white transition duration-1000 border-b-2 border-purple border-opacity-0 ${scrollBottomLine} px-5 flex w-full h-full items-center`}
+        className={`bg-white transition duration-1000 border-b-2 border-purple border-opacity-0 ${scrollBottomLine} px-3 flex w-full h-full items-center`}
       >
         <div className="w-full h-full space-x-4 flex items-center font-bold text-xs md:text-base lg:text-lg">
           <Logo
@@ -74,7 +79,7 @@ const Header = () => {
             <span>쑥떡쑥떡</span>
           </Link>
         </div>
-        <UserProfile />
+        {isLogged ? <UserProfile /> : <SignInAndSignUpButtons />}
       </div>
     </div>
   );
