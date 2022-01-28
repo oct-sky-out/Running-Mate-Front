@@ -12,14 +12,10 @@ type ViewNoticesSetUpType = {
 
 interface INoticeService {
   createNotice(token: string, notice: INotice): Promise<GetNoticesType>;
-  viewChoiceNotices(
-    setUp: ViewNoticesSetUpType
-  ): Promise<{ [key: string]: GetNoticesType }>;
+  viewChoiceNotices(setUp: ViewNoticesSetUpType): Promise<GetNoticesType[]>;
+  viewAllNotices(offset: number, limit: number): Promise<GetNoticesType[]>;
   deleteNotice(noticeId: number, token: string): void;
-  getTestNotices(
-    offset: number,
-    limit: number
-  ): { [key: string]: GetNoticesType };
+  getTestNotices(offset: number, limit: number): GetNoticesType[];
 }
 
 class NoticeService implements INoticeService {
@@ -48,7 +44,7 @@ class NoticeService implements INoticeService {
 
   viewChoiceNotices = async (query: ViewNoticesSetUpType) => {
     try {
-      const { data } = await axios.get<{ [key: string]: GetNoticesType }>(
+      const { data } = await axios.get<GetNoticesType[]>(
         `/boards?dou=${query.dou}&si=${query.si}&gu=${query.gu}&offset=${query.offset}&limit=${query.limit}`
       );
       return data;
@@ -60,9 +56,9 @@ class NoticeService implements INoticeService {
   viewAllNotices = async (
     offset: number,
     limit: number
-  ): Promise<{ [key: string]: GetNoticesType }> => {
+  ): Promise<GetNoticesType[]> => {
     try {
-      const { data } = await axios.get<{ [key: string]: GetNoticesType }>(
+      const { data } = await axios.get<GetNoticesType[]>(
         `/boards?offset=${offset}&limit=${limit}`
       );
       return data;
@@ -122,11 +118,11 @@ class NoticeService implements INoticeService {
 
   getTestNotices = (offset: number, limit: number) => {
     let count = 0;
-    const fillteredData: { [key: string]: GetNoticesType } = {};
+    const fillteredData: GetNoticesType[] = [];
     Object.keys(BoardData).forEach((key, index) => {
       if (offset <= index && count < limit) {
         count += 1;
-        fillteredData[key] = BoardData[key];
+        fillteredData.push(BoardData[key]);
       }
     });
     return fillteredData;

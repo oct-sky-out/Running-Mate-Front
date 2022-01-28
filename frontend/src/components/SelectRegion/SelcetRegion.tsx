@@ -28,11 +28,12 @@ const SelcetRegion: React.FC<Props> = memo(
     };
     useEffect(() => {
       submit({
+        gwon: region1,
         dou: region2,
         si: region3,
         gu: region4,
       });
-    }, [region2, region3, region4]);
+    }, [region1, region2, region3, region4]);
 
     return (
       <div className="flex flex-col sm:flex-row justify-center pb-2">

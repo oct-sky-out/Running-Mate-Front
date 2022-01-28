@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { withRouter, useHistory } from 'react-router-dom';
 // Next UI
@@ -39,12 +39,11 @@ const CreateNotice = () => {
   enoughDeadLine.setDate(enoughDeadLine.getDate() + 3);
   const [seletedDate, setSelectedDate] = useState(enoughDeadLine);
   const [timeOnOff, setTimeOnOff] = useState(true);
+  const [imageUploadLoading, setImageUploadLoading] = useState(false);
   const [previewImageFile, setPreviewImageFile] = useState<
     string | ArrayBuffer | null
   >();
 
-  //* useRef
-  const imageInputRef = useRef<HTMLInputElement>(null);
   //* Redux
   const dispatch = useDispatch();
 
@@ -79,13 +78,17 @@ const CreateNotice = () => {
 
   const saveImageFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     try {
+      setImageUploadLoading(true);
       if (!e.target.files) return;
       const file = e.target.files[0];
       const location = await ImageUploader(file, 'boardImage');
       dispatch(CreateNoticeActions.setImage(location));
+
       // 미리보기 이미지
       setPreviewImage(file);
+      setImageUploadLoading(false);
     } catch (error) {
+      setImageUploadLoading(false);
       await Swal.fire({
         title: '이미지 업로드 실패',
         text: '이미지 업로드에 실패하였습니다. 다시 시도해주세요.',
@@ -97,15 +100,19 @@ const CreateNotice = () => {
   };
   const deleteImageFile = async () => {
     try {
+      setImageUploadLoading(true);
       const imageURLArr = image.split('/');
       const fileName = `${imageURLArr[imageURLArr.length - 2]}/${
         imageURLArr[imageURLArr.length - 1]
       }`;
+
       await ImageDelete(fileName);
       dispatch(CreateNoticeActions.setImage(''));
       // 미리보기 이미지
       setPreviewImageFile(null);
+      setImageUploadLoading(false);
     } catch (error) {
+      setImageUploadLoading(false);
       await Swal.fire({
         title: '이미지 삭제 실패',
         text: '이미지 삭제에 실패하였습니다. 다시 시도해주세요.',
@@ -118,6 +125,7 @@ const CreateNotice = () => {
 
   const editImageFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     try {
+      setImageUploadLoading(true);
       if (!e.target.files) return;
       // 삭제
       if (image) {
@@ -134,7 +142,9 @@ const CreateNotice = () => {
 
       // 미리보기 이미지
       setPreviewImage(file);
+      setImageUploadLoading(false);
     } catch (error) {
+      setImageUploadLoading(false);
       await Swal.fire({
         title: '이미지 변경 실패',
         text: '이미지 변경에 실패하였습니다. 다시 시도해주세요.',
@@ -196,6 +206,7 @@ const CreateNotice = () => {
       [content, '게시물 내용을 작성해주세요'],
       [address.si, '모든 주소를 선택해주세요'],
       [title, '제목을 작성해주세요'],
+      [imageUploadLoading, '이미지가 저장 중입니다. 조금만 기다려주세요 :)'],
     ].forEach((str) => {
       if (!str[0]) {
         Swal.fire(`${str[1]}`).then(() => {

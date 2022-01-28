@@ -13,6 +13,13 @@ export type AddressType = {
   gu: string;
 };
 
+export type SearchAddressType = {
+  gwon: string;
+  dou: string;
+  si: string;
+  gu: string;
+};
+
 export type GetNoticesType = {
   address: AddressType;
   closed: boolean;

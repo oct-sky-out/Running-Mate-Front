@@ -17,8 +17,11 @@ import { useSelector } from '../../../modules';
 
 import SelecRegion from '../../SelectRegion/SelcetRegion';
 import { AddressType } from '../../../modules/types/notice';
+import ImageButtons from '../../../common/components/ImageButtons';
+
 // API
 import NoticeService from '../../../lib/api/noticeService';
+import { ImageUploader, ImageDelete } from '../../../lib/api/imageUploader';
 
 type NoticeActionType = 'setTitle' | 'setContent' | 'setOpenChat';
 
@@ -35,6 +38,10 @@ const EditNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
   enoughDeadLine.setDate(enoughDeadLine.getDate() + 3);
   const [seletedDate, setSelectedDate] = useState(enoughDeadLine);
   const [timeOnOff, setTimeOnOff] = useState(true);
+  const [imageUploadLoading, setImageUploadLoading] = useState(false);
+  const [previewImageFile, setPreviewImageFile] = useState<
+    string | ArrayBuffer | null
+  >();
 
   //* useRef
   const imageInputRef = useRef<HTMLInputElement>(null);
@@ -67,18 +74,92 @@ const EditNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
   }));
 
   //* event version
-  // const saveFileImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   if (!e.target.files) return;
-  //   const file = e.target.files[0];
-  //   const formData = new FormData();
-  //   formData.append('file', file);
+  const setPreviewImage = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      setPreviewImageFile(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
 
-  //   const reader = new FileReader();
-  //   reader.onload = () => {
-  //     dispatch(CreateNoticeActions.setImage(reader.result || ''));
-  //   };
-  //   reader.readAsDataURL(file);
-  // };
+  const saveImageFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    try {
+      setImageUploadLoading(true);
+      if (!e.target.files) return;
+      const file = e.target.files[0];
+      const location = await ImageUploader(file, 'boardImage');
+      dispatch(noticeActions.setImage(location));
+
+      // 미리보기 이미지
+      setPreviewImage(file);
+      setImageUploadLoading(false);
+    } catch (error) {
+      setImageUploadLoading(false);
+      await Swal.fire({
+        title: '이미지 업로드 실패',
+        text: '이미지 업로드에 실패하였습니다. 다시 시도해주세요.',
+        icon: 'error',
+        confirmButtonText: '확인',
+      });
+      console.error(error);
+    }
+  };
+  const deleteImageFile = async () => {
+    try {
+      setImageUploadLoading(true);
+      const imageURLArr = image.split('/');
+      const fileName = `${imageURLArr[imageURLArr.length - 2]}/${
+        imageURLArr[imageURLArr.length - 1]
+      }`;
+
+      await ImageDelete(fileName);
+      dispatch(noticeActions.setImage(''));
+      // 미리보기 이미지
+      setPreviewImageFile(null);
+      setImageUploadLoading(false);
+    } catch (error) {
+      setImageUploadLoading(false);
+      await Swal.fire({
+        title: '이미지 삭제 실패',
+        text: '이미지 삭제에 실패하였습니다. 다시 시도해주세요.',
+        icon: 'error',
+        confirmButtonText: '확인',
+      });
+      console.error(error);
+    }
+  };
+
+  const editImageFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    try {
+      setImageUploadLoading(true);
+      if (!e.target.files) return;
+      // 삭제
+      if (image) {
+        const imageURLArr = image.split('/');
+        const fileName = `${imageURLArr[imageURLArr.length - 2]}/${
+          imageURLArr[imageURLArr.length - 1]
+        }`;
+        await ImageDelete(fileName);
+      }
+      // 업로드
+      const file = e.target.files[0];
+      const location = await ImageUploader(file, 'boardImage');
+      dispatch(noticeActions.setImage(location));
+
+      // 미리보기 이미지
+      setPreviewImage(file);
+      setImageUploadLoading(false);
+    } catch (error) {
+      setImageUploadLoading(false);
+      await Swal.fire({
+        title: '이미지 변경 실패',
+        text: '이미지 변경에 실패하였습니다. 다시 시도해주세요.',
+        icon: 'error',
+        confirmButtonText: '확인',
+      });
+      console.error(error);
+    }
+  };
 
   const onChangeInputState = (
     e: React.ChangeEvent<FormElement>,
@@ -269,20 +350,16 @@ const EditNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
                   </div>
                 )}
               </div>
-              <label
-                htmlFor="notice-image"
-                className="w-64 flex flex-col items-center px-4 py-3 bg-white rounded-md shadow-md tracking-wide uppercase border border-blue cursor-pointer hover:bg-purple-600 hover:text-white text-purple ease-linear transition-all duration-150"
-              >
-                러닝 경로 지도 등록
-                <input
-                  ref={imageInputRef}
-                  id="notice-image"
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  // onChange={saveFileImage}
-                />
-              </label>
+              <ImageButtons
+                containerClassName="flex w-64"
+                condition={image}
+                deleteButtonEvent={deleteImageFile}
+                deleteButtonName="사진 삭제"
+                editButtonEvent={editImageFile}
+                editButtonName="사진 변경"
+                uploadButtonEvent={saveImageFile}
+                uploadButtonName="러닝 사진 등록"
+              />
             </div>
           </div>
           <div className="mb-20 md:mb-16">

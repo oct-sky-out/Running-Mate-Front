@@ -56,12 +56,7 @@ const ImageButtons: React.FC<IImageButtons> = ({
             id="delete-image"
             type="button"
             className="w-1/2 flex flex-col items-center px-4 py-3 bg-white rounded-md shadow-md tracking-wide uppercase border border-blue cursor-pointer hover:bg-purple-600 hover:text-white text-purple ease-linear transition-all duration-150"
-            onClick={() => {
-              console.log('삭제 버튼');
-              deleteButtonEvent().then(() => {
-                console.log('삭제 성공~');
-              });
-            }}
+            onClick={deleteButtonEvent}
           >
             {deleteButtonName}
           </button>

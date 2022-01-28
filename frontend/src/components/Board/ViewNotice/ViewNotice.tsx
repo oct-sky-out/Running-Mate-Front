@@ -14,6 +14,7 @@ import dateParser from '../../../common/functions/dateParser';
 import PreviousPageButton from '../../../common/components/PreviousPageButton';
 import { useSelector } from '../../../modules/index';
 import NoticeService from '../../../lib/api/noticeService';
+import { ImageDelete } from '../../../lib/api/imageUploader';
 
 interface MatchParam {
   runId: string;
@@ -57,50 +58,76 @@ const ViewNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
     nickName: state.signIn.userData.nickName,
   }));
 
-  const endDate = new Date(meetingTime || new Date());
+  const endDate = meetingTime ? new Date(meetingTime) : '';
 
-  const deleteNotice = () => {
-    Swal.fire({
-      title: '게시물 삭제',
-      text: '게시물을 삭제하시겠습니까?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: '삭제하기',
-    }).then((result) => {
+  const deleteNotice = async () => {
+    try {
+      const result = await Swal.fire({
+        title: '게시물 삭제',
+        text: '게시물을 삭제하시겠습니까?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '삭제하기',
+      });
       if (result.isConfirmed) {
-        noticeService
-          .deleteNotice(id, token)
-          .then((data) => {
-            console.log(data);
-            Swal.fire(
-              '삭제 성공',
-              '게시물을 성공적으로 삭제하였습니다.',
-              'success'
-            ).then(() => {
-              history.push('/');
-            });
-          })
-          .catch(() => {
-            console.error('삭제에 실패하였습니다.');
-          });
+        const data = await noticeService.deleteNotice(id, token);
+        await Swal.fire(
+          '삭제 성공',
+          '게시물을 성공적으로 삭제하였습니다.',
+          'success'
+        );
+        const imageURLArr = image.split('/');
+        const fileName = `${imageURLArr[imageURLArr.length - 2]}/${
+          imageURLArr[imageURLArr.length - 1]
+        }`;
+        await ImageDelete(fileName);
+        history.push('/');
       }
-    });
+    } catch (error) {
+      await Swal.fire({
+        title: '게시물 삭제 실패',
+        text: '게시물 삭제에 실패하였습니다. 다시 시도해주세요.',
+        icon: 'error',
+        confirmButtonText: '확인',
+      });
+      console.error(error);
+    }
   };
 
-  const getBoardDate = () => {
-    noticeService.getNotice(match.params.runId, token).then((data) => {
+  const getBoardDate = async () => {
+    try {
+      const data = await noticeService.getNotice(match.params.runId, token);
       dispatch(noticeActions.setOneViewNotice(data));
-      console.log('get data= ', data);
-    });
+      console.log(data);
+    } catch (error) {
+      const swalWithBootstrapButtons = await Swal.mixin({
+        buttonsStyling: true,
+      });
+      const result = await swalWithBootstrapButtons.fire({
+        title: '로그인이 필요합니다.',
+        text: '로그인 창으로 이동하시겠습니까?',
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#EF8791',
+        confirmButtonText: '이동',
+        cancelButtonText: '취소',
+      });
+      if (result.isConfirmed) {
+        history.push('/guest');
+      }
+      console.error(error);
+    }
   };
+
   useEffect(() => {
     getBoardDate(); // MOCK DATA 사용시 주석 처리할것.
-    if (!title) {
-      // history.push('/');
+    if (!title || !match.params.runId) {
+      history.push('/');
     }
-  }, [content]);
+  }, [content, match.params.runId]);
 
   return (
     <DetailBaseBorder>
@@ -178,8 +205,10 @@ const ViewNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
             <span className="w-full break-words">{`${address.dou} ${address.si} ${address.gu}`}</span>
           </div>
           <div>
-            <span className="block font-bold text-xl">시간</span>
-            <span className="w-full break-words">{dateParser(endDate)}</span>
+            <span className="block font-bold text-xl">마감 시간</span>
+            <span className="w-full break-words">
+              {endDate ? dateParser(endDate) : '마감 기간 없음'}
+            </span>
           </div>
           <div>
             <span className="block font-bold text-xl">오픈 채팅방 링크</span>
