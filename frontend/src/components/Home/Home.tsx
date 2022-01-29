@@ -1,4 +1,4 @@
-import { useEffect, useState, memo } from 'react';
+import { useEffect, useState, memo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { v4 } from 'uuid';
 import { isEmpty } from 'lodash';
@@ -7,7 +7,11 @@ import { useInView } from 'react-intersection-observer';
 import NoticeService from '../../lib/api/noticeService';
 import Board from '../Board/Board';
 import SelcetRegion from '../SelectRegion/SelcetRegion';
-import { GetNoticesType, AddressType } from '../../modules/types/notice';
+import {
+  GetNoticesType,
+  SearchAddressType,
+  AddressType,
+} from '../../modules/types/notice';
 // import LoadingModal from '../../common/components/LoadingModal';
 
 const Home = () => {
@@ -19,59 +23,95 @@ const Home = () => {
 
   //* useState
   const [offset, setOffset] = useState(0);
-  const [region, setRegion] = useState<AddressType>({
+  const [region, setRegion] = useState<SearchAddressType>({
+    gwon: '',
     dou: '',
     si: '',
     gu: '',
   });
   const [infiniteFetchStop, setInfiniteFetchStop] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  /* 
+  searchSwitch = true : 검색이 없는 전지역 상태
+  searchSwitch = false : 검색으로 특정 지역 상태
+  */
 
-  const [notices, setNotices] = useState<{
-    [key: string]: GetNoticesType;
-  }>();
+  const [notices, setNotices] = useState<GetNoticesType[]>([]);
 
   //* usuInView
   const [viewRef, InView] = useInView();
 
   //* functions
-  const searchRegionNotices = () => {
-    // noticeService
-    //   .viewChoiceNotices({
-    //     ...region,
-    //     limit: '5',
-    //     offset: '0',
-    //   })
-    //   .then((data) => {
-    //     setNotices(data);
-    //     setInfiniteFetchStop(false);
-    //   });
+  const clickSearchBtn = () => {
+    setOffset(0);
+    setNotices([]);
+    setInfiniteFetchStop(false);
   };
 
-  //* 실제 api 사용
-  const fetchAllRegionNoticeDataAndUpdate = async () => {
-    // wait의 역할: 과도한 API 요청을 방지해준다.
-    const wait = (delay: number) =>
-      new Promise((resolve) => setTimeout(resolve, delay * 1000));
-    await wait(0.5);
-    await noticeService
-      .viewAllNotices(offset, PAGING_LIMIT_NOTICES)
-      .then((data) => {
-        console.log(data);
+  const searchRegionNotices = useCallback(
+    async (offset_: number, limit_: number, region_: AddressType) => {
+      try {
+        const data = await noticeService.viewChoiceNotices({
+          ...region_,
+          limit: limit_,
+          offset: offset_,
+        });
         if (!isEmpty(data)) {
-          setNotices({ ...notices, ...data });
-          setOffset(offset + PAGING_LIMIT_NOTICES);
+          setNotices((previousNotices) => [...previousNotices, ...data]);
+          setOffset(offset_ + limit_);
         } else {
           setInfiniteFetchStop(true);
         }
-      })
-      .catch((error) => {
+      } catch (error) {
+        setInfiniteFetchStop(true);
         console.error(error);
+      }
+    },
+    []
+  );
+
+  const searchAllRegionNotices = useCallback(
+    async (offset_: number, limit_: number) => {
+      try {
+        const data = await noticeService.viewAllNotices(offset_, limit_);
+        if (!isEmpty(data)) {
+          setNotices((previousNotices) => [...previousNotices, ...data]);
+          setOffset(offset_ + limit_);
+        } else {
+          setInfiniteFetchStop(true);
+        }
+      } catch (error) {
+        setInfiniteFetchStop(true);
+        console.error(error);
+      }
+    },
+    []
+  );
+
+  //* 실제 api 사용
+  const fetchAllRegionNoticeDataAndUpdate = async () => {
+    setIsLoading(true);
+    // wait의 역할: 과도한 API 요청을 방지해준다.
+    const wait = (delay: number) =>
+      new Promise((resolve) => setTimeout(resolve, delay * 1000));
+    await wait(3);
+    if (region.si) {
+      console.log('검색중');
+      await searchRegionNotices(offset, PAGING_LIMIT_NOTICES, {
+        dou: region.dou,
+        si: region.si,
+        gu: region.gu,
       });
+    }
+    if (!region.si || region.gwon === '전체') {
+      await searchAllRegionNotices(offset, PAGING_LIMIT_NOTICES);
+    }
+    setIsLoading(false);
   };
 
   //* 무한 스크롤 테스트 가상 api
   const fetchTestAllRegionNoticeDataAndUpdate = async () => {
+    setIsLoading(true);
     const updateAllRegionBoards = noticeService.getTestNotices(
       offset,
       PAGING_LIMIT_NOTICES
@@ -80,7 +120,7 @@ const Home = () => {
       new Promise((resolve) => setTimeout(resolve, delay * 1000));
     await wait(1);
     if (!isEmpty(updateAllRegionBoards)) {
-      setNotices({ ...notices, ...updateAllRegionBoards });
+      setNotices([...notices, ...updateAllRegionBoards]);
       setOffset(offset + PAGING_LIMIT_NOTICES);
     } else {
       setInfiniteFetchStop(true);
@@ -90,22 +130,21 @@ const Home = () => {
 
   useEffect(() => {
     if (!infiniteFetchStop && InView && !isLoading) {
-      console.log('실행횟수');
-      setIsLoading(true);
+      console.log('api 실행'); // TEST 콘솔 배포시에는 지우기
       fetchAllRegionNoticeDataAndUpdate();
       // fetchTestAllRegionNoticeDataAndUpdate(); // TEST API
     }
-  }, [
-    infiniteFetchStop,
-    InView,
-    setIsLoading,
-    isLoading,
-    fetchAllRegionNoticeDataAndUpdate,
-  ]);
+  }, [infiniteFetchStop, InView, isLoading]);
 
-  useEffect(() => {
-    console.log('region = ', region);
-  }, [region]);
+  const changeButtonCSS = () => {
+    if (region.gwon === '전체') {
+      return 'bg-indigo-400 cursor-pointer';
+    }
+    if (region.si) {
+      return 'bg-indigo-400 cursor-pointer';
+    }
+    return 'bg-gray-400 cursor-not-allowed';
+  };
 
   return (
     <div>
@@ -116,13 +155,10 @@ const Home = () => {
         <div className="flex w-full justify-center items-center">
           <SelcetRegion submit={setRegion} className="p-2 m-2" />
           <button
-            disabled={!region.si}
-            className={`text-white w-16 h-10 md:w-20 md:w-25 rounded-xl hover:opacity-80 transition ease-in-out delay-100 ml-4 mb-2 outline-none ${
-              region.si
-                ? 'bg-indigo-400 cursor-pointer'
-                : 'bg-gray-400 cursor-not-allowed'
-            }`}
-            onClick={searchRegionNotices}
+            disabled={region.gwon === '전체' ? false : !region.si}
+            className={`text-white w-16 h-10 md:w-20 md:w-25 rounded-xl hover:opacity-80 transition ease-in-out delay-100 ml-4 mb-2 outline-none
+             ${changeButtonCSS()}`}
+            onClick={clickSearchBtn}
           >
             검색
           </button>
@@ -130,8 +166,8 @@ const Home = () => {
       </div>
       <div className="pt-7 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mx-auto my-0 mb-5 w-2/3 gap-x-20 gap-y-10 grid-template-rows">
         {notices &&
-          Object.keys(notices).map((key) => {
-            return <Board key={v4()} data={notices[key]} />;
+          notices.map((notice) => {
+            return <Board key={v4()} data={notice} />;
           })}
       </div>
       <div ref={viewRef} />
@@ -147,6 +183,7 @@ const Home = () => {
           />
         </Link>
       </button>
+      {/* {!isLoading && <LoadingModal />} */}
     </div>
   );
 };

@@ -2,6 +2,7 @@ type RegionType = {
   [key: string]: { [key1: string]: string[] };
 };
 const regions: RegionType = {
+  전체: Object(null),
   수도권: {
     서울특별시: [
       '강남구',
