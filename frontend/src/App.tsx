@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { useSelector } from './modules';
 import useLocalStroeageData from './hooks/useLocalStorageData';
 import CreateNotice from './components/Board/CreateNotice/CreateNotice';
@@ -15,11 +14,8 @@ import MyPage from './components/Mypage/MyPage';
 import ViewNotice from './components/Board/ViewNotice/ViewNotice';
 import UserPage from './components/UserPage/Userpage';
 import EditNotice from './components/Board/EditNotice/EditNotice';
-import { SignInActions } from './modules/signIn';
-import { IUserData } from './modules/types/signInTypes';
 
 function App() {
-  const dispatch = useDispatch();
   const token = useSelector((state) => state.signIn.token);
   const { getToken } = useLocalStroeageData();
 

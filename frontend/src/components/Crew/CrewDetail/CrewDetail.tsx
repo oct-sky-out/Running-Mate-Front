@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { withRouter, RouteComponentProps, useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Button } from '@nextui-org/react';
@@ -57,7 +57,18 @@ const CrewDetail: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
     new CrewService()
       .getCrewDetail(match.params.id)
       .then((data) => dispatch(crewActions.setCrewDetail(data)))
-      .catch((reason) => console.error(reason));
+      .catch(() =>
+        Swal.fire({
+          toast: true,
+          icon: 'error',
+          title: '크루 상세 데이터 조회 실패',
+          position: 'top-end',
+          timer: 5000,
+          timerProgressBar: true,
+          showConfirmButton: false,
+          showCloseButton: true,
+        })
+      );
   }, [match.params.id]);
 
   useEffect(() => {

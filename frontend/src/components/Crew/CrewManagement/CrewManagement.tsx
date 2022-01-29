@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Route, useHistory, RouteComponentProps } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import DetailBaseBorder from '../../../common/components/DetailBaseBorder';
 import PreviousPageButton from '../../../common/components/PreviousPageButton';
 import CrewService from '../../../lib/api/crewService';
@@ -28,7 +29,19 @@ const CrewManagement: React.FC<RouteComponentProps<MatchParam>> = ({
       new CrewService()
         .getCrewDetail(match.params.id)
         .then((data) => dispatch(crewActions.setCrewDetail(data)))
-        .catch((reason) => console.error(reason));
+        .catch((reason) => {
+          console.error(reason);
+          Swal.fire({
+            toast: true,
+            icon: 'error',
+            title: '데이터 조회 실패',
+            position: 'top-end',
+            timer: 5000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            showCloseButton: true,
+          });
+        });
   }, []);
 
   return (

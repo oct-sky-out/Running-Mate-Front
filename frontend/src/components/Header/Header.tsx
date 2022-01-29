@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useLocation, Link, withRouter, useHistory } from 'react-router-dom';
+import { useLocation, Link, useHistory } from 'react-router-dom';
 import { ReactComponent as Logo } from '../../assets/logo_mini.svg';
 import { useSelector } from '../../modules';
 import SignInAndSignUpButtons from './SignInAndSignUpButtons';
