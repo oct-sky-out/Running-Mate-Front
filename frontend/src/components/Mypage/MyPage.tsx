@@ -1,27 +1,43 @@
 import { useEffect } from 'react';
 import { Route, useLocation, useHistory } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import { useSelector } from '../../modules';
 import MyPageMenu from './MyPageMenu';
 import MyPageInformations from './MyPageInformations';
 import ChangeMyPassword from './ChangeMyPassword';
 import LeaveAccount from './LeaveAccount';
 import DetailBaseBorder from '../../common/components/DetailBaseBorder';
-import useRequireLogin from '../../hooks/useValidToken';
+import useValidToken, { CheckTokenResultType } from '../../hooks/useValidToken';
 
 const MyPage = () => {
   const location = useLocation();
   const history = useHistory();
   const token = useSelector((state) => state.signIn.token);
-  const { checkToekenAvailable } = useRequireLogin();
+
+  const { checkTokenAvailable } = useValidToken();
+  const tokenValidCallback = (result: CheckTokenResultType) => {
+    if (!result.tokenState) {
+      console.error(result.message);
+      history.push('/guest');
+    }
+  };
+  const tokenNotValidCallback = () => {
+    Swal.fire({
+      toast: true,
+      icon: 'error',
+      title: '사용자 정보가 만료되었거나 존재하지않습니다.',
+      position: 'top-end',
+      timer: 5000,
+      timerProgressBar: true,
+      showConfirmButton: false,
+      showCloseButton: true,
+    });
+  };
 
   useEffect(() => {
-    checkToekenAvailable(token)((result) => {
-      if (!result.tokenState) {
-        console.error(result.message);
-        history.push('/guest');
-      }
-    });
+    checkTokenAvailable(token, tokenValidCallback, tokenNotValidCallback);
   }, [location.pathname]);
+
   return (
     <DetailBaseBorder>
       <div className="flex justify-center items-center font-bold h-1/5 text-3xl">

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
 import { v4 } from 'uuid';
 import { Button, Loading } from '@nextui-org/react';
+import Swal from 'sweetalert2';
 import { useSelector } from '../../modules';
 import CrewService from '../../lib/api/crewService';
 import CrewImageSlider from './CrewImageSlider';
@@ -43,7 +44,16 @@ const Crew = () => {
         ]);
       }
     } catch (err) {
-      console.error(err);
+      Swal.fire({
+        toast: true,
+        icon: 'error',
+        title: '데이터 조회 실패',
+        position: 'top-end',
+        timer: 5000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+        showCloseButton: true,
+      });
     }
     setLoading(false);
   }, [offset]);

@@ -3,14 +3,13 @@ import { useDispatch } from 'react-redux';
 import { Input, Button } from '@nextui-org/react';
 import { FormElement } from '@nextui-org/react/esm/input/input-props';
 import { RiEyeCloseLine, RiEyeLine } from 'react-icons/ri';
+import { GrClose } from 'react-icons/gr';
 import Swal from 'sweetalert2';
 import { SignUpActions } from '../../modules/signUp';
 import { useSelector } from '../../modules';
 import Address from '../address/Address';
 import usePasswordCheck from '../../hooks/usePasswordCheck';
-import styles from './SignInAndUpModal.module.css';
 import { ReactComponent as MiniLogo } from '../../assets/logo_mini.svg';
-import 'react-toastify/dist/ReactToastify.css';
 
 interface IProps {
   closeModal: () => void;
@@ -80,7 +79,9 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
     },
     [email, nickName, address]
   );
-
+  const closeAddressModal = () => {
+    setOpenAddressModal(false);
+  };
   useEffect(() => {
     if (fetchState === 'Success') {
       closeModal();
@@ -108,21 +109,21 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
 
   return (
     <>
-      <div className="relative p-5 rounded-md flex items-center z-20 bg-white h-11/12 overflow-y-scroll">
-        <div className="flex w-full justify-center items-center flex-col">
-          <div className="w-3/4 mb-5 border-b-2 flex justify-center">
-            <MiniLogo width="100" height="100" />
+      <div className="w-500 h-500 md:h-700 relative p-5 mx-3 rounded-md z-20 bg-white overflow-y-scroll">
+        <div className="my-auto md:h-600">
+          <div className="w-3/4 mx-auto border-b-2 flex justify-center">
+            <MiniLogo className="w-10 h-10 md:w-24 md:h-24" />
           </div>
-          <div className="mb-10">
-            <span className="text-2xl">회원가입</span>
+          <div className="">
+            <span className="w-24 block text-2xl mx-auto">회원가입</span>
           </div>
-          <form onSubmit={signUpExecuting} className="space-y-10">
+          <form onSubmit={signUpExecuting} className="space-y-2 md:space-y-5">
             <Input
               color="secondary"
               bordered
               width="100%"
-              className={`mb-5 z-0 ${styles.signIn_form}`}
-              labelPlaceholder="이메일"
+              className="z-0"
+              label="이메일"
               type="email"
               onChange={(e) => {
                 changedInputs(e, 'setEmail');
@@ -132,25 +133,25 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
               color="secondary"
               bordered
               width="100%"
-              className={`mb-5 z-0 ${styles.signIn_form}`}
-              labelPlaceholder="별명"
+              className="z-0"
+              label="별명"
               onChange={(e) => {
                 changedInputs(e, 'setNickname');
               }}
             />
-            <div className="flex mb-5 items-center space-x-2 justify-between">
+            <div className="flex items-center space-x-2 justify-between">
               <Input
                 color="secondary"
                 bordered
                 disabled
                 width="100%"
-                className={`z-0 ${styles.signIn_form}`}
-                labelPlaceholder="주소 (시/도, 시/군/구 까지만 입력) "
+                className="z-0"
+                label="주소 (시/도, 시/군/구 까지만 입력) "
                 value={address}
               />
               <Button
                 auto
-                className="grow-0"
+                className="mt-7"
                 rounded
                 color="secondary"
                 onClick={() => {
@@ -165,8 +166,8 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
                 color="secondary"
                 bordered
                 width="100%"
-                className={`mb-2 z-0 ${styles.signIn_form}`}
-                labelPlaceholder="비밀번호"
+                className="mb-2 z-0"
+                label="비밀번호"
                 visibleIcon={<RiEyeLine fill="currentColor" />}
                 hiddenIcon={<RiEyeCloseLine fill="currentColor" />}
                 onChange={(e) =>
@@ -184,8 +185,8 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
                 color="secondary"
                 bordered
                 width="100%"
-                className={`mb-2 z-0 ${styles.signIn_form}`}
-                labelPlaceholder="비밀번호 확인"
+                className="mb-2 z-0"
+                label="비밀번호 확인"
                 visibleIcon={<RiEyeLine fill="currentColor" />}
                 hiddenIcon={<RiEyeCloseLine fill="currentColor" />}
                 onChange={(e) => {
@@ -198,12 +199,12 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
                 {getSamePasswordState()}
               </span>
             </div>
-            <div className="h-full flex justify-center align-center">
+            <div className="h-full flex flex-col justify-center align-center">
               <Button
+                auto
                 color="secondary"
                 rounded
                 type="submit"
-                id={`${styles.signIn_btn}`}
                 className="z-0 important"
                 disabled={
                   !(
@@ -220,8 +221,14 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
           </form>
         </div>
         {openAddressModal && (
-          <div className="z-10 w-full h-full absolute top-0 left-0">
+          <div className="z-10 w-full h-full absolute top-7 left-0">
             <Address setOpenAddressModal={setOpenAddressModal} />
+            <div className="absolute left-3 -top-5 md:-top-5">
+              <GrClose
+                className="cursor-pointer text-2xl md:text-3xl"
+                onClick={closeAddressModal}
+              />
+            </div>
           </div>
         )}
       </div>

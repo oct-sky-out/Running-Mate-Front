@@ -36,16 +36,16 @@ const Home = () => {
 
   //* functions
   const searchRegionNotices = () => {
-    noticeService
-      .viewChoiceNotices({
-        ...region,
-        limit: '5',
-        offset: '0',
-      })
-      .then((data) => {
-        setNotices(data);
-        setInfiniteFetchStop(false);
-      });
+    // noticeService
+    //   .viewChoiceNotices({
+    //     ...region,
+    //     limit: '5',
+    //     offset: '0',
+    //   })
+    //   .then((data) => {
+    //     setNotices(data);
+    //     setInfiniteFetchStop(false);
+    //   });
   };
 
   //* 실제 api 사용
