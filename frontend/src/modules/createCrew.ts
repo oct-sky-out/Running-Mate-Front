@@ -77,10 +77,13 @@ const createCrewSliceReducer = createSlice({
         crew: { ...state.crew, openChat: action.payload },
       }),
     },
-    setCreateOpenChatStatus: (
+    setCreateCrewStatus: (
       state,
       action: PayloadAction<CreateCrewStatusType>
-    ) => ({ ...state, createCrewStatus: action.payload }),
+    ) => ({
+      ...state,
+      createCrewStatus: action.payload,
+    }),
   },
 });
 

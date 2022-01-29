@@ -1,16 +1,16 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { RouteComponentProps, useHistory, useLocation } from 'react-router-dom';
+import { v4 } from 'uuid';
 import { BsPeopleFill } from 'react-icons/bs';
 import { GiPositionMarker } from 'react-icons/gi';
-import { v4 } from 'uuid';
 import { BiUser } from 'react-icons/bi';
+import Swal from 'sweetalert2';
 import { useSelector } from '../../modules';
 import UserService from '../../lib/api/userService';
 import useLocalStroeageData from '../../hooks/useLocalStorageData';
 import CrewWidget from '../Crew/CrewDetail/CrewWidget';
 import DetailBaseBorder from '../../common/components/DetailBaseBorder';
 import PreviousPageButton from '../../common/components/PreviousPageButton';
-import { IUserData } from '../../modules/types/signInTypes';
 
 // test data
 import userPageMock from '../../excuteData/UserPageMock/UserPageMock';
@@ -31,14 +31,6 @@ const UserPage: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
   }));
 
   //* useState
-  const [anotherUserData, setAnotherUserData] = useState<IUserData>({
-    address: '',
-    crewLeader: false,
-    crewName: '',
-    email: '',
-    id: '',
-    nickName: '',
-  });
   const [normalCategory, setNormalCategory] = useState({
     crewName: { icon: BsPeopleFill, title: '소속 크루', description: '' },
     address: { icon: GiPositionMarker, title: '러닝 지역', description: '' },
@@ -55,7 +47,7 @@ const UserPage: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
   }, [location.pathname]);
 
   useEffect(() => {
-    if (!match.params.id)
+    if (match.params.id === userData.nickName)
       setNormalCategory({
         crewName: {
           ...normalCategory.crewName,
@@ -79,7 +71,6 @@ const UserPage: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
         .getUser(match.params.id, token)
         .then((result) => {
           if (result) {
-            setAnotherUserData(result);
             setNormalCategory({
               crewName: {
                 ...normalCategory.crewName,
@@ -92,7 +83,19 @@ const UserPage: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
             });
           }
         })
-        .catch((reason) => console.error(reason));
+        .catch((reason) => {
+          console.error(reason);
+          Swal.fire({
+            toast: true,
+            icon: 'error',
+            title: '사용자 정보 조회 실패.',
+            position: 'top-end',
+            timer: 5000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            showCloseButton: true,
+          });
+        });
     }
   }, [token, location.pathname]);
 
@@ -116,13 +119,11 @@ const UserPage: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
           />
         </div>
         <div className="text-lg flex flex-col items-center">
-          <span className="mb-3 text-3xl font-bold">
-            {match.params.id || userData.nickName}
-          </span>
+          <span className="mb-3 text-3xl font-bold">{match.params.id}</span>
         </div>
       </div>
       <div className="space-y-5">
-        {match.params.id && token && (
+        {match.params.id === userData.nickName && token && (
           <div className="w-full my-5 pl-5 md:pl-0 ">
             <button className="text-white w-24 h-12 rounded-xl sm:absolute sm:right-10 md:static sm:top-32 md:right-20 md:top-40 bg-indigo-400 hover:opacity-80 transition ease-in-out delay-100">
               친구신청

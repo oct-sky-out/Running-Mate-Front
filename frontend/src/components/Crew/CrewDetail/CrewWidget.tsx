@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { IconType } from 'react-icons/lib';
 
 interface IProps {

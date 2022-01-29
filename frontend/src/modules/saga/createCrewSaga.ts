@@ -29,7 +29,7 @@ function* createCrewFetchSaga({
       createCrewData: payload.createCrewData,
     });
     if (message === '크루 생성 완료') {
-      yield put(CreateCrewActions.setCreateOpenChatStatus('Sucecss'));
+      yield put(CreateCrewActions.setCreateCrewStatus('Sucecss'));
       const { email, crewName, nickName, address, id, crewLeader, reuslt } =
         yield call(
           refreshUserDataAndRefreshLocalStorage,
@@ -49,9 +49,9 @@ function* createCrewFetchSaga({
         );
     }
     if (message === '이미 크루가 존재합니다.')
-      yield put(CreateCrewActions.setCreateOpenChatStatus('Failure'));
+      yield put(CreateCrewActions.setCreateCrewStatus('Failure'));
   } catch {
-    yield put(CreateCrewActions.setCreateOpenChatStatus('Failure'));
+    yield put(CreateCrewActions.setCreateCrewStatus('Failure'));
   }
 }
 

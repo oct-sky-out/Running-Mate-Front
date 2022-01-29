@@ -6,7 +6,6 @@ import { RiEyeCloseLine, RiEyeLine } from 'react-icons/ri';
 import Swal from 'sweetalert2';
 import { SignInActions } from '../../modules/signIn';
 import { useSelector } from '../../modules';
-import styles from './SignInAndUpModal.module.css';
 import { ReactComponent as MiniLogo } from '../../assets/logo_mini.svg';
 
 interface IProps {
@@ -52,9 +51,7 @@ const SignInModal: React.FC<IProps> = ({ closeModal }) => {
 
   return (
     <>
-      <div
-        className={`relative p-5 rounded-md flex items-center z-20 bg-white ${styles.signIn_wrapper}`}
-      >
+      <div className="relative p-5 rounded-md flex items-center z-20 bg-white">
         <div className="flex w-full ustify-center items-center flex-col">
           <div className="w-3/4 mb-5 border-b-2 flex justify-center">
             <MiniLogo width="100" height="100" />
@@ -70,7 +67,7 @@ const SignInModal: React.FC<IProps> = ({ closeModal }) => {
               width="100%"
               type="email"
               className="mb-5 z-0"
-              labelPlaceholder="이메일"
+              label="이메일"
               onChange={(e) => {
                 dispatch(SignInActions.setEmail(e.target.value));
               }}
@@ -82,7 +79,7 @@ const SignInModal: React.FC<IProps> = ({ closeModal }) => {
               data-testid="password-input"
               width="100%"
               className="mb-5 z-0"
-              labelPlaceholder="비밀번호"
+              label="비밀번호"
               visibleIcon={<RiEyeLine fill="currentColor" />}
               hiddenIcon={<RiEyeCloseLine fill="currentColor" />}
               onChange={(e) => {
@@ -90,12 +87,12 @@ const SignInModal: React.FC<IProps> = ({ closeModal }) => {
               }}
               data-cy="password"
             />
-            <div className="h-full flex justify-center align-center">
+            <div className="h-full flex flex-col justify-center align-center">
               <Button
+                auto
                 rounded
                 color="secondary"
                 type="submit"
-                id={`${styles.signIn_btn}`}
                 className="z-0 important"
                 disabled={!(email && password)}
                 data-cy="signIn-btn"
