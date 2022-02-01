@@ -35,6 +35,16 @@ interface ICrewService {
     token: string,
     crewName: string
   ) => Promise<{ message: number } | Error>;
+  dismissRequstUser: (
+    userNickName: string
+  ) => Promise<{ message: string } | Error>;
+  permitRequstUser: (
+    userNickName: string
+  ) => Promise<{ message: string } | Error>;
+  delegateCrewLeader: (
+    userNickName: string,
+    token: string
+  ) => Promise<{ message: string } | Error>;
 }
 
 class CrewService implements ICrewService {
@@ -132,6 +142,40 @@ class CrewService implements ICrewService {
         }
       );
       if (data === '이미 크루가 존재합니다.') throw Error(data);
+      return { message: data };
+    } catch (err: any | Error) {
+      return Error(err);
+    }
+  };
+
+  permitRequstUser = async (userNickName: string) => {
+    try {
+      const { data } = await axios.post<'추가 완료'>(
+        `/crews/users/${userNickName}/request`
+      );
+      return { message: data };
+    } catch (err: any | Error) {
+      return Error(err);
+    }
+  };
+
+  dismissRequstUser = async (userNickName: string) => {
+    try {
+      const { data } = await axios.delete<'삭제 완료'>(
+        `/crews/users/${userNickName}/request`
+      );
+      return { message: data };
+    } catch (err: any | Error) {
+      return Error(err);
+    }
+  };
+
+  delegateCrewLeader = async (userNickName: string, token: string) => {
+    try {
+      const { data } = await axios.patch<'위임 완료'>(
+        `/crew/users/${userNickName}/edit`,
+        { token }
+      );
       return { message: data };
     } catch (err: any | Error) {
       return Error(err);

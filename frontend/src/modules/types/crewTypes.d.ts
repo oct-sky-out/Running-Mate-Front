@@ -8,7 +8,7 @@ export interface ICrewType {
   crewName: string;
   explanation: string;
   userDtos: IUserData[];
-  requestUsers: IUserData[];
+  requestUsers: string[];
   crewRequested: boolean;
 }
 
