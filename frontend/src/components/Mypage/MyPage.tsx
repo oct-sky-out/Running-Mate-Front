@@ -6,13 +6,21 @@ import MyPageMenu from './MyPageMenu';
 import MyPageInformations from './MyPageInformations';
 import ChangeMyPassword from './ChangeMyPassword';
 import LeaveAccount from './LeaveAccount';
+import FriendsList from './FriendsList';
 import DetailBaseBorder from '../../common/components/DetailBaseBorder';
 import useValidToken, { CheckTokenResultType } from '../../hooks/useValidToken';
+import RequestFriendsManagement from './RequestFriendsManagement';
 
 const MyPage = () => {
   const location = useLocation();
   const history = useHistory();
   const token = useSelector((state) => state.signIn.token);
+  const menuTexts: { [key: string]: string } = {
+    '/mypage': '내 정보 관리',
+    '/mypage/changePassword': '비밀번호 변경',
+    '/mypage/leaving': '회원탈퇴',
+    '/mypage/friends/list': '친구관리',
+  };
 
   const { checkTokenAvailable } = useValidToken();
   const tokenValidCallback = (result: CheckTokenResultType) => {
@@ -41,14 +49,15 @@ const MyPage = () => {
   return (
     <DetailBaseBorder>
       <div className="flex justify-center items-center font-bold h-1/5 text-3xl">
-        {location.pathname === '/mypage' && <span>내 정보</span>}
-        {location.pathname === '/mypage/changePassword' && (
-          <span>비밀번호 변경</span>
+        {Object.keys(menuTexts).map(
+          (url) => location.pathname === url && <span>{menuTexts[url]}</span>
         )}
-        {location.pathname === '/mypage/leaving' && <span>회원탈퇴</span>}
+        {location.pathname === '/mypage/friends/requests' && (
+          <span>친구 요청 관리</span>
+        )}
       </div>
       <div className="my-10">
-        <MyPageMenu />
+        <MyPageMenu menuTexts={menuTexts} />
       </div>
       <Route
         exact
@@ -57,6 +66,12 @@ const MyPage = () => {
       />
       <Route exact path="/mypage/changePassword" component={ChangeMyPassword} />
       <Route exact path="/mypage/leaving" component={LeaveAccount} />
+      <Route exact path="/mypage/friends/list" component={FriendsList} />
+      <Route
+        exact
+        path="/mypage/friends/requests"
+        component={RequestFriendsManagement}
+      />
     </DetailBaseBorder>
   );
 };

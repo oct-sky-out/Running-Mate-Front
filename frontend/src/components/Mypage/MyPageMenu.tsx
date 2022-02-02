@@ -2,13 +2,11 @@ import { withRouter, useHistory, useLocation } from 'react-router-dom';
 import { v4 } from 'uuid';
 import MenuButton from '../../common/components/MenuButton';
 
-const MyPageMenu = () => {
-  const menuTexts: { [key: string]: string } = {
-    '/mypage': '내 정보 관리',
-    '/mypage/changePassword': '비밀번호 변경',
-    '/mypage/leaving': '회원탈퇴',
-  };
+interface IProps {
+  menuTexts: { [key: string]: string };
+}
 
+const MyPageMenu: React.FC<IProps> = ({ menuTexts }) => {
   const history = useHistory();
   const location = useLocation();
 
@@ -22,7 +20,7 @@ const MyPageMenu = () => {
         <MenuButton
           key={v4()}
           type="button"
-          className={`flex flex-left items-center text-xl font-bold mx-2 ${
+          className={`flex flex-left items-center md:text-xl font-bold mx-2 ${
             location.pathname === url ? 'border-purple' : null
           }`}
           onClick={() => moveURL(url)}
@@ -34,4 +32,4 @@ const MyPageMenu = () => {
   );
 };
 
-export default withRouter(MyPageMenu);
+export default MyPageMenu;

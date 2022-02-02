@@ -3,8 +3,8 @@ import Swal from 'sweetalert2';
 import { v4 } from 'uuid';
 import CrewService from '../../../lib/api/crewService';
 import { useSelector } from '../../../modules';
-import PeopleList from './PeopleList';
-import PeopleSearch from './PeopleSearch';
+import PeopleList from '../../../common/components/PeopleList';
+import PeopleSearch from '../../../common/components/PeopleSearch';
 
 const PeopleManagement = () => {
   const { crewMembers, crewLeaderId, crewLeaderName, token } = useSelector(
