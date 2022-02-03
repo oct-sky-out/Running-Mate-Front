@@ -1,20 +1,26 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { v4 } from 'uuid';
-import { Button } from '@nextui-org/react';
+import { Button, Loading } from '@nextui-org/react';
 import Swal from 'sweetalert2';
 import { useSelector } from '../../modules';
+import { friendActions } from '../../modules/friend';
 import PeopleSearch from '../../common/components/PeopleSearch';
 import FriendService from '../../lib/api/friendService';
 import PeopleList from '../../common/components/PeopleList';
 
 const FriendsList = () => {
-  const location = useLocation();
   const history = useHistory();
 
-  const token = useSelector((state) => state.signIn.token);
+  const { token, requestFriendFetch } = useSelector((state) => ({
+    token: state.signIn.token,
+    requestFriendFetch: state.friend.requestFriendFetch,
+  }));
+  const dispatch = useDispatch();
 
   const [userFriends, setUserFriends] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const getUserFriends = async () => {
     try {
@@ -35,6 +41,19 @@ const FriendsList = () => {
     }
   };
 
+  const dismissFriend = (userNickName: string) => {
+    dispatch(
+      friendActions.requestFriend({
+        token,
+        requesteeName: userNickName,
+        requestRole: 'dismiss',
+      })
+    );
+    setLoading(true);
+    getUserFriends();
+    setLoading(false);
+  };
+
   const goManageRequestFriends = () => {
     history.push('/mypage/friends/requests');
   };
@@ -42,6 +61,24 @@ const FriendsList = () => {
   useEffect(() => {
     getUserFriends();
   }, []);
+
+  useEffect(() => {
+    if (requestFriendFetch === 'Success')
+      dispatch(friendActions.initRequestFriendFetch());
+    if (requestFriendFetch === 'Failure') {
+      Swal.fire({
+        toast: true,
+        icon: 'error',
+        title: '죄송합니다. 요청에 실패하였습니다.',
+        position: 'top-end',
+        timer: 5000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+        showCloseButton: true,
+      });
+      dispatch(friendActions.initRequestFriendFetch());
+    }
+  }, [requestFriendFetch]);
 
   return (
     <div className="mx-auto my-0 py-10 px-20 flex flex-col space-y-10 justify-center">
@@ -62,13 +99,23 @@ const FriendsList = () => {
           </Button>
         </div>
       </div>
-      <PeopleSearch placeholder="검색 할 친구이름을 입력하세요" />
+      <PeopleSearch placeholder="검색 할 친구이름을 입력하세요" />\
+      {loading && (
+        <div>
+          <Loading type="points" color="secondart" />
+        </div>
+      )}
       {userFriends.length !== 0 ? (
         <div className="border-2 border-purple rounded-lg flex flex-col divide-y divide-purple">
           {userFriends.map((friend) => (
             <PeopleList key={v4()} userNickName={friend}>
               <div className="w-30">
-                <Button auto rounded color="secondary">
+                <Button
+                  auto
+                  rounded
+                  color="secondary"
+                  onClick={() => dismissFriend(friend)}
+                >
                   친구삭제
                 </Button>
               </div>
