@@ -94,6 +94,7 @@ const mockStore: RootState = {
     },
     notices: {},
   },
+  friend: { requestFriendFetch: '' },
 };
 
 export { mockStore };

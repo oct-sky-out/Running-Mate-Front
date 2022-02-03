@@ -1,11 +1,8 @@
 import axios from './axios';
-
-type FriendRelations = 'NOTHING' | 'SEND' | 'RECEIVE' | 'COPLETED';
-type FriendRequstStatus =
-  | '친구요청 성공'
-  | '친구요청 취소 성공'
-  | '친구요청 수락 성공'
-  | '이미 친구인 회원';
+import {
+  FriendRelations,
+  FriendRequstStatus,
+} from '../../modules/types/Friend';
 
 interface IFriendService {
   getMyFriends(toekn: string): Promise<{ friendList: string[] }>;
