@@ -45,28 +45,29 @@ const RequestFriendsManagement = () => {
   };
 
   const permitFriend = (userNickName: string) => {
+    setLoading(true);
     dispatch(
       friendActions.requestFriend({
         token,
         requesteeName: userNickName,
         requestRole: 'permit',
+        refreshFriendApi: getRequestFriends,
       })
     );
-    setLoading(true);
-    getRequestFriends();
     setLoading(false);
   };
 
   const dismissFriend = (userNickName: string) => {
+    setLoading(true);
     dispatch(
       friendActions.requestFriend({
         token,
         requesteeName: userNickName,
         requestRole: 'dismiss',
+        refreshFriendApi: getRequestFriends,
       })
     );
-    setLoading(true);
-    getRequestFriends();
+
     setLoading(false);
   };
 

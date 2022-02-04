@@ -42,15 +42,15 @@ const FriendsList = () => {
   };
 
   const dismissFriend = (userNickName: string) => {
+    setLoading(true);
     dispatch(
       friendActions.requestFriend({
         token,
         requesteeName: userNickName,
         requestRole: 'dismiss',
+        refreshFriendApi: getUserFriends,
       })
     );
-    setLoading(true);
-    getUserFriends();
     setLoading(false);
   };
 

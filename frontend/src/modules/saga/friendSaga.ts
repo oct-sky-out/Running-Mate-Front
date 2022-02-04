@@ -3,7 +3,7 @@ import { friendActions } from '../friend';
 import FriendService from '../../lib/api/friendService';
 
 function* friendSaga({
-  payload: { requestRole, requesteeName, token },
+  payload: { requestRole, requesteeName, token, refreshFriendApi },
 }: ReturnType<typeof friendActions.requestFriend>) {
   try {
     const friendService = new FriendService();
@@ -19,6 +19,7 @@ function* friendSaga({
     if (requestRole === 'dismiss')
       yield call(friendService.dismissFriendRequst, token, requesteeName);
 
+    yield call(refreshFriendApi);
     yield put(friendActions.successRequestFriend());
   } catch {
     yield put(friendActions.failureRequestFriend());

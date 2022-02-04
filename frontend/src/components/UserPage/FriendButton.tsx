@@ -48,39 +48,39 @@ const FriendButton: React.FC<IProps> = ({ userNickName }) => {
 
   //* any function
   const requestFriend = () => {
+    setFriednRelationResult('LOADING');
     dispatch(
       friendActions.requestFriend({
         token,
         requesteeName: userNickName,
         requestRole: 'request',
+        refreshFriendApi: checkFriendRelation,
       })
     );
-    setFriednRelationResult('LOADING');
-    checkFriendRelation();
   };
 
   const permitFriend = () => {
+    setFriednRelationResult('LOADING');
     dispatch(
       friendActions.requestFriend({
         token,
         requesteeName: userNickName,
         requestRole: 'permit',
+        refreshFriendApi: checkFriendRelation,
       })
     );
-    setFriednRelationResult('LOADING');
-    checkFriendRelation();
   };
 
   const dismissFriend = () => {
+    setFriednRelationResult('LOADING');
     dispatch(
       friendActions.requestFriend({
         token,
         requesteeName: userNickName,
         requestRole: 'dismiss',
+        refreshFriendApi: checkFriendRelation,
       })
     );
-    setFriednRelationResult('LOADING');
-    checkFriendRelation();
   };
 
   const assignFriendRelationResult = useCallback(() => {

@@ -18,6 +18,7 @@ const frinedSlice = createSlice({
         token: string;
         requesteeName: string;
         requestRole: 'request' | 'permit' | 'dismiss';
+        refreshFriendApi: (...args: any[]) => void;
       }>
     ) => ({
       requestFriendFetch: 'Fetch',
