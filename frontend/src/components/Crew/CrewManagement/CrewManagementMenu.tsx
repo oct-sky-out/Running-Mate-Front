@@ -15,6 +15,7 @@ const CrewManagementMenu = () => {
   const menuTexts = {
     [`/crew/${id}/management`]: '크루 정보관리',
     [`/crew/${id}/peoplemanagement`]: '크루원 관리',
+    [`/crew/${id}/requestmanagement`]: '크루가입 요청내역',
     [`/crew/${id}/delete`]: '크루 제거',
   };
 

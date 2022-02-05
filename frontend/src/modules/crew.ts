@@ -92,6 +92,10 @@ const crewSlice = createSlice({
       ...state,
       crewRequestFetch: 'Fetch',
     }),
+    setRequsetUsers: (state, action: PayloadAction<string[]>) => ({
+      ...state,
+      requestUsers: action.payload,
+    }),
   },
 });
 

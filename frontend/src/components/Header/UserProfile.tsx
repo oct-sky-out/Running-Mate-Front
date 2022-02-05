@@ -2,10 +2,14 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import OutsideClickHandler from 'react-outside-click-handler';
 import { BiUser } from 'react-icons/bi';
+import { useSelector } from '../../modules';
 
 const UserProfile = () => {
   //* react-router
   const history = useHistory();
+
+  //* redux
+  const userNickName = useSelector((state) => state.signIn.userData.nickName);
 
   //* useState
   const [isMyMenuOpen, setIsMyMenuOpen] = useState(false);
@@ -20,7 +24,7 @@ const UserProfile = () => {
   };
 
   const moveMyPage = () => {
-    history.push('/userInfo');
+    history.push(`/userInfo/${userNickName}`);
     setIsMyMenuOpen(false);
   };
   return (

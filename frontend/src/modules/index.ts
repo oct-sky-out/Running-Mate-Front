@@ -11,6 +11,7 @@ import crewReducer from './crew';
 import createCrewReducer from './createCrew';
 import newPasswordReducer from './newPassword';
 import createNoticeReducer from './createNotice';
+import friendReducer from './friend';
 import viewNoticeReducer from './notice';
 
 const rootReducer = combineReducers({
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   createNotice: createNoticeReducer,
   crew: crewReducer,
   viewNotice: viewNoticeReducer,
+  friend: friendReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
