@@ -14,6 +14,7 @@ import PreviousPageButton from '../../common/components/PreviousPageButton';
 
 // test data
 import userPageMock from '../../excuteData/UserPageMock/UserPageMock';
+import FriendButton from './FriendButton';
 
 interface MatchParam {
   id: string;
@@ -36,18 +37,9 @@ const UserPage: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
     address: { icon: GiPositionMarker, title: '러닝 지역', description: '' },
   });
 
-  //* custom hook
-  const { getUserData } = useLocalStroeageData();
-
   //* useEffects
   useEffect(() => {
-    if (!match.params.id) {
-      getUserData();
-    }
-  }, [location.pathname]);
-
-  useEffect(() => {
-    if (match.params.id === userData.nickName)
+    if (match.params.id === userData.nickName) {
       setNormalCategory({
         crewName: {
           ...normalCategory.crewName,
@@ -55,6 +47,7 @@ const UserPage: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
         },
         address: { ...normalCategory.address, description: userData.address },
       });
+    }
   }, [userData]);
 
   useEffect(() => {
@@ -66,7 +59,7 @@ const UserPage: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
         description: '',
       },
     });
-    if (match.params.id && token) {
+    if (match.params.id !== userData.nickName && token) {
       new UserService()
         .getUser(match.params.id, token)
         .then((result) => {
@@ -123,11 +116,9 @@ const UserPage: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
         </div>
       </div>
       <div className="space-y-5">
-        {match.params.id === userData.nickName && token && (
+        {match.params.id !== userData.nickName && token && (
           <div className="w-full my-5 pl-5 md:pl-0 ">
-            <button className="text-white w-24 h-12 rounded-xl sm:absolute sm:right-10 md:static sm:top-32 md:right-20 md:top-40 bg-indigo-400 hover:opacity-80 transition ease-in-out delay-100">
-              친구신청
-            </button>
+            <FriendButton userNickName={match.params.id} />
           </div>
         )}
         <span className="pl-5 md:pl-0 text-lg">기본정보</span>

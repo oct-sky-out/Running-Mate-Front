@@ -4,6 +4,7 @@ import watchSignUp from './signUpSaga';
 import watchCreateCrew from './createCrewSaga';
 import watchDeleteCrew from './deleteCrewSaga';
 import watchSignUpRequestCrew from './signUpRequestCrewSaga';
+import watchFriend from './friendSaga';
 
 export default function* rootSaga() {
   yield all([
@@ -12,5 +13,6 @@ export default function* rootSaga() {
     watchCreateCrew(),
     watchDeleteCrew(),
     watchSignUpRequestCrew(),
+    watchFriend(),
   ]);
 }

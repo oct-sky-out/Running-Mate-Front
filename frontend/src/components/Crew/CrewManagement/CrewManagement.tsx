@@ -9,6 +9,7 @@ import { useSelector } from '../../../modules';
 import { crewActions } from '../../../modules/crew';
 import CrewDelete from './CrewDelete';
 import CrewManagementMenu from './CrewManagementMenu';
+import CrewRequestManagement from './CrewRequestManagement';
 import Management from './Management';
 import PeopleManagement from './PeopleManagement';
 
@@ -74,6 +75,10 @@ const CrewManagement: React.FC<RouteComponentProps<MatchParam>> = ({
       <Route
         path={`${match.path}/peoplemanagement`}
         component={PeopleManagement}
+      />
+      <Route
+        path={`${match.path}/requestmanagement`}
+        component={CrewRequestManagement}
       />
       <Route path={`${match.path}/delete`} component={CrewDelete} />
     </DetailBaseBorder>

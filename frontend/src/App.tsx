@@ -17,9 +17,10 @@ import EditNotice from './components/Board/EditNotice/EditNotice';
 
 function App() {
   const token = useSelector((state) => state.signIn.token);
-  const { getToken } = useLocalStroeageData();
+  const { getToken, getUserData } = useLocalStroeageData();
 
   useEffect(() => {
+    getUserData();
     getToken();
   }, [token]);
 
