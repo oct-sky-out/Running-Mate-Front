@@ -34,7 +34,6 @@ const CrewDetail: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
     crewRequestFetch,
     crewRequested,
     userId,
-    isCrewLaeder,
     userCrewName,
     token,
   } = useSelector((state) => ({
@@ -47,7 +46,6 @@ const CrewDetail: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
     crewRequestFetch: state.crew.crewRequestFetch,
     crewRequested: state.crew.crewRequested,
     userId: state.signIn.userData.id,
-    isCrewLaeder: state.signIn.userData.crewLeader,
     userCrewName: state.signIn.userData.crewName,
     token: state.signIn.token,
   }));
@@ -144,9 +142,9 @@ const CrewDetail: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
             </a>
           </span>
         </div>
-        {userCrewName === crewName && !isCrewLaeder && (
+        {userCrewName === crewName && +userId !== crewLeaderId && (
           <div className="w-full ml-3 lg:ml-10">
-            <LeaveCrewButton /> {/* 크루원 전용 탈퇴 버튼 */}
+            <LeaveCrewButton />
           </div>
         )}
       </div>

@@ -82,6 +82,16 @@ const crewSlice = createSlice({
       ...state,
       crewRequestFetch: 'Fetch',
     }),
+    leaveCrew: (
+      state,
+      _action: PayloadAction<{
+        token: string;
+        userNickName: string;
+      }>
+    ) => ({
+      ...state,
+      crewRequestFetch: 'Fetch',
+    }),
     signUpRequestCrew: (
       state,
       _action: PayloadAction<{

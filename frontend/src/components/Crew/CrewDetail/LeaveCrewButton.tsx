@@ -1,24 +1,31 @@
 import { Button } from '@nextui-org/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
+import { crewActions } from '../../../modules/crew';
 import CrewService from '../../../lib/api/crewService';
 import { useSelector } from '../../../modules';
 
 const LeaveCrewButton = () => {
-  const { userNickName } = useSelector((state) => ({
+  const { userNickName, token, crewFetchStatus } = useSelector((state) => ({
     userNickName: state.signIn.userData.nickName,
+    token: state.signIn.token,
+    crewFetchStatus: state.crew.crewRequestFetch,
   }));
+  const dispatch = useDispatch();
 
   const [isLeaved, setIsLeaved] = useState(false);
 
   const clickLeaveCrewButton = async () => {
-    try {
-      // 리덕스 사가 처리해야함. 탈퇴 후 유저 정보 재조회(새로고침)필요.
-      const { message } = await new CrewService().leaveCrew(userNickName);
+    dispatch(crewActions.leaveCrew({ token, userNickName }));
+  };
+
+  useEffect(() => {
+    if (crewFetchStatus === 'Success') {
       Swal.fire({
         toast: true,
         icon: 'success',
-        title: message,
+        title: '크루 탈퇴 완료.',
         position: 'top-end',
         timer: 5000,
         timerProgressBar: true,
@@ -26,7 +33,9 @@ const LeaveCrewButton = () => {
         showCloseButton: true,
       });
       setIsLeaved(true);
-    } catch {
+      dispatch(crewActions.initCrewRequestFetch());
+    }
+    if (crewFetchStatus === 'Failure') {
       Swal.fire({
         toast: true,
         icon: 'success',
@@ -37,8 +46,9 @@ const LeaveCrewButton = () => {
         showConfirmButton: false,
         showCloseButton: true,
       });
+      dispatch(crewActions.initCrewRequestFetch());
     }
-  };
+  }, [crewFetchStatus]);
 
   return (
     <div className="w-20">
