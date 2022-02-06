@@ -180,7 +180,8 @@ class CrewService implements ICrewService {
     try {
       const { data } = await axios.patch<'위임 완료'>(
         `/crew/users/${userNickName}/edit`,
-        { token }
+        null,
+        { headers: { 'x-auth-token': token } }
       );
       return { message: data };
     } catch (err: any | Error) {
