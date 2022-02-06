@@ -1,4 +1,5 @@
-import { Button, Input } from '@nextui-org/react';
+import { useHistory } from 'react-router-dom';
+import { Button } from '@nextui-org/react';
 import Swal from 'sweetalert2';
 import { v4 } from 'uuid';
 import CrewService from '../../../lib/api/crewService';
@@ -7,6 +8,8 @@ import PeopleList from '../../../common/components/PeopleList';
 import PeopleSearch from '../../../common/components/PeopleSearch';
 
 const PeopleManagement = () => {
+  const history = useHistory();
+
   const { crewMembers, crewLeaderId, token } = useSelector((state) => ({
     crewMembers: state.crew.userDtos,
     crewLeaderId: state.crew.crewLeaderId,
@@ -41,10 +44,13 @@ const PeopleManagement = () => {
       .then(({ message }) => {
         Swal.fire({
           title: message,
-          text: '위임에 성공하였습니다.',
+          text: '<div>위임에 성공하였습니다.</div><h3>탈퇴 시 크루 상세 페이지정보로 이동 후 크루 탈퇴 버튼을 눌러 탈퇴해주세요.</h3>',
           icon: 'success',
           confirmButtonText: '확인',
         });
+      })
+      .then(() => {
+        history.push('/crewList');
       })
       .catch((reason) => {
         console.error(reason);
