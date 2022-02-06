@@ -7,18 +7,15 @@ import PeopleList from '../../../common/components/PeopleList';
 import PeopleSearch from '../../../common/components/PeopleSearch';
 
 const PeopleManagement = () => {
-  const { crewMembers, crewLeaderId, crewLeaderName, token } = useSelector(
-    (state) => ({
-      crewMembers: state.crew.userDtos,
-      crewLeaderId: state.crew.crewLeaderId,
-      crewLeaderName: state.signIn.userData.nickName,
-      token: state.signIn.token,
-    })
-  );
+  const { crewMembers, crewLeaderId, token } = useSelector((state) => ({
+    crewMembers: state.crew.userDtos,
+    crewLeaderId: state.crew.crewLeaderId,
+    token: state.signIn.token,
+  }));
 
   const kickCrewMember = (memberNickName: string) => {
     new CrewService()
-      .kickCrewMember(crewLeaderName, memberNickName)
+      .kickCrewMember(memberNickName)
       .then(({ message }) => {
         Swal.fire({
           title: message,
