@@ -12,7 +12,7 @@ export const refreshUserDataAndRefreshLocalStorage = async (
 ): Promise<IUserData | { result: false }> => {
   try {
     const userData = await new UserService().getUser(userNickName, token);
-    useLocalStroeageData().setUserData(userData);
+    localStorage.setItem('userData', JSON.stringify(userData));
     return userData;
   } catch (err: Error | any) {
     console.error(err);

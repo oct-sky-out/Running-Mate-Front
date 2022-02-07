@@ -27,10 +27,8 @@ interface ICrewService {
     newCrewName: string,
     token?: string
   ) => Promise<{ message: string } | Error>;
-  kickCrewMember: (
-    crewLeaderName: string,
-    memberName: string
-  ) => Promise<{ message: string } | Error>;
+  kickCrewMember: (memberName: string) => Promise<{ message: string } | Error>;
+  leaveCrew: (userName: string) => Promise<{ message: string } | Error>;
   signUpCrew: (
     token: string,
     crewName: string
@@ -120,13 +118,21 @@ class CrewService implements ICrewService {
     }
   };
 
-  kickCrewMember = async (crewLeaderName: string, memberName: string) => {
+  kickCrewMember = async (memberName: string) => {
     try {
       const { data } = await axios.post<'추방 완료'>(
-        `/crew/users/${crewLeaderName}/edit`,
-        { userName: memberName }
+        `/crew/users/${memberName}/edit`
       );
       return { message: data };
+    } catch {
+      throw new Error('강제 추방에 실패하였습니다.');
+    }
+  };
+
+  leaveCrew = async (userName: string) => {
+    try {
+      await axios.post<'추방 완료'>(`/crew/users/${userName}/edit`);
+      return { message: '크루 탈퇴 완료' };
     } catch {
       throw new Error('강제 추방에 실패하였습니다.');
     }
@@ -174,7 +180,8 @@ class CrewService implements ICrewService {
     try {
       const { data } = await axios.patch<'위임 완료'>(
         `/crew/users/${userNickName}/edit`,
-        { token }
+        null,
+        { headers: { 'x-auth-token': token } }
       );
       return { message: data };
     } catch (err: any | Error) {

@@ -14,6 +14,7 @@ import CrewWidget from './CrewWidget';
 import DetailBaseBorder from '../../../common/components/DetailBaseBorder';
 import PreviousPageButton from '../../../common/components/PreviousPageButton';
 import NextPageButton from '../../../common/components/NextPageButton';
+import LeaveCrewButton from './LeaveCrewButton';
 
 interface MatchParam {
   id: string;
@@ -33,6 +34,7 @@ const CrewDetail: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
     crewRequestFetch,
     crewRequested,
     userId,
+    userCrewName,
     token,
   } = useSelector((state) => ({
     crewName: state.crew.crewName,
@@ -44,6 +46,7 @@ const CrewDetail: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
     crewRequestFetch: state.crew.crewRequestFetch,
     crewRequested: state.crew.crewRequested,
     userId: state.signIn.userData.id,
+    userCrewName: state.signIn.userData.crewName,
     token: state.signIn.token,
   }));
   const { getUserData } = useLocalStroeageData();
@@ -139,10 +142,15 @@ const CrewDetail: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
             </a>
           </span>
         </div>
+        {userCrewName === crewName && +userId !== crewLeaderId && (
+          <div className="w-full ml-3 lg:ml-10">
+            <LeaveCrewButton />
+          </div>
+        )}
       </div>
       <div className="space-y-5">
         <div className="w-20 md:w-44 lg:w-52 pl-5 md:pl-0 py-4 flex flex-grow justify-start items-start">
-          {+userId !== crewLeaderId && (
+          {+userId !== crewLeaderId && userCrewName !== crewName && (
             <Button
               auto
               color="#8b8bf5"
