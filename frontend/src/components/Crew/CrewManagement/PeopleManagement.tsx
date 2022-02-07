@@ -1,25 +1,40 @@
-import { Button, Input } from '@nextui-org/react';
+import { useEffect } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { Button } from '@nextui-org/react';
 import Swal from 'sweetalert2';
 import { v4 } from 'uuid';
 import CrewService from '../../../lib/api/crewService';
 import { useSelector } from '../../../modules';
+import { crewActions } from '../../../modules/crew';
 import PeopleList from '../../../common/components/PeopleList';
 import PeopleSearch from '../../../common/components/PeopleSearch';
 
 const PeopleManagement = () => {
-  const { crewMembers, crewLeaderId, crewLeaderName, token } = useSelector(
-    (state) => ({
+  const history = useHistory();
+  const params = useParams<{ id: string }>();
+
+  const { crewMembers, crewLeaderId, userNickName, token, crewFetchStatus } =
+    useSelector((state) => ({
       crewMembers: state.crew.userDtos,
       crewLeaderId: state.crew.crewLeaderId,
-      crewLeaderName: state.signIn.userData.nickName,
+      userNickName: state.signIn.userData.nickName,
       token: state.signIn.token,
-    })
-  );
+      crewFetchStatus: state.crew.crewRequestFetch,
+    }));
+  const dispatch = useDispatch();
 
   const kickCrewMember = (memberNickName: string) => {
     new CrewService()
-      .kickCrewMember(crewLeaderName, memberNickName)
+      .kickCrewMember(memberNickName)
       .then(({ message }) => {
+        dispatch(
+          crewActions.setCrewUsers(
+            crewMembers.filter(
+              (crewMember) => crewMember.nickName !== memberNickName
+            )
+          )
+        );
         Swal.fire({
           title: message,
           text: '추방에 성공하였습니다.',
@@ -39,26 +54,33 @@ const PeopleManagement = () => {
   };
 
   const deligateCrewMember = (memberNickName: string) => {
-    new CrewService()
-      .delegateCrewLeader(memberNickName, token)
-      .then(({ message }) => {
-        Swal.fire({
-          title: message,
-          text: '위임에 성공하였습니다.',
-          icon: 'success',
-          confirmButtonText: '확인',
-        });
-      })
-      .catch((reason) => {
-        console.error(reason);
-        Swal.fire({
-          title: '위임 실패',
-          text: '위임에 실패하였습니다. 죄송합니다.',
-          icon: 'error',
-          confirmButtonText: '확인',
-        });
-      });
+    dispatch(
+      crewActions.deligateCrewLeader({ token, memberNickName, userNickName })
+    );
   };
+
+  useEffect(() => {
+    if (crewFetchStatus === 'Success') {
+      dispatch(crewActions.initCrewRequestFetch());
+      Swal.fire({
+        title: '위임 성공.',
+        html: '<div>위임에 성공하였습니다.</div><h2>탈퇴 시 크루 상세 페이지정보로 이동 후 크루 탈퇴 버튼을 눌러 탈퇴해주세요.</h2>',
+        icon: 'success',
+        confirmButtonText: '확인',
+      }).then(
+        (result) => result.isConfirmed && history.push(`/crewList/${params.id}`)
+      );
+    }
+    if (crewFetchStatus === 'Failure') {
+      Swal.fire({
+        title: '위임 실패',
+        text: '위임에 실패하였습니다. 죄송합니다.',
+        icon: 'error',
+        confirmButtonText: '확인',
+      });
+      dispatch(crewActions.initCrewRequestFetch());
+    }
+  }, [crewFetchStatus]);
 
   return (
     <div className="mx-auto my-0 py-10 px-20 flex flex-col space-y-10 justify-center">

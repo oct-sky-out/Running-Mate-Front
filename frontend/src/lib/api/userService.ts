@@ -99,7 +99,7 @@ class UserService implements IUserService {
 
   getUser = async (userNickName: string, token: string) => {
     try {
-      const { data } = await axios.get<IUserData>(`/users/${userNickName}`, {
+      const { data } = await axios.get<IUserData>(`/validate`, {
         headers: {
           'x-auth-token': token,
         },

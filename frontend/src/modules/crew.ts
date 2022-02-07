@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ICrewType, ICrews, ICrewRequestFetch } from './types/crewTypes';
+import { IUserData } from './types/signInTypes';
 
 const initialState: ICrewType & ICrews & ICrewRequestFetch = {
   id: 0,
@@ -82,6 +83,27 @@ const crewSlice = createSlice({
       ...state,
       crewRequestFetch: 'Fetch',
     }),
+    leaveCrew: (
+      state,
+      _action: PayloadAction<{
+        token: string;
+        userNickName: string;
+      }>
+    ) => ({
+      ...state,
+      crewRequestFetch: 'Fetch',
+    }),
+    deligateCrewLeader: (
+      state,
+      _action: PayloadAction<{
+        token: string;
+        memberNickName: string;
+        userNickName: string;
+      }>
+    ) => ({
+      ...state,
+      crewRequestFetch: 'Fetch',
+    }),
     signUpRequestCrew: (
       state,
       _action: PayloadAction<{
@@ -91,6 +113,10 @@ const crewSlice = createSlice({
     ) => ({
       ...state,
       crewRequestFetch: 'Fetch',
+    }),
+    setCrewUsers: (state, action: PayloadAction<IUserData[]>) => ({
+      ...state,
+      userDtos: action.payload,
     }),
     setRequsetUsers: (state, action: PayloadAction<string[]>) => ({
       ...state,
