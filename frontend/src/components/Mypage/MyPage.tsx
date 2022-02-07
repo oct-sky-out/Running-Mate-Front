@@ -24,10 +24,10 @@ const MyPage = () => {
 
   const { checkTokenAvailable } = useValidToken();
   const tokenValidCallback = (result: CheckTokenResultType) => {
-    if (!result.tokenState) {
-      console.error(result.message);
-      history.push('/guest');
-    }
+    // if (!result.tokenState) {
+    //   console.error(result.message);
+    //   history.push('/guest');
+    // }
   };
   const tokenNotValidCallback = () => {
     Swal.fire({
