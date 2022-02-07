@@ -1,4 +1,5 @@
 import React, { useState, useEffect, memo } from 'react';
+import { v4 } from 'uuid';
 import Regions from '../../lib/data/regions';
 import { AddressType } from '../../modules/types/notice';
 import findFirstRegion from '../../common/functions/findFirstRegion';
@@ -50,7 +51,11 @@ const SelcetRegion: React.FC<Props> = memo(
           >
             <option value="">지역을 선택해주세요</option>
             {Object.keys(Regions).map((region) => {
-              return <option value={region}>{region}</option>;
+              return (
+                <React.Fragment key={v4()}>
+                  <option value={region}>{region}</option>
+                </React.Fragment>
+              );
             })}
           </select>
         </div>
@@ -69,7 +74,11 @@ const SelcetRegion: React.FC<Props> = memo(
             </option>
             {region1 &&
               Object.keys(Regions[region1]).map((region) => {
-                return <option value={region}>{region}</option>;
+                return (
+                  <React.Fragment key={v4()}>
+                    <option value={region}>{region}</option>
+                  </React.Fragment>
+                );
               })}
           </select>
         </div>
@@ -85,9 +94,11 @@ const SelcetRegion: React.FC<Props> = memo(
             {region2 &&
               Object.keys(Regions[region1][region2]).map((index) => {
                 return (
-                  <option value={Regions[region1][region2][Number(index)]}>
-                    {Regions[region1][region2][Number(index)]}
-                  </option>
+                  <React.Fragment key={v4()}>
+                    <option value={Regions[region1][region2][Number(index)]}>
+                      {Regions[region1][region2][Number(index)]}
+                    </option>
+                  </React.Fragment>
                 );
               })}
           </select>

@@ -157,7 +157,7 @@ const Home = () => {
           <button
             disabled={region.gwon === '전체' ? false : !region.si}
             className={`text-white w-16 h-10 md:w-20 md:w-25 rounded-xl hover:opacity-80 transition ease-in-out delay-100 ml-4 mb-2 outline-none
-             ${changeButtonCSS()}`}
+            ${changeButtonCSS()}`}
             onClick={clickSearchBtn}
           >
             검색
