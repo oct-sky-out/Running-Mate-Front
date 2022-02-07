@@ -93,7 +93,10 @@ const Home = () => {
     setIsLoading(true);
     // wait의 역할: 과도한 API 요청을 방지해준다.
     const wait = (delay: number) =>
-      new Promise((resolve) => setTimeout(resolve, delay * 1000));
+      new Promise((resolve) => {
+        const timeOutUID = setTimeout(resolve, delay * 1000);
+        clearTimeout(timeOutUID);
+      });
     await wait(3);
     if (region.si) {
       console.log('검색중');
@@ -117,7 +120,10 @@ const Home = () => {
       PAGING_LIMIT_NOTICES
     );
     const wait = (delay: number) =>
-      new Promise((resolve) => setTimeout(resolve, delay * 1000));
+      new Promise((resolve) => {
+        const timeOutUID = setTimeout(resolve, delay * 1000);
+        clearTimeout(timeOutUID);
+      });
     await wait(1);
     if (!isEmpty(updateAllRegionBoards)) {
       setNotices([...notices, ...updateAllRegionBoards]);
