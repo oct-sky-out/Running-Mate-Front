@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Route, useLocation, useHistory } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import { useSelector } from '../../modules';
+import { v4 } from 'uuid';
 import MyPageMenu from './MyPageMenu';
 import MyPageInformations from './MyPageInformations';
 import ChangeMyPassword from './ChangeMyPassword';
@@ -14,20 +14,19 @@ import RequestFriendsManagement from './RequestFriendsManagement';
 const MyPage = () => {
   const location = useLocation();
   const history = useHistory();
-  const token = useSelector((state) => state.signIn.token);
   const menuTexts: { [key: string]: string } = {
     '/mypage': '내 정보 관리',
     '/mypage/changePassword': '비밀번호 변경',
     '/mypage/leaving': '회원탈퇴',
     '/mypage/friends/list': '친구관리',
   };
-
+  const token = localStorage.getItem('token');
   const { checkTokenAvailable } = useValidToken();
   const tokenValidCallback = (result: CheckTokenResultType) => {
-    // if (!result.tokenState) {
-    //   console.error(result.message);
-    //   history.push('/guest');
-    // }
+    if (!result.tokenState) {
+      console.error(result.message);
+      history.push('/guest');
+    }
   };
   const tokenNotValidCallback = () => {
     Swal.fire({
@@ -39,6 +38,8 @@ const MyPage = () => {
       timerProgressBar: true,
       showConfirmButton: false,
       showCloseButton: true,
+    }).then(() => {
+      history.push('/guest');
     });
   };
 
@@ -50,7 +51,10 @@ const MyPage = () => {
     <DetailBaseBorder>
       <div className="flex justify-center items-center font-bold h-1/5 text-3xl">
         {Object.keys(menuTexts).map(
-          (url) => location.pathname === url && <span>{menuTexts[url]}</span>
+          (url) =>
+            location.pathname === url && (
+              <span key={v4()}>{menuTexts[url]}</span>
+            )
         )}
         {location.pathname === '/mypage/friends/requests' && (
           <span>친구 요청 관리</span>
@@ -62,7 +66,7 @@ const MyPage = () => {
       <Route
         exact
         path="/mypage"
-        render={() => <MyPageInformations token={token} />}
+        render={() => <MyPageInformations token={token || ''} />}
       />
       <Route exact path="/mypage/changePassword" component={ChangeMyPassword} />
       <Route exact path="/mypage/leaving" component={LeaveAccount} />
