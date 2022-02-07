@@ -19,10 +19,8 @@ function* signInFetchSaga({
   payload,
 }: ReturnType<typeof SignInActions.signInFetch>) {
   try {
-    const {
-      userDto: { email, address, crewLeader, crewName, id, nickName },
-      token,
-    } = yield call(userService.login, payload);
+    const { email, address, crewLeader, crewName, id, nickName, token } =
+      yield call(userService.login, payload);
     const data = {
       email,
       address,
