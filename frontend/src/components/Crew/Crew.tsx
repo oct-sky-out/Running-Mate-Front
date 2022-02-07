@@ -31,8 +31,8 @@ const Crew = () => {
   const crewBoardTop = useRef<undefined | number>(undefined);
 
   const getCrews = useCallback(async () => {
-    setLoading(true);
     try {
+      setLoading(true);
       const crewsData = await new CrewService().getCrewRange(offset, 10);
 
       if (crewsData.length === 0) setIsSamePreviousData(true);
@@ -54,8 +54,9 @@ const Crew = () => {
         showConfirmButton: false,
         showCloseButton: true,
       });
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   }, [offset]);
 
   const observerInView = useCallback(() => {

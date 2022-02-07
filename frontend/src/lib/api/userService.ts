@@ -118,7 +118,7 @@ class UserService implements IUserService {
     }
   };
 
-  tokenValid = async (token: string) => {
+  tokenValid = async (token: string | null) => {
     try {
       if (!token) throw Error('token is not find please check token');
 

@@ -63,7 +63,6 @@ const Home = () => {
           setInfiniteFetchStop(true);
         }
       } catch (error) {
-        setInfiniteFetchStop(true);
         console.error(error);
       }
     },
@@ -81,7 +80,6 @@ const Home = () => {
           setInfiniteFetchStop(true);
         }
       } catch (error) {
-        setInfiniteFetchStop(true);
         console.error(error);
       }
     },
@@ -113,7 +111,6 @@ const Home = () => {
       offset,
       PAGING_LIMIT_NOTICES
     );
-
     if (!isEmpty(updateAllRegionBoards)) {
       setNotices([...notices, ...updateAllRegionBoards]);
       setOffset(offset + PAGING_LIMIT_NOTICES);
