@@ -75,7 +75,7 @@ const ViewNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
         confirmButtonText: '삭제하기',
       });
       if (result.isConfirmed) {
-        const data = await noticeService.deleteNotice(id, token);
+        await noticeService.deleteNotice(id, token);
         await Swal.fire(
           '삭제 성공',
           '게시물을 성공적으로 삭제하였습니다.',

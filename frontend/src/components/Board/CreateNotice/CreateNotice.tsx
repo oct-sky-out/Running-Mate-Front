@@ -82,7 +82,7 @@ const CreateNotice = () => {
     reader.readAsDataURL(file);
   };
 
-  const saveImageFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const saveImageFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     try {
       setImageUploadLoading(true);
       if (!e.target.files) return;
@@ -95,7 +95,7 @@ const CreateNotice = () => {
       setImageUploadLoading(false);
     } catch (error) {
       setImageUploadLoading(false);
-      await Swal.fire({
+      Swal.fire({
         title: '이미지 업로드 실패',
         text: '이미지 업로드에 실패하였습니다. 다시 시도해주세요.',
         icon: 'error',
@@ -104,7 +104,7 @@ const CreateNotice = () => {
       console.error(error);
     }
   };
-  const deleteImageFile = async () => {
+  const deleteImageFile = () => {
     try {
       setImageUploadLoading(true);
       const imageURLArr = image.split('/');
@@ -119,7 +119,7 @@ const CreateNotice = () => {
       setImageUploadLoading(false);
     } catch (error) {
       setImageUploadLoading(false);
-      await Swal.fire({
+      Swal.fire({
         title: '이미지 삭제 실패',
         text: '이미지 삭제에 실패하였습니다. 다시 시도해주세요.',
         icon: 'error',
