@@ -21,7 +21,9 @@ import ImageButtons from '../../../common/components/ImageButtons';
 
 // API
 import NoticeService from '../../../lib/api/noticeService';
-import { ImageUploader, ImageDelete } from '../../../lib/api/imageUploader';
+import useImageUploader from '../../../hooks/useImageUploader';
+import useImageDelete from '../../../hooks/useImageDelete';
+// import { ImageUploader, ImageDelete } from '../../../lib/api/imageUploader';
 
 type NoticeActionType = 'setTitle' | 'setContent' | 'setOpenChat';
 
@@ -73,6 +75,10 @@ const EditNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
     token: state.signIn.token,
   }));
 
+  //* custom hooks
+  const { progress, imageUploader } = useImageUploader();
+  const imageDelete = useImageDelete();
+
   //* event version
   const setPreviewImage = (file: File) => {
     const reader = new FileReader();
@@ -82,12 +88,12 @@ const EditNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
     reader.readAsDataURL(file);
   };
 
-  const saveImageFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const saveImageFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     try {
       setImageUploadLoading(true);
       if (!e.target.files) return;
       const file = e.target.files[0];
-      const location = await ImageUploader(file, 'boardImage');
+      const location = imageUploader(file, 'boardImage');
       dispatch(noticeActions.setImage(location));
 
       // 미리보기 이미지
@@ -95,7 +101,7 @@ const EditNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
       setImageUploadLoading(false);
     } catch (error) {
       setImageUploadLoading(false);
-      await Swal.fire({
+      Swal.fire({
         title: '이미지 업로드 실패',
         text: '이미지 업로드에 실패하였습니다. 다시 시도해주세요.',
         icon: 'error',
@@ -104,7 +110,7 @@ const EditNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
       console.error(error);
     }
   };
-  const deleteImageFile = async () => {
+  const deleteImageFile = () => {
     try {
       setImageUploadLoading(true);
       const imageURLArr = image.split('/');
@@ -112,14 +118,14 @@ const EditNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
         imageURLArr[imageURLArr.length - 1]
       }`;
 
-      await ImageDelete(fileName);
+      imageDelete(fileName);
       dispatch(noticeActions.setImage(''));
       // 미리보기 이미지
       setPreviewImageFile(null);
       setImageUploadLoading(false);
     } catch (error) {
       setImageUploadLoading(false);
-      await Swal.fire({
+      Swal.fire({
         title: '이미지 삭제 실패',
         text: '이미지 삭제에 실패하였습니다. 다시 시도해주세요.',
         icon: 'error',
@@ -129,7 +135,7 @@ const EditNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
     }
   };
 
-  const editImageFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const editImageFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     try {
       setImageUploadLoading(true);
       if (!e.target.files) return;
@@ -139,11 +145,11 @@ const EditNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
         const fileName = `${imageURLArr[imageURLArr.length - 2]}/${
           imageURLArr[imageURLArr.length - 1]
         }`;
-        await ImageDelete(fileName);
+        imageDelete(fileName);
       }
       // 업로드
       const file = e.target.files[0];
-      const location = await ImageUploader(file, 'boardImage');
+      const location = imageUploader(file, 'boardImage');
       dispatch(noticeActions.setImage(location));
 
       // 미리보기 이미지
@@ -151,7 +157,7 @@ const EditNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
       setImageUploadLoading(false);
     } catch (error) {
       setImageUploadLoading(false);
-      await Swal.fire({
+      Swal.fire({
         title: '이미지 변경 실패',
         text: '이미지 변경에 실패하였습니다. 다시 시도해주세요.',
         icon: 'error',

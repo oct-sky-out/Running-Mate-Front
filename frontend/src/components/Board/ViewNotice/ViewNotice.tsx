@@ -14,7 +14,7 @@ import dateParser from '../../../common/functions/dateParser';
 import PreviousPageButton from '../../../common/components/PreviousPageButton';
 import { useSelector } from '../../../modules/index';
 import NoticeService from '../../../lib/api/noticeService';
-import { ImageDelete } from '../../../lib/api/imageUploader';
+import useImageDelete from '../../../hooks/useImageDelete';
 
 interface MatchParam {
   runId: string;
@@ -58,6 +58,9 @@ const ViewNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
     nickName: state.signIn.userData.nickName,
   }));
 
+  //* custom hook
+  const imageDelete = useImageDelete();
+
   const endDate = meetingTime ? new Date(meetingTime) : '';
 
   const deleteNotice = async () => {
@@ -72,7 +75,7 @@ const ViewNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
         confirmButtonText: '삭제하기',
       });
       if (result.isConfirmed) {
-        const data = await noticeService.deleteNotice(id, token);
+        await noticeService.deleteNotice(id, token);
         await Swal.fire(
           '삭제 성공',
           '게시물을 성공적으로 삭제하였습니다.',
@@ -82,7 +85,7 @@ const ViewNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
         const fileName = `${imageURLArr[imageURLArr.length - 2]}/${
           imageURLArr[imageURLArr.length - 1]
         }`;
-        await ImageDelete(fileName);
+        imageDelete(fileName);
         history.push('/');
       }
     } catch (error) {

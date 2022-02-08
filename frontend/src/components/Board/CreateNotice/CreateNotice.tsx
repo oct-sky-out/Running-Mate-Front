@@ -23,7 +23,9 @@ import { AddressType } from '../../../modules/types/notice';
 
 // API
 import NoticeService from '../../../lib/api/noticeService';
-import { ImageUploader, ImageDelete } from '../../../lib/api/imageUploader';
+import useImageUploader from '../../../hooks/useImageUploader';
+import useImageDelete from '../../../hooks/useImageDelete';
+// import { ImageUploader, ImageDelete } from '../../../lib/api/imageUploader';
 
 type CreacteNoticeActionType = 'setTitle' | 'setContent' | 'setOpenChat';
 
@@ -68,6 +70,10 @@ const CreateNotice = () => {
     token: state.signIn.token,
   }));
 
+  //* custom Hook
+  const { progress, imageUploader } = useImageUploader();
+  const imageDelete = useImageDelete();
+
   const setPreviewImage = (file: File) => {
     const reader = new FileReader();
     reader.onload = () => {
@@ -76,12 +82,12 @@ const CreateNotice = () => {
     reader.readAsDataURL(file);
   };
 
-  const saveImageFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const saveImageFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     try {
       setImageUploadLoading(true);
       if (!e.target.files) return;
       const file = e.target.files[0];
-      const location = await ImageUploader(file, 'boardImage');
+      const location = imageUploader(file, 'boardImage');
       dispatch(CreateNoticeActions.setImage(location));
 
       // 미리보기 이미지
@@ -89,7 +95,7 @@ const CreateNotice = () => {
       setImageUploadLoading(false);
     } catch (error) {
       setImageUploadLoading(false);
-      await Swal.fire({
+      Swal.fire({
         title: '이미지 업로드 실패',
         text: '이미지 업로드에 실패하였습니다. 다시 시도해주세요.',
         icon: 'error',
@@ -98,7 +104,7 @@ const CreateNotice = () => {
       console.error(error);
     }
   };
-  const deleteImageFile = async () => {
+  const deleteImageFile = () => {
     try {
       setImageUploadLoading(true);
       const imageURLArr = image.split('/');
@@ -106,14 +112,14 @@ const CreateNotice = () => {
         imageURLArr[imageURLArr.length - 1]
       }`;
 
-      await ImageDelete(fileName);
+      imageDelete(fileName);
       dispatch(CreateNoticeActions.setImage(''));
       // 미리보기 이미지
       setPreviewImageFile(null);
       setImageUploadLoading(false);
     } catch (error) {
       setImageUploadLoading(false);
-      await Swal.fire({
+      Swal.fire({
         title: '이미지 삭제 실패',
         text: '이미지 삭제에 실패하였습니다. 다시 시도해주세요.',
         icon: 'error',
@@ -123,7 +129,7 @@ const CreateNotice = () => {
     }
   };
 
-  const editImageFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const editImageFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     try {
       setImageUploadLoading(true);
       if (!e.target.files) return;
@@ -133,11 +139,11 @@ const CreateNotice = () => {
         const fileName = `${imageURLArr[imageURLArr.length - 2]}/${
           imageURLArr[imageURLArr.length - 1]
         }`;
-        await ImageDelete(fileName);
+        imageDelete(fileName);
       }
       // 업로드
       const file = e.target.files[0];
-      const location = await ImageUploader(file, 'boardImage');
+      const location = imageUploader(file, 'boardImage');
       dispatch(CreateNoticeActions.setImage(location));
 
       // 미리보기 이미지
@@ -145,7 +151,7 @@ const CreateNotice = () => {
       setImageUploadLoading(false);
     } catch (error) {
       setImageUploadLoading(false);
-      await Swal.fire({
+      Swal.fire({
         title: '이미지 변경 실패',
         text: '이미지 변경에 실패하였습니다. 다시 시도해주세요.',
         icon: 'error',

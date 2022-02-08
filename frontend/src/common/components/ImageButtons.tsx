@@ -6,9 +6,9 @@ interface IImageButtons {
   uploadButtonName: string;
   editButtonName: string;
   deleteButtonName: string;
-  uploadButtonEvent: (e: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
-  editButtonEvent: (e: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
-  deleteButtonEvent: () => Promise<void>;
+  uploadButtonEvent: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  editButtonEvent: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  deleteButtonEvent: () => void;
 }
 
 const ImageButtons: React.FC<IImageButtons> = ({
