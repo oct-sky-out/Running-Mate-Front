@@ -14,7 +14,7 @@ import dateParser from '../../../common/functions/dateParser';
 import PreviousPageButton from '../../../common/components/PreviousPageButton';
 import { useSelector } from '../../../modules/index';
 import NoticeService from '../../../lib/api/noticeService';
-import { ImageDelete } from '../../../lib/api/imageUploader';
+// import { ImageDelete } from '../../../lib/api/imageUploader';
 
 interface MatchParam {
   runId: string;

@@ -21,7 +21,7 @@ import ImageButtons from '../../../common/components/ImageButtons';
 
 // API
 import NoticeService from '../../../lib/api/noticeService';
-import { ImageUploader, ImageDelete } from '../../../lib/api/imageUploader';
+// import { ImageUploader, ImageDelete } from '../../../lib/api/imageUploader';
 
 type NoticeActionType = 'setTitle' | 'setContent' | 'setOpenChat';
 
