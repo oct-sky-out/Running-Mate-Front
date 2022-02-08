@@ -23,7 +23,10 @@ const CrewManagement: React.FC<RouteComponentProps<MatchParam>> = ({
   //* react router dom
   const history = useHistory();
   const dispatch = useDispatch();
-  const crewId = useSelector((state) => state.crew.id);
+  const { crewId, crewOpenChatLink } = useSelector((state) => ({
+    crewId: state.crew.id,
+    crewOpenChatLink: state.crew.openChat,
+  }));
 
   useEffect(() => {
     if (crewId === 0)
@@ -66,7 +69,7 @@ const CrewManagement: React.FC<RouteComponentProps<MatchParam>> = ({
         <div className="text-lg">
           <span>오픈 채팅 : </span>
           <span>
-            <a href="http://kakao.com/openchat">http://kakao.com/openchat</a>
+            <a href={crewOpenChatLink}>{crewOpenChatLink}</a>
           </span>
         </div>
       </div>
