@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { S3 } from 'aws-sdk';
+import S3 from 'aws-sdk/clients/s3';
 import { v4 } from 'uuid';
 
 const useImageUploader = () => {
