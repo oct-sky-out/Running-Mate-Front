@@ -34,14 +34,18 @@ jobs:
         shell : bash
         env:
          REACT_APP_API_SERVER: ${{ secrets.REACT_APP_API_SERVER }}
-         AWS_ACCESS_KEY: ${{ secrets.REACT_APP_AWS_S3_ACCESS_KEY_ID }}
-         AWS_SECRET_ACCESS_KEY: ${{ secrets.REACT_APP_AWS_S3_SECRET_ACCESS_KEY }}
+         REACT_APP_AWS_S3_BUCKET_NAME: ${{ secrets.REACT_APP_AWS_S3_BUCKET_NAME }}
+         REACT_APP_AWS_S3_REGION: ${{ secrets.REACT_APP_AWS_S3_REGION }}
+         REACT_APP_AWS_S3_ACCESS_KEY_ID: ${{ secrets.REACT_APP_AWS_S3_ACCESS_KEY_ID }}
+         REACT_APP_AWS_S3_SECRET_ACCESS_KEY: ${{ secrets.REACT_APP_AWS_S3_SECRET_ACCESS_KEY }}
         run: |
          touch .env.production
          echo REACT_APP_API_SERVER="$REACT_APP_API_SERVER" >> .env.production
-         echo REACT_APP_AWS_S3_ACCESS_KEY_ID="$AWS_ACCESS_KEY" >> .env.production
-         echo REACT_APP_AWS_S3_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY" >> .env.production   
-          
+         echo REACT_APP_AWS_S3_BUCKET_NAME="$REACT_APP_AWS_S3_BUCKET_NAME" >> .env.production
+         echo REACT_APP_AWS_S3_REGION="$REACT_APP_AWS_S3_REGION" >> .env.production
+         echo REACT_APP_AWS_S3_ACCESS_KEY_ID="$REACT_APP_AWS_S3_ACCESS_KEY_ID" >> .env.production
+         echo REACT_APP_AWS_S3_SECRET_ACCESS_KEY="$REACT_APP_AWS_S3_SECRET_ACCESS_KEY" >> .env.production   
+         
       - uses: actions/setup-node@v2
         with:
           node-version: '14'
