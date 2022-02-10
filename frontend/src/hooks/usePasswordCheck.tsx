@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { debounce, isEqual } from 'lodash';
+import L from 'lodash';
 import { FormElement } from '@nextui-org/react/esm/input/input-props';
 
 const usePasswordCheck = () => {
@@ -10,7 +10,7 @@ const usePasswordCheck = () => {
   const [safePassword, setSafePassword] = useState(false);
 
   const changePassword = useCallback(
-    debounce((e: React.ChangeEvent<FormElement>, dispatch?: () => void) => {
+    L.debounce((e: React.ChangeEvent<FormElement>, dispatch?: () => void) => {
       const passwordRegex =
         /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
 
@@ -30,16 +30,16 @@ const usePasswordCheck = () => {
   );
 
   const changeChekcPassword = useCallback(
-    debounce(
+    L.debounce(
       (
         e: React.ChangeEvent<FormElement>,
         passwordTarget: string,
         dispatch?: () => void
       ) => {
-        if (isEqual(passwordTarget, e.target.value)) {
+        if (L.isEqual(passwordTarget, e.target.value)) {
           setSamePassword('같은 비밀번호입니다.');
         }
-        if (isEqual(passwordTarget, e.target.value)) {
+        if (!L.isEqual(passwordTarget, e.target.value)) {
           setSamePassword('비밀번호가 다릅니다.');
         }
         if (dispatch) dispatch();
@@ -51,7 +51,7 @@ const usePasswordCheck = () => {
 
   const isSafedAndPasswordSame = useCallback(
     (target1, target2) => {
-      if (safePassword && isEqual(target1, target2)) return true;
+      if (safePassword && L.isEqual(target1, target2)) return true;
       return false;
     },
     [safePassword]

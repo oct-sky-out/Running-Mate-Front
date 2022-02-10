@@ -7,6 +7,7 @@ import { BiUser } from 'react-icons/bi';
 import Swal from 'sweetalert2';
 import { useSelector } from '../../modules';
 import UserService from '../../lib/api/userService';
+import useLocalStroeageData from '../../hooks/useLocalStorageData';
 import CrewWidget from '../Crew/CrewDetail/CrewWidget';
 import DetailBaseBorder from '../../common/components/DetailBaseBorder';
 import PreviousPageButton from '../../common/components/PreviousPageButton';
