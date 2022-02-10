@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { useSelector } from './modules';
 import useLocalStroeageData from './hooks/useLocalStorageData';
@@ -14,6 +14,8 @@ import MyPage from './components/Mypage/MyPage';
 import ViewNotice from './components/Board/ViewNotice/ViewNotice';
 import UserPage from './components/UserPage/Userpage';
 import EditNotice from './components/Board/EditNotice/EditNotice';
+import SuspenseLoading from './components/Loading/SuspenseLoading';
+import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 
 function App() {
   const token = useSelector((state) => state.signIn.token);
@@ -27,21 +29,25 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <Header />
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route exact path="/guest" component={GuestPage} />
-          <Route exact path="/userInfo/:id" component={UserPage} />
-          <Route path="/myPage" component={MyPage} />
-          <Route exact path="/crewList" component={Crew} />
-          <Route exact path="/crewList/:id" component={CrewDetail} />
-          <Route exact path="/crew/new" component={CreateNewCrew} />
-          <Route path="/crew/:id" component={CrewManagement} />
-          <Route exact path="/boards/run/:runId" component={ViewNotice} />
-          <Route exact path="/boards/edit/run/:id" component={EditNotice} />
-          <Route exact path="/boards/create/run" component={CreateNotice} />
-        </Switch>
-        <div id="modal" />
+        <Suspense fallback={SuspenseLoading}>
+          <ErrorBoundary>
+            <Header />
+            <Switch>
+              <Route exact path="/" component={Home} />
+              <Route exact path="/guest" component={GuestPage} />
+              <Route exact path="/userInfo/:id" component={UserPage} />
+              <Route path="/myPage" component={MyPage} />
+              <Route exact path="/crewList" component={Crew} />
+              <Route exact path="/crewList/:id" component={CrewDetail} />
+              <Route exact path="/crew/new" component={CreateNewCrew} />
+              <Route path="/crew/:id" component={CrewManagement} />
+              <Route exact path="/boards/run/:runId" component={ViewNotice} />
+              <Route exact path="/boards/edit/run/:id" component={EditNotice} />
+              <Route exact path="/boards/create/run" component={CreateNotice} />
+            </Switch>
+            <div id="modal" />
+          </ErrorBoundary>
+        </Suspense>
       </BrowserRouter>
     </>
   );
