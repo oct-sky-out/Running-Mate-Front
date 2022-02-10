@@ -5,22 +5,22 @@ import { BsPeopleFill } from 'react-icons/bs';
 import { GiPositionMarker } from 'react-icons/gi';
 import { BiUser } from 'react-icons/bi';
 import Swal from 'sweetalert2';
-import { useSelector } from '../../modules';
-import UserService from '../../lib/api/userService';
-import useLocalStroeageData from '../../hooks/useLocalStorageData';
-import CrewWidget from '../Crew/CrewDetail/CrewWidget';
-import DetailBaseBorder from '../../common/components/DetailBaseBorder';
-import PreviousPageButton from '../../common/components/PreviousPageButton';
+import { useSelector } from '../../../modules';
+import UserService from '../../../lib/api/userService';
+import useLocalStroeageData from '../../../hooks/useLocalStorageData';
+import CrewWidget from '../../Crew/CrewDetail/CrewWidget';
+import DetailBaseBorder from '../../../common/components/DetailBaseBorder';
+import PreviousPageButton from '../../../common/components/PreviousPageButton';
 
 // test data
-import userPageMock from '../../excuteData/UserPageMock/UserPageMock';
+import userPageMock from '../../../excuteData/UserPageMock/UserPageMock';
 import FriendButton from './FriendButton';
 
 interface MatchParam {
   id: string;
 }
 
-const UserPage: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
+const UserDetail: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
   //* react-router-dom
   const history = useHistory();
   const location = useLocation();
@@ -93,7 +93,7 @@ const UserPage: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
   }, [token, location.pathname]);
 
   return (
-    <DetailBaseBorder>
+    <>
       <div className="flex items-center justify-between">
         <PreviousPageButton
           text="뒤로가기"
@@ -150,8 +150,8 @@ const UserPage: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
           </div>
         </div>
       </div>
-    </DetailBaseBorder>
+    </>
   );
 };
 
-export default UserPage;
+export default UserDetail;

@@ -28,7 +28,7 @@ export default class ErrorBoundary extends Component<Props, State> {
     const { children } = this.props;
     if (isError)
       return (
-        <div className="w-screen h-screen flex flex-col space-y-10 justify-center text-black ">
+        <div className="w-screen h-screen flex flex-col space-y-10 justify-center items-center text-black ">
           <div>
             <span className="text-3xl">에러가 발생하였습니다.</span>
           </div>

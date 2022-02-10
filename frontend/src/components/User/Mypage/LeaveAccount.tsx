@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button, Input } from '@nextui-org/react';
 import Swal from 'sweetalert2';
-import { useSelector } from '../../modules';
-import UserService from '../../lib/api/userService';
+import { useSelector } from '../../../modules';
+import UserService from '../../../lib/api/userService';
 
 const LeaveAccount = () => {
   const history = useHistory();

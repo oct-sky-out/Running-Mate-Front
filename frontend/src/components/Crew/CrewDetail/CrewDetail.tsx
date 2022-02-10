@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { withRouter, RouteComponentProps, useHistory } from 'react-router-dom';
+import { RouteComponentProps, useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Button } from '@nextui-org/react';
 import Swal from 'sweetalert2';
@@ -179,4 +179,4 @@ const CrewDetail: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
   );
 };
 
-export default withRouter(CrewDetail);
+export default CrewDetail;

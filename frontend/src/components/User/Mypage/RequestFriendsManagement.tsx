@@ -1,31 +1,30 @@
 import { useEffect, useState } from 'react';
-import { useLocation, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { v4 } from 'uuid';
 import { Button, Loading } from '@nextui-org/react';
 import Swal from 'sweetalert2';
-import { useSelector } from '../../modules';
-import { friendActions } from '../../modules/friend';
-import PeopleSearch from '../../common/components/PeopleSearch';
-import FriendService from '../../lib/api/friendService';
-import PeopleList from '../../common/components/PeopleList';
+import PeopleList from '../../../common/components/PeopleList';
+import FriendService from '../../../lib/api/friendService';
+import { useSelector } from '../../../modules';
+import { friendActions } from '../../../modules/friend';
 
-const FriendsList = () => {
+const RequestFriendsManagement = () => {
   const history = useHistory();
-
   const { token, requestFriendFetch } = useSelector((state) => ({
     token: state.signIn.token,
     requestFriendFetch: state.friend.requestFriendFetch,
   }));
   const dispatch = useDispatch();
-
-  const [userFriends, setUserFriends] = useState<string[]>([]);
+  const [requestList, setRequestList] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const getUserFriends = async () => {
+  const getRequestFriends = async () => {
     try {
-      const { friendList } = await new FriendService().getMyFriends(token);
-      setUserFriends(friendList);
+      const { requestFriendList } = await new FriendService().getRequestFriend(
+        token
+      );
+      setRequestList(requestFriendList);
     } catch {
       Swal.fire({
         toast: true,
@@ -41,6 +40,23 @@ const FriendsList = () => {
     }
   };
 
+  const goManageRequestFriends = () => {
+    history.push('/user/mypage/friends/list');
+  };
+
+  const permitFriend = (userNickName: string) => {
+    setLoading(true);
+    dispatch(
+      friendActions.requestFriend({
+        token,
+        requesteeName: userNickName,
+        requestRole: 'permit',
+        refreshFriendApi: getRequestFriends,
+      })
+    );
+    setLoading(false);
+  };
+
   const dismissFriend = (userNickName: string) => {
     setLoading(true);
     dispatch(
@@ -48,18 +64,18 @@ const FriendsList = () => {
         token,
         requesteeName: userNickName,
         requestRole: 'dismiss',
-        refreshFriendApi: getUserFriends,
+        refreshFriendApi: getRequestFriends,
       })
     );
+
     setLoading(false);
   };
 
-  const goManageRequestFriends = () => {
-    history.push('/mypage/friends/requests');
-  };
-
+  //* useEffects
   useEffect(() => {
-    getUserFriends();
+    setLoading(true);
+    getRequestFriends();
+    setLoading(false);
   }, []);
 
   useEffect(() => {
@@ -84,31 +100,40 @@ const FriendsList = () => {
     <div className="mx-auto my-0 py-10 px-20 flex flex-col space-y-10 justify-center">
       <div className="w-full flex space-x-3 justify-center">
         <div>
-          <Button bordered auto color="secondary">
-            친구목록
-          </Button>
-        </div>
-        <div>
           <Button
             bordered
             auto
             color="secondary"
             onClick={goManageRequestFriends}
           >
+            친구목록
+          </Button>
+        </div>
+        <div>
+          <Button bordered auto color="secondary">
             친구요청
           </Button>
         </div>
       </div>
-      <PeopleSearch placeholder="검색 할 친구이름을 입력하세요" />\
       {loading && (
         <div>
           <Loading type="points" color="secondart" />
         </div>
       )}
-      {userFriends.length !== 0 ? (
+      {requestList.length !== 0 ? (
         <div className="border-2 border-purple rounded-lg flex flex-col divide-y divide-purple">
-          {userFriends.map((friend) => (
+          {requestList.map((friend) => (
             <PeopleList key={v4()} userNickName={friend}>
+              <div className="w-30">
+                <Button
+                  auto
+                  rounded
+                  color="secondary"
+                  onClick={() => permitFriend(friend)}
+                >
+                  수락
+                </Button>
+              </div>
               <div className="w-30">
                 <Button
                   auto
@@ -116,17 +141,17 @@ const FriendsList = () => {
                   color="secondary"
                   onClick={() => dismissFriend(friend)}
                 >
-                  친구삭제
+                  거절
                 </Button>
               </div>
             </PeopleList>
           ))}
         </div>
       ) : (
-        <h1 className="text-2xl">친구목록이 비어있습니다.</h1>
+        <h1 className="text-2xl">친구요청 목록이 비어있습니다.</h1>
       )}
     </div>
   );
 };
 
-export default FriendsList;
+export default RequestFriendsManagement;
