@@ -7,6 +7,7 @@ import watchSignUpRequestCrew from './signUpRequestCrewSaga';
 import watchFriend from './friendSaga';
 import watchLeaveCrew from './leaveCrewSaga';
 import watchDeligateCrewLeader from './deligateCrewLeaderSaga';
+import watchPermitCrewRequest from './permitCrewRequsetSaga';
 
 export default function* rootSaga() {
   yield all([
@@ -18,5 +19,6 @@ export default function* rootSaga() {
     watchFriend(),
     watchLeaveCrew(),
     watchDeligateCrewLeader(),
+    watchPermitCrewRequest(),
   ]);
 }

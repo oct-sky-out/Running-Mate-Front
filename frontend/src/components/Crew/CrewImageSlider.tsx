@@ -19,7 +19,7 @@ const CrewImageSlider = () => {
       {imageURL.map((url, index) => {
         return (
           imageOrder === index && (
-            <div key={v4()} className="w-full h-full bg-white opacity-50">
+            <div key={v4()} className="w-full h-full bg-white opacity-70">
               <div
                 className="w-full h-full transition-opacity bg-contain sm:bg-cover sm:bg-fixed bg-center bg-no-repeat"
                 style={{ backgroundImage: `url(${url})` }}
