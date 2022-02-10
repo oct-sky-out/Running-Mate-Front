@@ -2,7 +2,6 @@ import { call, takeLatest, put } from '@redux-saga/core/effects';
 import { CreateCrewActions } from '../createCrew';
 import CrewService from '../../lib/api/crewService';
 import UserService from '../../lib/api/userService';
-import useLocalStroeageData from '../../hooks/useLocalStorageData';
 import { SignInActions } from '../signIn';
 import { IUserData } from '../types/signInTypes';
 
