@@ -48,68 +48,68 @@ const Home = () => {
     setInfiniteFetchStop(false);
   };
 
-  // const searchRegionNotices = useCallback(
-  //   async (offset_: number, limit_: number, region_: AddressType) => {
-  //     try {
-  //       const data = await noticeService.viewChoiceNotices({
-  //         ...region_,
-  //         limit: limit_,
-  //         offset: offset_,
-  //       });
-  //       if (!isEmpty(data)) {
-  //         setNotices((previousNotices) => [...previousNotices, ...data]);
-  //         setOffset(offset_ + limit_);
-  //       } else {
-  //         setInfiniteFetchStop(true);
-  //       }
-  //     } catch (error) {
-  //       setInfiniteFetchStop(true);
-  //       console.error(error);
-  //     }
-  //   },
-  //   []
-  // );
+  const searchRegionNotices = useCallback(
+    async (offset_: number, limit_: number, region_: AddressType) => {
+      try {
+        const data = await noticeService.viewChoiceNotices({
+          ...region_,
+          limit: limit_,
+          offset: offset_,
+        });
+        if (!isEmpty(data)) {
+          setNotices((previousNotices) => [...previousNotices, ...data]);
+          setOffset(offset_ + limit_);
+        } else {
+          setInfiniteFetchStop(true);
+        }
+      } catch (error) {
+        setInfiniteFetchStop(true);
+        console.error(error);
+      }
+    },
+    []
+  );
 
-  // const searchAllRegionNotices = useCallback(
-  //   async (offset_: number, limit_: number) => {
-  //     try {
-  //       const data = await noticeService.viewAllNotices(offset_, limit_);
-  //       if (!isEmpty(data)) {
-  //         setNotices((previousNotices) => [...previousNotices, ...data]);
-  //         setOffset(offset_ + limit_);
-  //       } else {
-  //         setInfiniteFetchStop(true);
-  //       }
-  //     } catch (error) {
-  //       setInfiniteFetchStop(true);
-  //       console.error(error);
-  //     }
-  //   },
-  //   []
-  // );
+  const searchAllRegionNotices = useCallback(
+    async (offset_: number, limit_: number) => {
+      try {
+        const data = await noticeService.viewAllNotices(offset_, limit_);
+        if (!isEmpty(data)) {
+          setNotices((previousNotices) => [...previousNotices, ...data]);
+          setOffset(offset_ + limit_);
+        } else {
+          setInfiniteFetchStop(true);
+        }
+      } catch (error) {
+        setInfiniteFetchStop(true);
+        console.error(error);
+      }
+    },
+    []
+  );
 
-  // //* 실제 api 사용
-  // const fetchAllRegionNoticeDataAndUpdate = async () => {
-  //   setIsLoading(true);
-  //   if (region.si) {
-  //     await searchRegionNotices(offset, PAGING_LIMIT_NOTICES, {
-  //       dou: region.dou,
-  //       si: region.si,
-  //       gu: region.gu,
-  //     });
-  //   }
-  //   if (!region.si || region.gwon === '전체') {
-  //     await searchAllRegionNotices(offset, PAGING_LIMIT_NOTICES);
-  //   }
-  //   setIsLoading(false);
-  // };
+  //* 실제 api 사용
+  const fetchAllRegionNoticeDataAndUpdate = async () => {
+    setIsLoading(true);
+    if (region.si) {
+      await searchRegionNotices(offset, PAGING_LIMIT_NOTICES, {
+        dou: region.dou,
+        si: region.si,
+        gu: region.gu,
+      });
+    }
+    if (!region.si || region.gwon === '전체') {
+      await searchAllRegionNotices(offset, PAGING_LIMIT_NOTICES);
+    }
+    setIsLoading(false);
+  };
 
-  // useEffect(() => {
-  //   if (!infiniteFetchStop && InView && !isLoading) {
-  //     console.log('api 실행'); // TEST 콘솔 배포시에는 지우기
-  //     fetchAllRegionNoticeDataAndUpdate();
-  //   }
-  // }, [infiniteFetchStop, InView, isLoading]);
+  useEffect(() => {
+    if (!infiniteFetchStop && InView && !isLoading) {
+      console.log('api 실행'); // TEST 콘솔 배포시에는 지우기
+      fetchAllRegionNoticeDataAndUpdate();
+    }
+  }, [infiniteFetchStop, InView, isLoading]);
 
   const changeButtonCSS = () => {
     if (region.gwon === '전체') {
