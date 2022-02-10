@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useLocation, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { v4 } from 'uuid';
 import { Button, Loading } from '@nextui-org/react';

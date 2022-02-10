@@ -1,4 +1,4 @@
-import { withRouter, useHistory, useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { v4 } from 'uuid';
 import MenuButton from '../../common/components/MenuButton';
 
