@@ -116,6 +116,19 @@ class NoticeService implements INoticeService {
     }
   };
 
+  setNoticeClosed = async (boardId: string, token: string) => {
+    try {
+      const { data } = await axios.patch(`/boards/${boardId}`, {
+        headers: {
+          'x-auth-token': token,
+        },
+      });
+      return data;
+    } catch {
+      throw new Error('마감 변경 실패');
+    }
+  };
+
   getTestNotices = (offset: number, limit: number) => {
     let count = 0;
     const fillteredData: GetNoticesType[] = [];

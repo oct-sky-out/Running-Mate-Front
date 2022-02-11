@@ -138,6 +138,13 @@ const noticeSlice = createSlice({
       ...state,
       notices: action.payload,
     }),
+    setClosed: (state, action: PayloadAction<boolean>) => ({
+      ...state,
+      viewNoticeData: {
+        ...state.viewNoticeData,
+        closed: action.payload,
+      },
+    }),
   },
 });
 

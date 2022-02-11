@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { v4 } from 'uuid';
 import Regions from '../../lib/data/regions';
 import { AddressType } from '../../modules/types/notice';
-import findFirstRegion from '../../common/functions/findFirstRegion';
+import findFirstRegion from '../functions/findFirstRegion';
 
 type Props = {
   submit: Function;
