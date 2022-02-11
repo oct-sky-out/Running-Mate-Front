@@ -6,10 +6,6 @@ const mockStore: RootState = {
       email: '',
       password: '',
     },
-    error: {
-      message: '',
-      code: '',
-    },
     userData: {
       email: '',
       nickName: '',
@@ -18,7 +14,7 @@ const mockStore: RootState = {
       id: '',
       crewLeader: false,
     },
-    signInStatus: '',
+    signInFetchStatus: '',
     token: '',
     isLogged: false,
   },
@@ -31,9 +27,6 @@ const mockStore: RootState = {
     signUpFetchState: '',
     success: {
       id: 0,
-    },
-    error: {
-      code: '',
     },
   },
   createCrew: {

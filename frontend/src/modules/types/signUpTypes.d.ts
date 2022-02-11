@@ -8,9 +8,6 @@ export interface ISignUp {
   success: {
     id: number;
   };
-  error: {
-    code: string;
-  };
 }
 
 export interface ISignUpForm {

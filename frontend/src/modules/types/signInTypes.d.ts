@@ -3,10 +3,6 @@ export interface ISignIn {
     email: string;
     password: string;
   };
-  error: {
-    message: string;
-    code: string;
-  };
   userData: {
     email: string;
     nickName: string;
@@ -15,7 +11,7 @@ export interface ISignIn {
     id: string;
     crewLeader: boolean;
   };
-  signInStatus: '' | 'Fetch' | 'Success' | 'Error';
+  signInFetchStatus: '' | 'Fetch' | 'Success' | 'Error';
   token: string;
   isLogged: boolean;
 }

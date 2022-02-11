@@ -156,7 +156,7 @@ const ViewNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
               className="border-2 rounded-full border-purple cursor-pointer w-6 h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 ml-3"
             />
             <span className="ml-2 font-bold">
-              <Link to={`/userInfo/${author}`}>{author}</Link>
+              <Link to={`/user/${author}`}>{author}</Link>
             </span>
           </div>
           <span className="align-bottom mr-3 text-gray-500">

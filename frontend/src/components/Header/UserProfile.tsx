@@ -15,16 +15,16 @@ const UserProfile = () => {
   const [isMyMenuOpen, setIsMyMenuOpen] = useState(false);
 
   //* Any Functions
-  const moveChangeMyPage = () => {
-    history.push('/mypage');
+  const moveMyPage = () => {
+    history.push('/user/mypage');
     setIsMyMenuOpen(false);
   };
   const logOut = () => {
     setIsMyMenuOpen(false);
   };
 
-  const moveMyPage = () => {
-    history.push(`/userInfo/${userNickName}`);
+  const moveMyInformationPage = () => {
+    history.push(`/user/${userNickName}`);
     setIsMyMenuOpen(false);
   };
   return (
@@ -44,13 +44,13 @@ const UserProfile = () => {
           <div className="absolute w-24 lg:w-64 md:w-48 top-12 right-4 md:top-16 md:right-12 text-xs md:text-base border-2 rounded border-purple bg-white divide-y-2 divide-purple divide-solid">
             <div
               className="flex h-5 md:h-10 md:py-2 justify-center items-center cursor-pointer"
-              onClick={moveMyPage}
+              onClick={moveMyInformationPage}
             >
-              <button type="button">내 페이지</button>
+              <button type="button">내 프로필 보기</button>
             </div>
             <div
               className="flex h-5 md:h-10 md:py-2 justify-center items-center cursor-pointer"
-              onClick={moveChangeMyPage}
+              onClick={moveMyPage}
             >
               <button type="button">내 정보관리</button>
             </div>

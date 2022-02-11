@@ -7,18 +7,20 @@ import MyPageInformations from './MyPageInformations';
 import ChangeMyPassword from './ChangeMyPassword';
 import LeaveAccount from './LeaveAccount';
 import FriendsList from './FriendsList';
-import DetailBaseBorder from '../../common/components/DetailBaseBorder';
-import useValidToken, { CheckTokenResultType } from '../../hooks/useValidToken';
+import DetailBaseBorder from '../../../common/components/DetailBaseBorder';
+import useValidToken, {
+  CheckTokenResultType,
+} from '../../../hooks/useValidToken';
 import RequestFriendsManagement from './RequestFriendsManagement';
 
 const MyPage = () => {
   const location = useLocation();
   const history = useHistory();
   const menuTexts: { [key: string]: string } = {
-    '/mypage': '내 정보 관리',
-    '/mypage/changePassword': '비밀번호 변경',
-    '/mypage/leaving': '회원탈퇴',
-    '/mypage/friends/list': '친구관리',
+    '/user/mypage': '내 정보 관리',
+    '/user/mypage/changePassword': '비밀번호 변경',
+    '/user/mypage/leaving': '회원탈퇴',
+    '/user/mypage/friends/list': '친구관리',
   };
   const token = localStorage.getItem('token');
   const { checkTokenAvailable } = useValidToken();
@@ -48,7 +50,7 @@ const MyPage = () => {
   }, [location.pathname]);
 
   return (
-    <DetailBaseBorder>
+    <>
       <div className="flex justify-center items-center font-bold h-1/5 text-3xl">
         {Object.keys(menuTexts).map(
           (url) =>
@@ -56,7 +58,7 @@ const MyPage = () => {
               <span key={v4()}>{menuTexts[url]}</span>
             )
         )}
-        {location.pathname === '/mypage/friends/requests' && (
+        {location.pathname === '/user/mypage/friends/requests' && (
           <span>친구 요청 관리</span>
         )}
       </div>
@@ -68,15 +70,19 @@ const MyPage = () => {
         path="/mypage"
         render={() => <MyPageInformations token={token || ''} />}
       />
-      <Route exact path="/mypage/changePassword" component={ChangeMyPassword} />
-      <Route exact path="/mypage/leaving" component={LeaveAccount} />
-      <Route exact path="/mypage/friends/list" component={FriendsList} />
       <Route
         exact
-        path="/mypage/friends/requests"
+        path="/user/mypage/changePassword"
+        component={ChangeMyPassword}
+      />
+      <Route exact path="/user/mypage/leaving" component={LeaveAccount} />
+      <Route exact path="/user/mypage/friends/list" component={FriendsList} />
+      <Route
+        exact
+        path="/user/mypage/friends/requests"
         component={RequestFriendsManagement}
       />
-    </DetailBaseBorder>
+    </>
   );
 };
 

@@ -8,7 +8,6 @@ import { CreateCrewActions } from '../../../modules/createCrew';
 import { useSelector } from '../../../modules/index';
 import CreateCrewOrderMarker from './CreateCrewOrderMarker';
 import PreviousPageButton from '../../../common/components/PreviousPageButton';
-import DetailBaseBorder from '../../../common/components/DetailBaseBorder';
 
 type CreacteCrewActionType =
   | 'setCrewName'
@@ -139,7 +138,7 @@ const CreateCrew = () => {
   }, []);
 
   return (
-    <DetailBaseBorder>
+    <>
       <div className="flex flex-col justify-center items-center pt-10">
         <div className="w-full pl-4 mb:pl-4 mb-8 md:mb-16 flex justify-left">
           <PreviousPageButton
@@ -236,7 +235,7 @@ const CreateCrew = () => {
           </div>
         </div>
       </div>
-    </DetailBaseBorder>
+    </>
   );
 };
 export default CreateCrew;

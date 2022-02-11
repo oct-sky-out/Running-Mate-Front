@@ -4,10 +4,10 @@ import { useDispatch } from 'react-redux';
 import { v4 } from 'uuid';
 import { Button, Loading } from '@nextui-org/react';
 import Swal from 'sweetalert2';
-import PeopleList from '../../common/components/PeopleList';
-import FriendService from '../../lib/api/friendService';
-import { useSelector } from '../../modules';
-import { friendActions } from '../../modules/friend';
+import PeopleList from '../../../common/components/PeopleList';
+import FriendService from '../../../lib/api/friendService';
+import { useSelector } from '../../../modules';
+import { friendActions } from '../../../modules/friend';
 
 const RequestFriendsManagement = () => {
   const history = useHistory();
@@ -41,7 +41,7 @@ const RequestFriendsManagement = () => {
   };
 
   const goManageRequestFriends = () => {
-    history.push('/mypage/friends/list');
+    history.push('/user/mypage/friends/list');
   };
 
   const permitFriend = (userNickName: string) => {
