@@ -5,17 +5,19 @@ import Swal from 'sweetalert2';
 import { CreateCrewActions } from '../../../modules/createCrew';
 import useCreateCrew from './hooks/useCreateCrew';
 
-const CreateCrewResult = () => {
+interface IProps {
+  questionOrder: number;
+}
+
+const CreateCrewResult: React.FC<IProps> = ({ questionOrder }) => {
   const dispatch = useDispatch();
   const {
     reduxCreateCrewState: { createCrewFetchStatus },
     questions,
     QUESTION_COUNT,
-    questionOrderState,
     createResultState,
     loadingState,
   } = useCreateCrew();
-  const [questionOrder] = questionOrderState;
   const [loading, setLoading] = loadingState;
   const [createResult, setCreateResult] = createResultState;
 

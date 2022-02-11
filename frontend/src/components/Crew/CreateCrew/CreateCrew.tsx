@@ -1,13 +1,11 @@
-import React, { useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Input } from '@nextui-org/react';
-import { FormElement } from '@nextui-org/react/esm/input/input-props';
 import { CreateCrewActions } from '../../../modules/createCrew';
 import CreateCrewOrderMarker from './CreateCrewOrderMarker';
-import PreviousPageButton from '../../../common/components/PreviousPageButton';
 import CreateCrewResult from './CreateCrewResult';
-import useCreateCrew, { CreacteCrewActionType } from './hooks/useCreateCrew';
 import CreateCrewButton from './CreateCrewButton';
+import useCreateCrew from './hooks/useCreateCrew';
+import PreviousPageButton from '../../../common/components/PreviousPageButton';
 
 const CreateCrew = () => {
   //* redux dispach
@@ -16,32 +14,34 @@ const CreateCrew = () => {
   //* custom hook
   const {
     QUESTION_COUNT,
-    ReduxActionNames,
-    questionInputValues,
     reduxCreateCrewState: { crewName, crewRegion, explanation, openChat },
-    questionOrderState,
     canCompleteState,
     goToCrewMainPage,
   } = useCreateCrew();
-  const [questionOrder] = questionOrderState;
-  const [_, setCanComplete] = canCompleteState;
+  const [, setCanComplete] = canCompleteState;
 
-  const InputStateToRedux = (
-    e: React.ChangeEvent<FormElement>,
-    actionName: CreacteCrewActionType
-  ) => {
-    dispatch(CreateCrewActions[actionName](e.target.value));
-  };
+  const [questionOrder, setQuestionOrder] = useState(0);
 
-  //* useEffects
-  useEffect(() => {
+  const completeCheck = useCallback(() => {
     if (questionOrder >= QUESTION_COUNT - 1) setCanComplete(true);
     if (
       questionOrder < QUESTION_COUNT - 1 ||
       (crewName && crewRegion && explanation && openChat)
     )
       setCanComplete(false);
-  }, [questionOrder, crewName, crewRegion, explanation, openChat]);
+  }, [questionOrder]);
+
+  //* useEffects
+  useEffect(() => {
+    completeCheck();
+  }, [
+    questionOrder,
+    crewName,
+    crewRegion,
+    explanation,
+    openChat,
+    completeCheck,
+  ]);
 
   useEffect(() => {
     dispatch(CreateCrewActions.setInit());
@@ -59,31 +59,17 @@ const CreateCrew = () => {
             tailwindTextSize="text-sm md:text-2xl"
           />
         </div>
-        <CreateCrewOrderMarker />
+        <CreateCrewOrderMarker questionOrder={questionOrder} />
         <span
           className="text-2xl md:text-3xl font-bold lg:mb-20 p-8 text-center"
           data-testid="question-span"
         >
-          <CreateCrewResult />
+          <CreateCrewResult questionOrder={questionOrder} />
         </span>
-        {questionOrder !== QUESTION_COUNT && (
-          <div
-            onSubmit={(e) => e.preventDefault}
-            className="w-3/5 text-center mb-10"
-          >
-            <Input
-              type="text"
-              width="80%"
-              className="lg:mb-20"
-              value={questionInputValues[questionOrder]}
-              onChange={(e) => {
-                InputStateToRedux(e, ReduxActionNames[questionOrder]);
-              }}
-              data-testid="data-input"
-            />
-          </div>
-        )}
-        <CreateCrewButton />
+        <CreateCrewButton
+          questionOrder={questionOrder}
+          setQuestionOrder={setQuestionOrder}
+        />
       </div>
     </>
   );

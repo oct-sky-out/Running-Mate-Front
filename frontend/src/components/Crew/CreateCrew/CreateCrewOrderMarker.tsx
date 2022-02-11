@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { v4 } from 'uuid';
 import useCreateCrew from './hooks/useCreateCrew';
 
-const CreateCrewOrderMarker = () => {
+interface IProps {
+  questionOrder: number;
+}
+
+const CreateCrewOrderMarker: React.FC<IProps> = ({ questionOrder }) => {
   //* any variables
   const orders: string[] = ['이름', '지역', '소개', '채팅방'];
-  const { questionOrderState, QUESTION_COUNT } = useCreateCrew();
-  const [questionOrder] = questionOrderState;
+  const { QUESTION_COUNT } = useCreateCrew();
 
   return (
     <div className="w-11/12 md:w-full flex items-center justify-center mb-20 text-xs">
@@ -45,4 +48,4 @@ const CreateCrewOrderMarker = () => {
   );
 };
 
-export default CreateCrewOrderMarker;
+export default React.memo(CreateCrewOrderMarker);

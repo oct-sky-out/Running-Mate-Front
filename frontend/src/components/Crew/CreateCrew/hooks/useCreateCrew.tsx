@@ -1,8 +1,6 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from '../../../../modules';
-import { CreateCrewActions } from '../../../../modules/createCrew';
 
 export type CreacteCrewActionType =
   | 'setCrewName'
@@ -13,9 +11,6 @@ export type CreacteCrewActionType =
 const useCreateCrew = () => {
   //* react-router-dom
   const history = useHistory();
-
-  //* Redux
-  const dispatch = useDispatch();
   const {
     createCrewFetchStatus,
     crewName,
@@ -50,7 +45,6 @@ const useCreateCrew = () => {
   ];
 
   //* react hooks
-  const [questionOrder, setQuestionOrder] = useState(0);
   const [canComplete, setCanComplete] = useState(false as boolean);
   const [loading, setLoading] = useState(false as boolean);
   const [createResult, setCreateResult] = useState('');
@@ -74,36 +68,12 @@ const useCreateCrew = () => {
     history.push(`/crewList/${crewName}`);
   };
 
-  const movePrevious = () => {
-    if (questionOrder > 0) setQuestionOrder(questionOrder - 1);
-  };
-
-  const moveNextOrComplete = () => {
-    if (questionOrder < QUESTION_COUNT) setQuestionOrder(questionOrder + 1);
-    if (questionOrder === QUESTION_COUNT - 1) {
-      setLoading(true);
-      dispatch(
-        CreateCrewActions.newCrew({
-          createCrewData: {
-            crew: { crewName, crewRegion, explanation, openChat },
-          },
-          token,
-          userNickName,
-        })
-      );
-    }
-  };
-
   return {
     reduxCreateCrewState,
     questionInputValues,
     questions,
     QUESTION_COUNT,
     ReduxActionNames,
-    questionOrderState: [questionOrder, setQuestionOrder] as [
-      number,
-      React.Dispatch<React.SetStateAction<number>>
-    ],
     canCompleteState: [canComplete, setCanComplete] as [
       boolean,
       React.Dispatch<React.SetStateAction<boolean>>
@@ -118,8 +88,6 @@ const useCreateCrew = () => {
     ],
     goToCrewDetail,
     goToCrewMainPage,
-    movePrevious,
-    moveNextOrComplete,
   };
 };
 
