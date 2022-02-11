@@ -16,7 +16,7 @@ import Swal from 'sweetalert2';
 import { useSelector } from '../../../modules';
 import { CreateNoticeActions } from '../../../modules/createNotice';
 // Component
-import SelecRegion from '../../SelectRegion/SelcetRegion';
+import SelecRegion from '../../../common/components/SelcetRegion';
 import ImageButtons from '../../../common/components/ImageButtons';
 // Type
 import { AddressType } from '../../../modules/types/notice';
