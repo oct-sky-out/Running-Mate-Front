@@ -6,10 +6,6 @@ const initialState: ISignIn = {
     email: '',
     password: '',
   },
-  error: {
-    message: '',
-    code: '',
-  },
   userData: {
     email: '',
     nickName: '',
@@ -18,7 +14,7 @@ const initialState: ISignIn = {
     id: '',
     crewLeader: false,
   },
-  signInStatus: '',
+  signInFetchStatus: '',
   token: '',
   isLogged: false,
 };
@@ -32,10 +28,6 @@ const signInSliceReducer = createSlice({
         email: '',
         password: '',
       },
-      error: {
-        message: '',
-        code: '',
-      },
       userData: {
         email: '',
         nickName: '',
@@ -44,17 +36,13 @@ const signInSliceReducer = createSlice({
         id: '',
         crewLeader: false,
       },
-      signInStatus: '',
+      signInFetchStatus: '',
       token: '',
       isLogged: false,
     }),
     setInitError: (state, _action: PayloadAction<void>) => ({
       ...state,
-      error: {
-        message: '',
-        code: '',
-      },
-      signInStatus: '',
+      signInFetchStatus: '',
     }),
     setEmail: {
       prepare: (email: string) => {
@@ -86,7 +74,7 @@ const signInSliceReducer = createSlice({
         state,
         _action: PayloadAction<{ email: string; password: string }>
       ) => {
-        return { ...state, signInStatus: 'Fetch' };
+        return { ...state, signInFetchStatus: 'Fetch' };
       },
     },
     setToken: {
@@ -136,25 +124,15 @@ const signInSliceReducer = createSlice({
         return {
           ...state,
           userData: action.payload,
-          signInStatus: 'Success',
+          signInFetchStatus: 'Success',
           isLogged: true,
         };
       },
     },
-    signInFailure: {
-      prepare: (signInStatus: { message: string; code: string }) => {
-        return { payload: signInStatus };
-      },
-      reducer: (
-        state,
-        action: PayloadAction<{
-          message: string;
-          code: string;
-        }>
-      ) => {
-        return { ...state, error: action.payload, signInStatus: 'Error' };
-      },
-    },
+    signInFailure: (state, _action: PayloadAction<void>) => ({
+      ...state,
+      signInFetchStatus: 'Error',
+    }),
   },
 });
 

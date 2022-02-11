@@ -13,10 +13,7 @@ interface IProps {
 const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
   //* Redux State
   const dispatch = useDispatch();
-  const { fetchState, error } = useSelector((state) => ({
-    fetchState: state.signUp.signUpFetchState,
-    error: state.signUp.error,
-  }));
+  const fetchState = useSelector((state) => state.signUp.signUpFetchState);
 
   useEffect(() => {
     if (fetchState === 'Success') {
@@ -35,13 +32,13 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
     if (fetchState === 'Error') {
       Swal.fire({
         icon: 'error',
-        title: '에러 발생',
-        text: `${error.code}`,
+        title: '회원가입 실패',
+        text: '죄송합니다 회원가입에 실패하였습니다.',
       }).then(() => {
         dispatch(SignUpActions.setSignUpState());
       });
     }
-  }, [fetchState, error.code]);
+  }, [fetchState]);
 
   return (
     <>

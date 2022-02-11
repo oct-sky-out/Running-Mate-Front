@@ -17,12 +17,14 @@ const SignInModal: React.FC<IProps> = ({ closeModal }) => {
   const history = useHistory();
   //* Redux State
   const dispatch = useDispatch();
-  const { email, password, error, userData } = useSelector((state) => ({
-    email: state.signIn.loginForm.email,
-    password: state.signIn.loginForm.password,
-    error: state.signIn.error,
-    userData: state.signIn.userData,
-  }));
+  const { email, password, signInFetchStatus, userData } = useSelector(
+    (state) => ({
+      email: state.signIn.loginForm.email,
+      password: state.signIn.loginForm.password,
+      signInFetchStatus: state.signIn.signInFetchStatus,
+      userData: state.signIn.userData,
+    })
+  );
 
   //* useCallbacks
   const signInExecuting = useCallback(
@@ -34,20 +36,21 @@ const SignInModal: React.FC<IProps> = ({ closeModal }) => {
   );
 
   useEffect(() => {
-    if (userData.email !== '') {
+    if (signInFetchStatus === 'Success') {
       closeModal();
+      dispatch(SignInActions.setInitError());
       history.push('/');
     }
-    if (error.code === '500') {
+    if (signInFetchStatus === 'Error') {
       Swal.fire({
         icon: 'error',
         title: '로그인 실패',
-        text: `${error.message}`,
+        text: `계정 혹은 비밀번호를 다시 한번 확인해주세요.`,
       }).then(() => {
         dispatch(SignInActions.setInitError());
       });
     }
-  }, [userData.email, error]);
+  }, [signInFetchStatus]);
 
   return (
     <>

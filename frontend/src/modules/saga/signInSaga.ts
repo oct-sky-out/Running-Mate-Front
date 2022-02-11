@@ -33,10 +33,7 @@ function* signInFetchSaga({
     yield put(SignInActions.setToken(token));
     yield call(saveUserData, { userData: JSON.stringify(data), token });
   } catch (error: any | Error) {
-    console.error(error);
-    yield put(
-      SignInActions.signInFailure({ code: '500', message: error.message })
-    );
+    yield put(SignInActions.signInFailure());
   }
 }
 
