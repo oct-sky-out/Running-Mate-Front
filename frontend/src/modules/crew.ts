@@ -93,6 +93,13 @@ const crewSlice = createSlice({
       ...state,
       crewRequestFetch: 'Fetch',
     }),
+    permitCrewRequst: (
+      state,
+      _action: PayloadAction<{ userNickName: string; crewName: string }>
+    ) => ({
+      ...state,
+      crewRequestFetch: 'Fetch',
+    }),
     deligateCrewLeader: (
       state,
       _action: PayloadAction<{

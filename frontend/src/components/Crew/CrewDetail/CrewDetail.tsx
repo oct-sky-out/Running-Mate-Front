@@ -32,8 +32,11 @@ const CrewDetail: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
     openChat,
     crewUserCount,
     crewRequestFetch,
+    requestUsers,
     crewRequested,
     userId,
+    userNickName,
+    isCrewLeader,
     userCrewName,
     token,
   } = useSelector((state) => ({
@@ -44,8 +47,11 @@ const CrewDetail: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
     openChat: state.crew.openChat,
     crewUserCount: state.crew.userDtos.length,
     crewRequestFetch: state.crew.crewRequestFetch,
+    requestUsers: state.crew.requestUsers,
     crewRequested: state.crew.crewRequested,
     userId: state.signIn.userData.id,
+    userNickName: state.signIn.userData.nickName,
+    isCrewLeader: state.signIn.userData.crewLeader,
     userCrewName: state.signIn.userData.crewName,
     token: state.signIn.token,
   }));
@@ -59,7 +65,13 @@ const CrewDetail: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
   useEffect(() => {
     new CrewService()
       .getCrewDetail(match.params.id)
-      .then((data) => dispatch(crewActions.setCrewDetail(data)))
+      .then((data) => {
+        const isRequested = data.requestUsers.includes(userNickName);
+        if (isRequested) dispatch(crewActions.setCrewRequested(true));
+        if (!isRequested || isCrewLeader)
+          dispatch(crewActions.setCrewRequested(false));
+        dispatch(crewActions.setCrewDetail(data));
+      })
       .catch(() =>
         Swal.fire({
           toast: true,
@@ -150,16 +162,18 @@ const CrewDetail: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
       </div>
       <div className="space-y-5">
         <div className="w-20 md:w-44 lg:w-52 pl-5 md:pl-0 py-4 flex flex-grow justify-start items-start">
-          {+userId !== crewLeaderId && userCrewName !== crewName && (
-            <Button
-              auto
-              color="#8b8bf5"
-              onClick={signUpRequestCrew}
-              disabled={crewRequested}
-            >
-              {crewRequested ? '요청됨' : '가입요청 보내기'}
-            </Button>
-          )}
+          {+userId !== crewLeaderId &&
+            userCrewName !== crewName &&
+            !isCrewLeader && (
+              <Button
+                auto
+                color="#8b8bf5"
+                onClick={signUpRequestCrew}
+                disabled={crewRequested}
+              >
+                {crewRequested ? '요청됨' : '가입요청 보내기'}
+              </Button>
+            )}
         </div>
         <span className="block pl-5 md:pl-0 text-lg">기본정보</span>
         <div className="w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 mx-auto gap-5">

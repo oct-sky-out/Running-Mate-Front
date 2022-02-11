@@ -1,4 +1,6 @@
-import { Button, Input } from '@nextui-org/react';
+import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { Button } from '@nextui-org/react';
 import { useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
 import { v4 } from 'uuid';
@@ -9,8 +11,12 @@ import PeopleList from '../../../common/components/PeopleList';
 import PeopleSearch from '../../../common/components/PeopleSearch';
 
 const CrewRequestManagement = () => {
+  const params = useParams<{ id: string }>();
   const dispatch = useDispatch();
-  const requestUsers = useSelector((state) => state.crew.requestUsers);
+  const { requestUsers, crewFetchStatus } = useSelector((state) => ({
+    requestUsers: state.crew.requestUsers,
+    crewFetchStatus: state.crew.crewRequestFetch,
+  }));
 
   const filterRequestUser = (requestUserNickName: string) =>
     dispatch(
@@ -53,35 +59,43 @@ const CrewRequestManagement = () => {
   };
 
   const peremitRequstUser = (requestUserNickName: string) => {
-    new CrewService()
-      .permitRequstUser(requestUserNickName)
-      .then(() => {
-        filterRequestUser(requestUserNickName);
-        Swal.fire({
-          toast: true,
-          icon: 'success',
-          title: '크루원 추가 성공!',
-          position: 'top-end',
-          timer: 5000,
-          timerProgressBar: true,
-          showConfirmButton: false,
-          showCloseButton: true,
-        });
+    filterRequestUser(requestUserNickName);
+    dispatch(
+      crewActions.permitCrewRequst({
+        userNickName: requestUserNickName,
+        crewName: params.id,
       })
-      .catch((reason) => {
-        console.error(reason);
-        Swal.fire({
-          toast: true,
-          icon: 'error',
-          title: '크루원 추가 실패',
-          position: 'top-end',
-          timer: 5000,
-          timerProgressBar: true,
-          showConfirmButton: false,
-          showCloseButton: true,
-        });
-      });
+    );
   };
+
+  useEffect(() => {
+    if (crewFetchStatus === 'Success') {
+      Swal.fire({
+        toast: true,
+        icon: 'success',
+        title: '크루원 추가 성공!',
+        position: 'top-end',
+        timer: 5000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+        showCloseButton: true,
+      });
+      dispatch(crewActions.initCrewRequestFetch());
+    }
+    if (crewFetchStatus === 'Failure') {
+      Swal.fire({
+        toast: true,
+        icon: 'error',
+        title: '크루원 추가 실패',
+        position: 'top-end',
+        timer: 5000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+        showCloseButton: true,
+      });
+      dispatch(crewActions.initCrewRequestFetch());
+    }
+  }, [crewFetchStatus]);
 
   return (
     <div className="mx-auto my-0 py-10 px-20 flex flex-col space-y-10 justify-center">
