@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
-import { useLocation, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { v4 } from 'uuid';
 import { Button, Loading } from '@nextui-org/react';
 import Swal from 'sweetalert2';
-import { useSelector } from '../../modules';
-import { friendActions } from '../../modules/friend';
-import PeopleSearch from '../../common/components/PeopleSearch';
-import FriendService from '../../lib/api/friendService';
-import PeopleList from '../../common/components/PeopleList';
+import { useSelector } from '../../../modules';
+import { friendActions } from '../../../modules/friend';
+import PeopleSearch from '../../../common/components/PeopleSearch';
+import FriendService from '../../../lib/api/friendService';
+import PeopleList from '../../../common/components/PeopleList';
 
 const FriendsList = () => {
   const history = useHistory();
@@ -55,7 +55,7 @@ const FriendsList = () => {
   };
 
   const goManageRequestFriends = () => {
-    history.push('/mypage/friends/requests');
+    history.push('/user/mypage/friends/requests');
   };
 
   useEffect(() => {
@@ -99,7 +99,7 @@ const FriendsList = () => {
           </Button>
         </div>
       </div>
-      <PeopleSearch placeholder="검색 할 친구이름을 입력하세요" />\
+      <PeopleSearch placeholder="검색 할 친구이름을 입력하세요" />
       {loading && (
         <div>
           <Loading type="points" color="secondart" />

@@ -13,9 +13,6 @@ const initialState: ISignUp = {
   success: {
     id: 0,
   },
-  error: {
-    code: '',
-  },
 };
 
 const signUpSliceReducer = createSlice({
@@ -32,9 +29,6 @@ const signUpSliceReducer = createSlice({
         signUpFetchState: '',
         success: {
           id: 0,
-        },
-        error: {
-          code: '',
         },
       };
     },
@@ -108,18 +102,10 @@ const signUpSliceReducer = createSlice({
         };
       },
     },
-    signUpFetchError: {
-      prepare: (errorData: string) => {
-        return { payload: errorData };
-      },
-      reducer: (state, action: PayloadAction<string>) => {
-        return {
-          ...state,
-          error: { code: action.payload },
-          signUpFetchState: 'Error',
-        };
-      },
-    },
+    signUpFetchError: (state, _action: PayloadAction<void>) => ({
+      ...state,
+      signUpFetchState: 'Error',
+    }),
   },
 });
 

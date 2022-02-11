@@ -3,10 +3,10 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { GiThreeFriends } from 'react-icons/gi';
 import Swal from 'sweetalert2';
-import { useSelector } from '../../modules';
-import { friendActions } from '../../modules/friend';
-import FriendService from '../../lib/api/friendService';
-import { FriendRelations } from '../../modules/types/Friend';
+import { useSelector } from '../../../modules';
+import { friendActions } from '../../../modules/friend';
+import FriendService from '../../../lib/api/friendService';
+import { FriendRelations } from '../../../modules/types/Friend';
 
 interface IProps {
   userNickName: string;

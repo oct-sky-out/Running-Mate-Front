@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
 import { crewActions } from '../../../modules/crew';
-import CrewService from '../../../lib/api/crewService';
 import { useSelector } from '../../../modules';
 
 const LeaveCrewButton = () => {

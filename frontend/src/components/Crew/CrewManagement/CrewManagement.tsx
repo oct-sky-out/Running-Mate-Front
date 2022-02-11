@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Route, useHistory, RouteComponentProps } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import DetailBaseBorder from '../../../common/components/DetailBaseBorder';
 import PreviousPageButton from '../../../common/components/PreviousPageButton';
 import CrewService from '../../../lib/api/crewService';
 import { useSelector } from '../../../modules';
@@ -49,7 +48,7 @@ const CrewManagement: React.FC<RouteComponentProps<MatchParam>> = ({
   }, []);
 
   return (
-    <DetailBaseBorder>
+    <>
       <PreviousPageButton
         text="뒤로가기"
         onClick={() => history.goBack()}
@@ -84,7 +83,7 @@ const CrewManagement: React.FC<RouteComponentProps<MatchParam>> = ({
         component={CrewRequestManagement}
       />
       <Route path={`${match.path}/delete`} component={CrewDelete} />
-    </DetailBaseBorder>
+    </>
   );
 };
 

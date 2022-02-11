@@ -11,8 +11,7 @@ function* signUpFetchSaga({
     const { userId } = yield call(userService.signUp, payload);
     yield put(SignUpActions.signUpFetchSuccess(userId));
   } catch (error: any) {
-    console.error(error);
-    yield put(SignUpActions.signUpFetchError(error.message));
+    yield put(SignUpActions.signUpFetchError());
   }
 }
 
