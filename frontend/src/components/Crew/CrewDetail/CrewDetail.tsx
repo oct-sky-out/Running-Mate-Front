@@ -9,7 +9,7 @@ import { v4 } from 'uuid';
 import { useSelector } from '../../../modules';
 import { crewActions } from '../../../modules/crew';
 import CrewService from '../../../lib/api/crewService';
-import useLocalStroeageData from '../../../hooks/useLocalStorageData';
+import useLocalStroeageData from '../../../common/hooks/useLocalStorageData';
 import CrewWidget from './CrewWidget';
 import DetailBaseBorder from '../../../common/components/DetailBaseBorder';
 import PreviousPageButton from '../../../common/components/PreviousPageButton';

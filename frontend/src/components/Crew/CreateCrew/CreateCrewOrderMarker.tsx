@@ -1,14 +1,12 @@
 import React from 'react';
 import { v4 } from 'uuid';
+import useCreateCrew from './hooks/useCreateCrew';
 
-interface IProps {
-  questionOrder: number;
-}
-
-const CreateCrewOrderMarker = ({ questionOrder }: IProps) => {
+const CreateCrewOrderMarker = () => {
   //* any variables
-  const QUESTIONS_LENGTH = 4;
   const orders: string[] = ['이름', '지역', '소개', '채팅방'];
+  const { questionOrderState, QUESTION_COUNT } = useCreateCrew();
+  const [questionOrder] = questionOrderState;
 
   return (
     <div className="w-11/12 md:w-full flex items-center justify-center mb-20 text-xs">
@@ -36,7 +34,7 @@ const CreateCrewOrderMarker = ({ questionOrder }: IProps) => {
       })}
       <div
         className={`w-12 h-11 md:w-16 md:h-14 lg:w-20 lg:h-20 text-gray-600 rounded-full flex items-center justify-center ${
-          questionOrder !== QUESTIONS_LENGTH
+          questionOrder !== QUESTION_COUNT
             ? 'transition ease-in-out delay-150 bg-gray-300'
             : 'transition ease-in-out delay-150 bg-purple-400'
         }`}
