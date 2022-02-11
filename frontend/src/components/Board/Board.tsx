@@ -17,7 +17,8 @@ const Board: React.FC<IProps & RouteComponentProps> = ({ data }) => {
 
   const [finished, setFinished] = useState(false);
 
-  const { address, closed, count, id, image, meetingTime, title } = data;
+  const { address, closed, count, id, image, meetingTime, title, author } =
+    data;
 
   const dispatchViewNoticeData = () => {
     dispatch(noticeActions.setInitViewNoticeData());
@@ -47,7 +48,7 @@ const Board: React.FC<IProps & RouteComponentProps> = ({ data }) => {
           }`}
         >
           <div className="px-2">
-            <span className="block text-sm mb-2">작성자</span>
+            <span className="block text-sm mb-2">{author}</span>
             <span className="block font-bold truncate" title={title || ''}>
               {title || '제목없음'}
             </span>

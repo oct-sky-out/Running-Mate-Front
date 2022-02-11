@@ -15,6 +15,7 @@ import PreviousPageButton from '../../../common/components/PreviousPageButton';
 import { useSelector } from '../../../modules/index';
 import NoticeService from '../../../lib/api/noticeService';
 import useImageDelete from '../../../common/hooks/useImageDelete';
+import useValidToken from '../../../common/hooks/useValidToken';
 
 interface MatchParam {
   runId: string;
@@ -65,7 +66,7 @@ const ViewNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
 
   const deleteNotice = async () => {
     try {
-      const result = await Swal.fire({
+      const swalResult = await Swal.fire({
         title: '게시물 삭제',
         text: '게시물을 삭제하시겠습니까?',
         icon: 'warning',
@@ -74,7 +75,7 @@ const ViewNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
         cancelButtonColor: '#d33',
         confirmButtonText: '삭제하기',
       });
-      if (result.isConfirmed) {
+      if (swalResult.isConfirmed) {
         await noticeService.deleteNotice(id, token);
         await Swal.fire(
           '삭제 성공',
@@ -125,12 +126,40 @@ const ViewNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
     }
   };
 
-  useEffect(() => {
-    getBoardDate(); // MOCK DATA 사용시 주석 처리할것.
-    if (!title || !match.params.runId) {
-      history.push('/');
+  const setNoticeClosed = async () => {
+    try {
+      await noticeService.setNoticeClosed(match.params.runId, token);
+      dispatch(noticeActions.setClosed(!closed));
+    } catch {
+      await Swal.fire({
+        title: '게시물 삭제 실패',
+        text: '게시물 삭제에 실패하였습니다. 다시 시도해주세요.',
+        icon: 'error',
+        confirmButtonText: '확인',
+      });
     }
+  };
+
+  const checkToken = async () => {
+    const result = await useValidToken().checkTokenApi(token);
+    return result.tokenState;
+  };
+
+  useEffect(() => {
+    console.log(match.params.runId);
+    checkToken().then((state) => {
+      console.log('이것은 토큰 스테이트 입니다.', state);
+      if (!state || !match.params.runId) history.push('/');
+    });
+    console.log('토큰 통과해부럿으');
+    getBoardDate(); // MOCK DATA 사용시 주석 처리할것.
   }, [content, match.params.runId]);
+
+  const showMeetingTime = () => {
+    if (closed) return '마감됨';
+    if (endDate) return dateParser(endDate);
+    return '마감 기간 없음';
+  };
 
   return (
     <DetailBaseBorder>
@@ -192,8 +221,8 @@ const ViewNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
       </div>
       <div className="px-4 sm:px-0">
         <div className="grid grid-cols-1 gap-10 mb-20">
-          <div className="flex justify-center mb-4">
-            {image && <img src={image} alt="map" className="w-2/5" />}
+          <div className="flex justify-center mb-4 ">
+            {image && <img src={image} alt="map" className="max:w-2/5" />}
           </div>
           <p
             className="w-full text-base md:text-xl break-words px-10"
@@ -202,16 +231,14 @@ const ViewNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
             {}
           </p>
         </div>
-        <div className="w-full space-y-3">
+        <div className="w-full space-y-3 relative">
           <div>
             <span className="block font-bold text-xl">장소</span>
             <span className="w-full break-words">{`${address.dou} ${address.si} ${address.gu}`}</span>
           </div>
           <div>
             <span className="block font-bold text-xl">마감 시간</span>
-            <span className="w-full break-words">
-              {endDate ? dateParser(endDate) : '마감 기간 없음'}
-            </span>
+            <span className="w-full break-words">{showMeetingTime()}</span>
           </div>
           <div>
             <span className="block font-bold text-xl">오픈 채팅방 링크</span>
@@ -223,6 +250,14 @@ const ViewNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
             >
               {openChat}
             </a>
+          </div>
+          <div className="w-full text-right">
+            <button
+              className="text-white w-28 h-10 md:w-32 md:w-25 rounded-xl hover:opacity-80 transition ease-in-out delay-100 ml-4 mb-2 outline-none bg-indigo-400 cursor-pointer"
+              onClick={setNoticeClosed}
+            >
+              {closed ? '마감 취소' : '공지 마감'}
+            </button>
           </div>
         </div>
       </div>
