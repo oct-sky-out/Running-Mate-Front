@@ -3,7 +3,7 @@ import { Button, Input } from '@nextui-org/react';
 import { RiEyeCloseLine, RiEyeLine } from 'react-icons/ri';
 import { useSelector } from '../../../modules/index';
 import { newPasswordActions } from '../../../modules/newPassword';
-import usePasswordCheck from '../../../hooks/usePasswordCheck';
+import usePasswordCheck from '../../../common/hooks/usePasswordCheck';
 
 const ChangeMyPassword = () => {
   const dispatch = useDispatch();

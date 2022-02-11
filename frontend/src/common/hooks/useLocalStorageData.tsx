@@ -1,6 +1,6 @@
 import { useDispatch } from 'react-redux';
-import { SignInActions } from '../modules/signIn';
-import { IUserData } from '../modules/types/signInTypes';
+import { SignInActions } from '../../modules/signIn';
+import { IUserData } from '../../modules/types/signInTypes';
 
 const useLocalStroeageData = () => {
   const dispatch = useDispatch();

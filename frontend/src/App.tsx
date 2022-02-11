@@ -1,7 +1,7 @@
 import { Suspense, useEffect, lazy } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { useSelector } from './modules';
-import useLocalStroeageData from './hooks/useLocalStorageData';
+import useLocalStroeageData from './common/hooks/useLocalStorageData';
 import CreateNotice from './components/Board/CreateNotice/CreateNotice';
 import GuestPage from './components/GuestPage/GuestPage';
 import Header from './components/Header/Header';

@@ -10,7 +10,7 @@ import FriendsList from './FriendsList';
 import DetailBaseBorder from '../../../common/components/DetailBaseBorder';
 import useValidToken, {
   CheckTokenResultType,
-} from '../../../hooks/useValidToken';
+} from '../../../common/hooks/useValidToken';
 import RequestFriendsManagement from './RequestFriendsManagement';
 
 const MyPage = () => {

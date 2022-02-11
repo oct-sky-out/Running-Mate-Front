@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import useModalPotal from '../../hooks/useModalPotal';
+import useModalPotal from '../../common/hooks/useModalPotal';
 import SignInModal from '../Modals/SignInModal';
 import SignUpModal from '../Modals/SignUpModal';
 

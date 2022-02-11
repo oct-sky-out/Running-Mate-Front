@@ -1,4 +1,4 @@
-import UserService from '../lib/api/userService';
+import UserService from '../../lib/api/userService';
 
 export type CheckTokenResultType = { tokenState: boolean; message: string };
 
