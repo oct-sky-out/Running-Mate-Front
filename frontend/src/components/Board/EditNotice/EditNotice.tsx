@@ -21,8 +21,8 @@ import ImageButtons from '../../../common/components/ImageButtons';
 
 // API
 import NoticeService from '../../../lib/api/noticeService';
-import useImageUploader from '../../../hooks/useImageUploader';
-import useImageDelete from '../../../hooks/useImageDelete';
+import useImageUploader from '../../../common/hooks/useImageUploader';
+import useImageDelete from '../../../common/hooks/useImageDelete';
 // import { ImageUploader, ImageDelete } from '../../../lib/api/imageUploader';
 
 type NoticeActionType = 'setTitle' | 'setContent' | 'setOpenChat';

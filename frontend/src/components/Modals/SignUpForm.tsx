@@ -7,7 +7,7 @@ import { FormElement } from '@nextui-org/react/esm/input/input-props';
 import Address from '../address/Address';
 import { useSelector } from '../../modules';
 import { SignUpActions } from '../../modules/signUp';
-import usePasswordCheck from '../../hooks/usePasswordCheck';
+import usePasswordCheck from '../../common/hooks/usePasswordCheck';
 
 type SignUpActionType = keyof typeof SignUpActions;
 

@@ -3,10 +3,10 @@ import { Button, Input } from '@nextui-org/react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from '../../../modules';
 import { SignInActions } from '../../../modules/signIn';
-import useModalPotal from '../../../hooks/useModalPotal';
+import useModalPotal from '../../../common/hooks/useModalPotal';
 import Address from '../../address/Address';
 import UserService from '../../../lib/api/userService';
-import useLocalStroeageData from '../../../hooks/useLocalStorageData';
+import useLocalStroeageData from '../../../common/hooks/useLocalStorageData';
 
 type Props = {
   token: string;

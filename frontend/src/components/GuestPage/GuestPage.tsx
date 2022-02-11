@@ -3,7 +3,7 @@ import { Button } from '@nextui-org/react';
 import { useDispatch } from 'react-redux';
 import { SignUpActions } from '../../modules/signUp';
 import { SignInActions } from '../../modules/signIn';
-import useModalPotal from '../../hooks/useModalPotal';
+import useModalPotal from '../../common/hooks/useModalPotal';
 import styles from './GuestPage.module.css';
 import { ReactComponent as Logo } from '../../assets/logo_big.svg';
 import SignInModal from '../Modals/SignInModal';

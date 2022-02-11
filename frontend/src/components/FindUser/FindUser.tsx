@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef } from 'react';
 import { Input, Button } from '@nextui-org/react';
 import { v4 } from 'uuid';
 import styles from './FindUser.module.css';
-import useModalPotal from '../../hooks/useModalPotal';
+import useModalPotal from '../../common/hooks/useModalPotal';
 
 import UsersData from '../../excuteData/UsersMock/UsersMock';
 
