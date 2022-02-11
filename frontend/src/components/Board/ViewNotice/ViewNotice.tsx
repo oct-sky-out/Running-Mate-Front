@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import {
   useHistory,
   withRouter,
@@ -16,6 +16,7 @@ import { useSelector } from '../../../modules/index';
 import NoticeService from '../../../lib/api/noticeService';
 import useImageDelete from '../../../common/hooks/useImageDelete';
 import useValidToken from '../../../common/hooks/useValidToken';
+import ListComment from './ListComments/ListComments';
 
 interface MatchParam {
   runId: string;
@@ -261,6 +262,7 @@ const ViewNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
           </div>
         </div>
       </div>
+      <ListComment />
     </DetailBaseBorder>
   );
 };
