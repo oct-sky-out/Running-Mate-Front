@@ -7,20 +7,21 @@ import MyPageInformations from './MyPageInformations';
 import ChangeMyPassword from './ChangeMyPassword';
 import LeaveAccount from './LeaveAccount';
 import FriendsList from './FriendsList';
-import DetailBaseBorder from '../../../common/components/DetailBaseBorder';
 import useValidToken, {
   CheckTokenResultType,
 } from '../../../common/hooks/useValidToken';
 import RequestFriendsManagement from './RequestFriendsManagement';
+import MyBoards from './MyBoards';
 
 const MyPage = () => {
   const location = useLocation();
   const history = useHistory();
   const menuTexts: { [key: string]: string } = {
-    '/user/mypage': '내 정보 관리',
+    '/user/mypage': '정보 관리',
     '/user/mypage/changePassword': '비밀번호 변경',
-    '/user/mypage/leaving': '회원탈퇴',
+    '/user/mypage/myBoards': '작성글',
     '/user/mypage/friends/list': '친구관리',
+    '/user/mypage/leaving': '회원탈퇴',
   };
   const token = localStorage.getItem('token');
   const { checkTokenAvailable } = useValidToken();
@@ -67,7 +68,7 @@ const MyPage = () => {
       </div>
       <Route
         exact
-        path="/mypage"
+        path="/user/mypage"
         render={() => <MyPageInformations token={token || ''} />}
       />
       <Route
@@ -82,6 +83,7 @@ const MyPage = () => {
         path="/user/mypage/friends/requests"
         component={RequestFriendsManagement}
       />
+      <Route exact path="/user/mypage/myBoards" component={MyBoards} />
     </>
   );
 };

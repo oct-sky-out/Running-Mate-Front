@@ -1,5 +1,9 @@
 import axios from './axios';
-import { INotice, GetNoticesType } from '../../modules/types/notice';
+import {
+  INotice,
+  GetNoticesType,
+  GetMyNoticeType,
+} from '../../modules/types/notice';
 import BoardData from '../../excuteData/BoardMock/BoardMock';
 
 type ViewNoticesSetUpType = {
@@ -15,7 +19,12 @@ interface INoticeService {
   viewChoiceNotices(setUp: ViewNoticesSetUpType): Promise<GetNoticesType[]>;
   viewAllNotices(offset: number, limit: number): Promise<GetNoticesType[]>;
   deleteNotice(noticeId: number, token: string): void;
-  getTestNotices(offset: number, limit: number): GetNoticesType[];
+  getMyNotices(
+    userNickName: string,
+    token: string,
+    offset: number,
+    limit: number
+  ): Promise<GetMyNoticeType[]>;
 }
 
 class NoticeService implements INoticeService {
@@ -129,16 +138,25 @@ class NoticeService implements INoticeService {
     }
   };
 
-  getTestNotices = (offset: number, limit: number) => {
-    let count = 0;
-    const fillteredData: GetNoticesType[] = [];
-    Object.keys(BoardData).forEach((key, index) => {
-      if (offset <= index && count < limit) {
-        count += 1;
-        fillteredData.push(BoardData[key]);
-      }
-    });
-    return fillteredData;
+  getMyNotices = async (
+    userNickName: string,
+    token: string,
+    offset: number,
+    limit: number
+  ) => {
+    try {
+      const { data } = await axios.get<GetMyNoticeType[]>(
+        `/users/${userNickName}/boards?offset=${offset}&limit=${limit}`,
+        {
+          headers: {
+            'x-auth-token': token,
+          },
+        }
+      );
+      return data;
+    } catch {
+      throw Error('내 작성글 조회 실패.');
+    }
   };
 }
 
