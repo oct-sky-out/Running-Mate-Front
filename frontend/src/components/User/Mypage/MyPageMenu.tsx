@@ -20,7 +20,7 @@ const MyPageMenu: React.FC<IProps> = ({ menuTexts }) => {
         <MenuButton
           key={v4()}
           type="button"
-          className={`flex flex-left items-center md:text-xl font-bold mx-2 ${
+          className={`flex flex-left items-center text-sm sm:text-base md:text-xl font-bold mx-1 ${
             location.pathname === url ? 'border-purple' : null
           }`}
           onClick={() => moveURL(url)}

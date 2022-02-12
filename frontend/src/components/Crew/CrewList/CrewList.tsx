@@ -1,10 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
 import { v4 } from 'uuid';
-import { Button, Loading } from '@nextui-org/react';
+import { Loading } from '@nextui-org/react';
 import Swal from 'sweetalert2';
-import { useSelector } from '../../../modules';
 import CrewService from '../../../lib/api/crewService';
 import CrewImageSlider from '../CrewImageSlider';
 import CrewCard from '../CrewCard';
