@@ -17,9 +17,9 @@ const MyPage = () => {
   const location = useLocation();
   const history = useHistory();
   const menuTexts: { [key: string]: string } = {
-    '/user/mypage': '내 정보 관리',
+    '/user/mypage': '정보 관리',
     '/user/mypage/changePassword': '비밀번호 변경',
-    '/user/mypage/myBoards': '내 작성글',
+    '/user/mypage/myBoards': '작성글',
     '/user/mypage/friends/list': '친구관리',
     '/user/mypage/leaving': '회원탈퇴',
   };

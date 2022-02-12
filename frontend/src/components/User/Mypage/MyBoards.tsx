@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import { useSelector } from '../../../modules';
 import NoticeService from '../../../lib/api/noticeService';
 import { GetMyNoticeType } from '../../../modules/types/notice';
+import dateParser from '../../../common/functions/dateParser';
 
 const MyBoards = () => {
   //* react-router-dom
@@ -121,15 +122,18 @@ const MyBoards = () => {
         {myBoards.map((myBoard) => {
           return (
             <div key={v4()} className="flex py-5">
-              <div className="w-full my-auto mx-0">
+              <div className="w-full my-auto mx-0 mr-3 truncate">
                 <span
-                  className="block h-full cursor-pointer text-xl font-bold"
+                  className="block h-full cursor-pointer text-lg md:text-xl font-bold"
                   onClick={() => goToViewMyBoard(myBoard.id)}
                 >
-                  {myBoard.title}
+                  {myBoard.title}asdfasda
+                </span>
+                <span className="block h-full text-gray-400 text-sm md:text-base s font-bold">
+                  {dateParser(new Date(myBoard.regDate))}
                 </span>
               </div>
-              <div className="w-52 flex justify-around itmes-center">
+              <div className="w-52 flex space-x-2 md:space-x-0 md:justify-around itmes-center">
                 <div className="flex w-full">
                   <div className="w-1/2">
                     <Button
