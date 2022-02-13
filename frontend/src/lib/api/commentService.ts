@@ -2,7 +2,6 @@ import { CommentType } from '../../modules/types/commentType';
 import axios from './axios';
 
 interface ICommentService {
-  // return type은 API 테스트 후 정할 것임
   registComment(
     token: string,
     content: string,
@@ -22,9 +21,9 @@ class CommentService implements ICommentService {
     try {
       const { data } = await axios.post<CommentType>(
         `/boards/${boardId}/comments`,
-        { content },
+        content,
         {
-          headers: { 'x-auth-token': token },
+          headers: { 'x-auth-token': token, 'Content-Type': 'text/plain' },
         }
       );
       return data;
@@ -51,8 +50,8 @@ class CommentService implements ICommentService {
     try {
       const { data } = await axios.post<CommentType>(
         `/boards/comments/${commentId}`,
-        { content },
-        { headers: { 'x-auth-token': token } }
+        content,
+        { headers: { 'x-auth-token': token, 'Content-Type': 'text/plain' } }
       );
       return data;
     } catch {

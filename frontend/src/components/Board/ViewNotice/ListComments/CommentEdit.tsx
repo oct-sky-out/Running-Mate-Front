@@ -1,24 +1,28 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Button } from '@nextui-org/react';
 import Swal from 'sweetalert2';
 import CommentService from '../../../../lib/api/commentService';
 import { useSelector } from '../../../../modules';
+import { noticeActions } from '../../../../modules/notice';
 import { CommentType } from '../../../../modules/types/commentType';
 
 interface IProps {
   commentId: number;
   content: string;
   setEditCommentIndex: React.Dispatch<React.SetStateAction<number | null>>;
-  setCommentList: React.Dispatch<React.SetStateAction<CommentType[]>>;
+  commentList: CommentType[];
 }
 
 const CommentEdit: React.FC<IProps> = ({
   commentId,
   content,
   setEditCommentIndex,
-  setCommentList,
+  commentList,
 }) => {
   const token = useSelector((state) => state.signIn.token);
+  const dispatch = useDispatch();
+
   const [editedComment, setEditedComment] = useState<string>(content);
 
   const changeComment = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -29,14 +33,16 @@ const CommentEdit: React.FC<IProps> = ({
     try {
       await new CommentService().editComment(token, commentId, editedComment);
       setEditCommentIndex(null);
-      setCommentList((commentList) => [
-        ...commentList.map((comment) => {
-          if (comment.id === commentId) {
-            return { ...comment, content: editedComment };
-          }
-          return comment;
-        }),
-      ]);
+      dispatch(
+        noticeActions.setComments([
+          ...commentList.map((comment) => {
+            if (comment.id === commentId) {
+              return { ...comment, content: editedComment };
+            }
+            return comment;
+          }),
+        ])
+      );
       await Swal.fire({
         toast: true,
         title: '댓글 변경',

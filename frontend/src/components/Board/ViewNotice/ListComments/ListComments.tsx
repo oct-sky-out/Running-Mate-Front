@@ -1,12 +1,13 @@
 import { useHistory } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { v4 } from 'uuid';
 import { Avatar } from '@nextui-org/react';
 import * as url from '../../../../assets/default_profile.png';
 import CommentEditDeleteButton from './CommentEditDeleteButton';
 import { useSelector } from '../../../../modules';
+import { noticeActions } from '../../../../modules/notice';
 import CommentService from '../../../../lib/api/commentService';
-import { CommentType } from '../../../../modules/types/commentType';
 import dateParser from '../../../../common/functions/dateParser';
 import CommentEdit from './CommentEdit';
 
@@ -17,20 +18,21 @@ interface IProps {
 const ListComments: React.FC<IProps> = ({ boardId }) => {
   const history = useHistory();
 
-  const { userNickName, token } = useSelector((state) => ({
+  const { commentList, userNickName, token } = useSelector((state) => ({
+    commentList: state.viewNotice.comments,
     userNickName: state.signIn.userData.nickName,
     token: state.signIn.token,
   }));
+  const dispatch = useDispatch();
 
   const [editCommentIndex, setEditCommentIndex] = useState<null | number>(null);
-  const [commentList, setCommentList] = useState<CommentType[]>([]);
   const goCommenterUserDetail = (author: string) =>
     history.push(`/user/${author}`);
 
   useEffect(() => {
     new CommentService()
       .getComments(token, boardId)
-      .then((comments) => setCommentList(comments));
+      .then((comments) => dispatch(noticeActions.setComments(comments)));
   }, [boardId]);
 
   return (
@@ -61,7 +63,7 @@ const ListComments: React.FC<IProps> = ({ boardId }) => {
                   commentId={comment.id}
                   editCommentIndex={editCommentIndex}
                   setEditCommentIndex={setEditCommentIndex}
-                  setCommentList={setCommentList}
+                  commentList={commentList}
                 />
               )}
             </div>
@@ -71,7 +73,7 @@ const ListComments: React.FC<IProps> = ({ boardId }) => {
                 commentId={comment.id}
                 content={comment.content}
                 setEditCommentIndex={setEditCommentIndex}
-                setCommentList={setCommentList}
+                commentList={commentList}
               />
             ) : (
               <p className="text-lg pb-4">{comment.content}</p>

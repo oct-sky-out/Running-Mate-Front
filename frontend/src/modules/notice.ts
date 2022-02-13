@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { CommentType } from './types/commentType';
 import {
   GetNoticesType,
   NoticesType,
@@ -9,6 +10,7 @@ import {
 const initialState: {
   viewNoticeData: GetNoticesType;
   notices: NoticesType;
+  comments: CommentType[];
 } & NoticeFetchStatusType = {
   viewNoticeData: {
     address: {
@@ -29,6 +31,7 @@ const initialState: {
   },
   notices: {},
   noticeFetchStatus: '',
+  comments: [],
 };
 
 const noticeSlice = createSlice({
@@ -55,6 +58,7 @@ const noticeSlice = createSlice({
       },
       notices: {},
       noticeFetchStatus: '',
+      comments: [],
     }),
     setInitViewNoticeData: (state, _action: PayloadAction<void>) => ({
       ...state,
@@ -168,6 +172,10 @@ const noticeSlice = createSlice({
     setFailureNoticeFetchStatus: (state, _action: PayloadAction<void>) => ({
       ...state,
       noticeFetchStatus: 'Failure',
+    }),
+    setComments: (state, action: PayloadAction<CommentType[]>) => ({
+      ...state,
+      comments: action.payload,
     }),
   },
 });

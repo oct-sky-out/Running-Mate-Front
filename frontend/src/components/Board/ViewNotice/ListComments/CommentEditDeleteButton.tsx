@@ -1,22 +1,26 @@
+import { useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
 import CommentService from '../../../../lib/api/commentService';
 import { useSelector } from '../../../../modules';
+import { noticeActions } from '../../../../modules/notice';
 import { CommentType } from '../../../../modules/types/commentType';
 
 interface IProps {
   commentId: number;
   editCommentIndex: null | number;
   setEditCommentIndex: React.Dispatch<React.SetStateAction<null | number>>;
-  setCommentList: React.Dispatch<React.SetStateAction<CommentType[]>>;
+  commentList: CommentType[];
 }
 
 const CommentEditDeleteButton: React.FC<IProps> = ({
   commentId,
   editCommentIndex,
   setEditCommentIndex,
-  setCommentList,
+  commentList,
 }) => {
   const token = useSelector((state) => state.signIn.token);
+  const dispatch = useDispatch();
+
   const editMyComment = () => {
     if (editCommentIndex) setEditCommentIndex(null);
     if (!editCommentIndex) setEditCommentIndex(commentId);
@@ -24,8 +28,10 @@ const CommentEditDeleteButton: React.FC<IProps> = ({
   const deleteMyComment = async () => {
     try {
       await new CommentService().deleteComment(token, commentId);
-      setCommentList((commentList) =>
-        commentList.filter((comment) => comment.id !== commentId)
+      dispatch(
+        noticeActions.setComments(
+          commentList.filter((comment) => comment.id !== commentId)
+        )
       );
       await Swal.fire({
         toast: true,
