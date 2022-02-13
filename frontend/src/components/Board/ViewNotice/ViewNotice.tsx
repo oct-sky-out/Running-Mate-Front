@@ -157,8 +157,8 @@ const ViewNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
     if (noticeFetchStatus === 'Success') {
       Swal.fire({
         toast: true,
-        title: '게시물 마감',
-        text: '인원 모집을 마감합니다.',
+        title: '게시물 마감상태 변경',
+        text: `게시물 마감상태 변경이 완료되었습니다..`,
         icon: 'success',
         position: 'top-end',
         timer: 5000,
@@ -170,8 +170,8 @@ const ViewNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
     if (noticeFetchStatus === 'Failure') {
       Swal.fire({
         toast: true,
-        title: '게시물 삭제 실패',
-        text: '게시물 삭제에 실패하였습니다. 다시 시도해주세요.',
+        title: '게시물 마감상태 변경 실패',
+        text: '게시물 마감상태 변경에 실패하였습니다. 다시 시도해주세요.',
         icon: 'error',
         position: 'top-end',
         timer: 5000,
@@ -283,7 +283,7 @@ const ViewNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
               className="text-white w-28 h-10 md:w-32 md:w-25 rounded-xl hover:opacity-80 transition ease-in-out delay-100 ml-4 mb-2 outline-none bg-indigo-400 cursor-pointer"
               onClick={setNoticeClosed}
             >
-              {closed ? '마감 취소' : '공지 마감'}
+              {closed ? '공지 마감' : '마감 취소'}
             </button>
           </div>
         </div>

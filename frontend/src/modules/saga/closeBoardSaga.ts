@@ -19,5 +19,5 @@ function* closeBoardSaga({
 }
 
 export default function* watchCloseBoard() {
-  yield takeLeading('board/setClosed', closeBoardSaga);
+  yield takeLeading('notice/setClosed', closeBoardSaga);
 }
