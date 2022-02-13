@@ -17,6 +17,7 @@ import NoticeService from '../../../lib/api/noticeService';
 import useImageDelete from '../../../common/hooks/useImageDelete';
 import useValidToken from '../../../common/hooks/useValidToken';
 import ListComment from './ListComments/ListComments';
+import WriteComment from './WriteComment/WriteComment';
 
 interface MatchParam {
   runId: string;
@@ -145,10 +146,10 @@ const ViewNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
 
   useEffect(() => {
     console.log(match.params.runId);
-    checkToken().then((state) => {
-      console.log('이것은 토큰 스테이트 입니다.', state);
-      if (!state || !match.params.runId) history.push('/');
-    });
+    // checkToken().then((state) => {
+    //   console.log('이것은 토큰 스테이트 입니다.', state);
+    //   if (!state || !match.params.runId) history.push('/');
+    // });
     console.log('토큰 통과해부럿으');
     getBoardDate(); // MOCK DATA 사용시 주석 처리할것.
   }, [content, match.params.runId]);
@@ -288,7 +289,8 @@ const ViewNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
           </div>
         </div>
       </div>
-      <ListComment />
+      <WriteComment boardId={match.params.runId} />
+      <ListComment boardId={match.params.runId} />
     </DetailBaseBorder>
   );
 };

@@ -373,7 +373,6 @@ const EditNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
               theme="snow"
               defaultValue={content}
               onChange={(e) => {
-                console.log(e);
                 dispatch(noticeActions.setContent(e));
               }}
               style={{ height: '300px' }}
