@@ -52,3 +52,7 @@ export type GetMyNoticeType = {
   boardCategory: string;
   closed: boolean;
 };
+
+export type NoticeFetchStatusType = {
+  noticeFetchStatus: '' | 'Fetch' | 'Success' | 'Failure';
+};
