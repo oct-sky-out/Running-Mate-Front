@@ -1,9 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { GetNoticesType, NoticesType, AddressType } from './types/notice';
+import {
+  GetNoticesType,
+  NoticesType,
+  AddressType,
+  NoticeFetchStatusType,
+} from './types/notice';
 
-const initialState: { viewNoticeData: GetNoticesType } & {
+const initialState: {
+  viewNoticeData: GetNoticesType;
   notices: NoticesType;
-} = {
+} & NoticeFetchStatusType = {
   viewNoticeData: {
     address: {
       dou: '',
@@ -22,6 +28,7 @@ const initialState: { viewNoticeData: GetNoticesType } & {
     author: '',
   },
   notices: {},
+  noticeFetchStatus: '',
 };
 
 const noticeSlice = createSlice({
@@ -47,6 +54,7 @@ const noticeSlice = createSlice({
         author: '',
       },
       notices: {},
+      noticeFetchStatus: '',
     }),
     setInitViewNoticeData: (state, _action: PayloadAction<void>) => ({
       ...state,
@@ -138,12 +146,24 @@ const noticeSlice = createSlice({
       ...state,
       notices: action.payload,
     }),
-    setClosed: (state, action: PayloadAction<boolean>) => ({
+    setClosed: (
+      state,
+      action: PayloadAction<{ closed: boolean; boardId: string; token: string }>
+    ) => ({
       ...state,
       viewNoticeData: {
         ...state.viewNoticeData,
-        closed: action.payload,
+        closed: action.payload.closed,
       },
+      noticeFetchStatus: 'Fetch',
+    }),
+    setSuccessNoticeFetchStatus: (state, _action: PayloadAction<void>) => ({
+      ...state,
+      noticeFetchStatus: 'Success',
+    }),
+    setFailureNoticeFetchStatus: (state, _action: PayloadAction<void>) => ({
+      ...state,
+      noticeFetchStatus: 'Failure',
     }),
   },
 });
