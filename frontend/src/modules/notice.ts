@@ -157,6 +157,10 @@ const noticeSlice = createSlice({
       },
       noticeFetchStatus: 'Fetch',
     }),
+    setInitNoticeFetchStatus: (state, _action: PayloadAction<void>) => ({
+      ...state,
+      noticeFetchStatus: '',
+    }),
     setSuccessNoticeFetchStatus: (state, _action: PayloadAction<void>) => ({
       ...state,
       noticeFetchStatus: 'Success',
