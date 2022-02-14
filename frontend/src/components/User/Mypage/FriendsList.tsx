@@ -22,14 +22,14 @@ const FriendsList = () => {
   const [userFriends, setUserFriends] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const { successToast, errorToast } = useSwalerts();
+  const { errorToast } = useSwalerts();
 
   const getUserFriends = async () => {
     try {
       const { friendList } = await new FriendService().getMyFriends(token);
       setUserFriends(friendList);
     } catch {
-      successToast(
+      errorToast(
         '친구 정보 불러오기 실패.',
         '친구 정보를 불러오는데 실패하였습니다.'
       );

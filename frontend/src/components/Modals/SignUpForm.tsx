@@ -4,7 +4,7 @@ import { Input, Button } from '@nextui-org/react';
 import { RiEyeCloseLine, RiEyeLine } from 'react-icons/ri';
 import { GrClose } from 'react-icons/gr';
 import { FormElement } from '@nextui-org/react/esm/input/input-props';
-import Address from '../address/Address';
+import Address from '../Address/Address';
 import { useSelector } from '../../modules';
 import { SignUpActions } from '../../modules/signUp';
 import usePasswordCheck from '../../common/hooks/usePasswordCheck';
