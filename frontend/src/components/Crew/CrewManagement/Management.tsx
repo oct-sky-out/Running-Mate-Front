@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button, Input } from '@nextui-org/react';
-import Swal from 'sweetalert2';
 import { useSelector } from '../../../modules';
 import CrewService from '../../../lib/api/crewService';
+import useSwalerts from '../../../common/hooks/useSwalerts';
 
 // import useLocalStroeageData from '../../../hooks/useLocalStorageData';
 
@@ -11,7 +11,7 @@ const Management = () => {
   const history = useHistory();
   const crewName = useSelector((state) => state.crew.crewName);
   const [newCrewName, setnewCrewName] = useState('');
-
+  const { successAlert, errorAlert } = useSwalerts();
   //* 이부분도 토큰 필요한지 알아보기
   // const { getToken } = useLocalStroeageData();
 
@@ -22,19 +22,14 @@ const Management = () => {
         crewName,
         newCrewName
       );
-      await Swal.fire({
-        title: message,
-        icon: 'success',
-        confirmButtonText: '크루 정보페이지로 돌아가기.',
-      });
+      await successAlert(
+        '정보 변경 완료.',
+        message,
+        '크루 정보페이지로 돌아가기.'
+      );
       history.push(`/crewList/${newCrewName}`);
     } catch (err) {
-      console.error(err);
-      Swal.fire({
-        title: '정보 변경에 실패하였습니다.',
-        icon: 'error',
-        confirmButtonText: '확인',
-      });
+      errorAlert('정보 변경 실패', '정보 변경에 실패하였습니다.');
     }
   };
 

@@ -3,10 +3,10 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Input, Button } from '@nextui-org/react';
 import { RiEyeCloseLine, RiEyeLine } from 'react-icons/ri';
-import Swal from 'sweetalert2';
 import { SignInActions } from '../../modules/signIn';
 import { useSelector } from '../../modules';
 import { ReactComponent as MiniLogo } from '../../assets/logo_mini.svg';
+import useSwalerts from '../../common/hooks/useSwalerts';
 
 interface IProps {
   closeModal: () => void;
@@ -26,6 +26,8 @@ const SignInModal: React.FC<IProps> = ({ closeModal }) => {
     })
   );
 
+  const { errorAlert } = useSwalerts();
+
   //* useCallbacks
   const signInExecuting = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
@@ -42,11 +44,10 @@ const SignInModal: React.FC<IProps> = ({ closeModal }) => {
       history.push('/');
     }
     if (signInFetchStatus === 'Error') {
-      Swal.fire({
-        icon: 'error',
-        title: '로그인 실패',
-        text: `계정 혹은 비밀번호를 다시 한번 확인해주세요.`,
-      }).then(() => {
+      errorAlert(
+        '로그인 실패',
+        '계정 혹은 비밀번호를 다시 한번 확인해주세요.'
+      ).then(() => {
         dispatch(SignInActions.setInitError());
       });
     }

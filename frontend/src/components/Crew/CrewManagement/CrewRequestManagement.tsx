@@ -2,13 +2,13 @@ import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Button } from '@nextui-org/react';
 import { useDispatch } from 'react-redux';
-import Swal from 'sweetalert2';
 import { v4 } from 'uuid';
 import CrewService from '../../../lib/api/crewService';
 import { useSelector } from '../../../modules';
 import { crewActions } from '../../../modules/crew';
 import PeopleList from '../../../common/components/PeopleList';
 import PeopleSearch from '../../../common/components/PeopleSearch';
+import useSwalerts from '../../../common/hooks/useSwalerts';
 
 const CrewRequestManagement = () => {
   const params = useParams<{ id: string }>();
@@ -17,6 +17,7 @@ const CrewRequestManagement = () => {
     requestUsers: state.crew.requestUsers,
     crewFetchStatus: state.crew.crewRequestFetch,
   }));
+  const { errorToast, successToast } = useSwalerts();
 
   const filterRequestUser = (requestUserNickName: string) =>
     dispatch(
@@ -32,29 +33,11 @@ const CrewRequestManagement = () => {
       .dismissRequstUser(requestUserNickName)
       .then(() => {
         filterRequestUser(requestUserNickName);
-        Swal.fire({
-          toast: true,
-          icon: 'success',
-          title: '추방 성공!',
-          position: 'top-end',
-          timer: 5000,
-          timerProgressBar: true,
-          showConfirmButton: false,
-          showCloseButton: true,
-        });
+        successToast('추방 성공!', '추방을 성공했습니다.');
       })
       .catch((reason) => {
         console.error(reason);
-        Swal.fire({
-          toast: true,
-          icon: 'error',
-          title: '추방 실패',
-          position: 'top-end',
-          timer: 5000,
-          timerProgressBar: true,
-          showConfirmButton: false,
-          showCloseButton: true,
-        });
+        errorToast('추방 실패', '추방을 실패하였습니다.');
       });
   };
 
@@ -70,29 +53,11 @@ const CrewRequestManagement = () => {
 
   useEffect(() => {
     if (crewFetchStatus === 'Success') {
-      Swal.fire({
-        toast: true,
-        icon: 'success',
-        title: '크루원 추가 성공!',
-        position: 'top-end',
-        timer: 5000,
-        timerProgressBar: true,
-        showConfirmButton: false,
-        showCloseButton: true,
-      });
+      successToast('크루원 추가 성공!', '크루원을 추가했습니다!');
       dispatch(crewActions.initCrewRequestFetch());
     }
     if (crewFetchStatus === 'Failure') {
-      Swal.fire({
-        toast: true,
-        icon: 'error',
-        title: '크루원 추가 실패',
-        position: 'top-end',
-        timer: 5000,
-        timerProgressBar: true,
-        showConfirmButton: false,
-        showCloseButton: true,
-      });
+      errorToast('크루원 추가 실패', '크루원 추가를 실패했습니다.');
       dispatch(crewActions.initCrewRequestFetch());
     }
   }, [crewFetchStatus]);

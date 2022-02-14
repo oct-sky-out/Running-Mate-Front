@@ -1,11 +1,11 @@
 import { Link, useHistory } from 'react-router-dom';
 import { Avatar } from '@nextui-org/react';
-import Swal from 'sweetalert2';
+import { useSelector } from '../../../modules';
 import * as defaultProfile from '../../../assets/default_profile.png';
 import dateParser from '../../../common/functions/dateParser';
+import useSwalerts from '../../../common/hooks/useSwalerts';
 import useImageDelete from '../../../common/hooks/useImageDelete';
 import NoticeService from '../../../lib/api/noticeService';
-import { useSelector } from '../../../modules';
 
 const ViewNoticeHeader = () => {
   const history = useHistory();
@@ -23,10 +23,11 @@ const ViewNoticeHeader = () => {
     }));
 
   const imageDelete = useImageDelete();
+  const { customAlert, successToast, errorAlert } = useSwalerts();
 
   const deleteNotice = async () => {
     try {
-      const swalResult = await Swal.fire({
+      const swalResult = await customAlert({
         title: '게시물 삭제',
         text: '게시물을 삭제하시겠습니까?',
         icon: 'warning',
@@ -37,25 +38,19 @@ const ViewNoticeHeader = () => {
       });
       if (swalResult.isConfirmed) {
         await new NoticeService().deleteNotice(id, token);
-        await Swal.fire(
-          '삭제 성공',
-          '게시물을 성공적으로 삭제하였습니다.',
-          'success'
-        );
         const imageURLArr = image.split('/');
         const fileName = `${imageURLArr[imageURLArr.length - 2]}/${
           imageURLArr[imageURLArr.length - 1]
         }`;
         imageDelete(fileName);
+        successToast('삭제 성공', '게시물을 성공적으로 삭제하였습니다.');
         history.push('/');
       }
-    } catch (error) {
-      await Swal.fire({
-        title: '게시물 삭제 실패',
-        text: '게시물 삭제에 실패하였습니다. 다시 시도해주세요.',
-        icon: 'error',
-        confirmButtonText: '확인',
-      });
+    } catch {
+      errorAlert(
+        '게시물 삭제 실패',
+        '게시물 삭제에 실패하였습니다. 다시 시도해주세요.'
+      );
     }
   };
 

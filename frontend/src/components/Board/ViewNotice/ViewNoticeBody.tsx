@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import Swal from 'sweetalert2';
 import dateParser from '../../../common/functions/dateParser';
+import useSwalerts from '../../../common/hooks/useSwalerts';
 import { useSelector } from '../../../modules';
 import { noticeActions } from '../../../modules/notice';
 
@@ -29,6 +29,7 @@ const ViewNoticeBody: React.FC<IProps> = ({ boardId }) => {
     noticeFetchStatus: state.viewNotice.noticeFetchStatus,
   }));
   const dispatch = useDispatch();
+  const { successToast, errorToast } = useSwalerts();
 
   const showMeetingTime = () => {
     const endDate = meetingTime ? new Date(meetingTime) : '';
@@ -48,30 +49,16 @@ const ViewNoticeBody: React.FC<IProps> = ({ boardId }) => {
 
   useEffect(() => {
     if (noticeFetchStatus === 'Success') {
-      Swal.fire({
-        toast: true,
-        title: '게시물 마감상태 변경',
-        text: `게시물 마감상태 변경이 완료되었습니다..`,
-        icon: 'success',
-        position: 'top-end',
-        timer: 5000,
-        timerProgressBar: true,
-        showConfirmButton: false,
-        showCloseButton: true,
-      }).then(() => dispatch(noticeActions.setInitNoticeFetchStatus()));
+      successToast(
+        '게시물 마감상태 변경',
+        `게시물 마감상태 변경이 완료되었습니다..`
+      ).then(() => dispatch(noticeActions.setInitNoticeFetchStatus()));
     }
     if (noticeFetchStatus === 'Failure') {
-      Swal.fire({
-        toast: true,
-        title: '게시물 마감상태 변경 실패',
-        text: '게시물 마감상태 변경에 실패하였습니다. 다시 시도해주세요.',
-        icon: 'error',
-        position: 'top-end',
-        timer: 5000,
-        timerProgressBar: true,
-        showConfirmButton: false,
-        showCloseButton: true,
-      }).then(() => dispatch(noticeActions.setInitNoticeFetchStatus()));
+      errorToast(
+        '게시물 마감상태 변경 실패',
+        '게시물 마감상태 변경에 실패하였습니다. 다시 시도해주세요.'
+      ).then(() => dispatch(noticeActions.setInitNoticeFetchStatus()));
     }
   }, [noticeFetchStatus]);
 

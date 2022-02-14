@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import Swal from 'sweetalert2';
+import useSwalerts from '../../../../common/hooks/useSwalerts';
 import CommentService from '../../../../lib/api/commentService';
 import { useSelector } from '../../../../modules';
 import { noticeActions } from '../../../../modules/notice';
@@ -20,7 +20,7 @@ const CommentEditDeleteButton: React.FC<IProps> = ({
 }) => {
   const token = useSelector((state) => state.signIn.token);
   const dispatch = useDispatch();
-
+  const { successToast, errorToast } = useSwalerts();
   const editMyComment = () => {
     if (editCommentIndex) setEditCommentIndex(null);
     if (!editCommentIndex) setEditCommentIndex(commentId);
@@ -33,29 +33,12 @@ const CommentEditDeleteButton: React.FC<IProps> = ({
           commentList.filter((comment) => comment.id !== commentId)
         )
       );
-      await Swal.fire({
-        toast: true,
-        title: '댓글 삭제',
-        text: '댓글이 삭제되었습니다!',
-        icon: 'success',
-        position: 'top-end',
-        timer: 5000,
-        timerProgressBar: true,
-        showConfirmButton: false,
-        showCloseButton: true,
-      });
+      await successToast('댓글 삭제', '댓글이 삭제되었습니다!');
     } catch {
-      await Swal.fire({
-        toast: true,
-        title: '댓글 삭제 실패',
-        text: '죄송합니다. 댓글 삭제에 실패하였습니다.',
-        icon: 'error',
-        position: 'top-end',
-        timer: 5000,
-        timerProgressBar: true,
-        showConfirmButton: false,
-        showCloseButton: true,
-      });
+      await errorToast(
+        '댓글 삭제 실패',
+        '죄송합니다. 댓글 삭제에 실패하였습니다.'
+      );
     }
   };
   return (

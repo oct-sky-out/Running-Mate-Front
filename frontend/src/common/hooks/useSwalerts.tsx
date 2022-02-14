@@ -1,9 +1,10 @@
-import Swal, { SweetAlertIcon, SweetAlertPosition } from 'sweetalert2';
+import Swal, { SweetAlertOptions, SweetAlertResult } from 'sweetalert2';
 
 const useSwalerts = () => {
   const successAlert = (
     title: string,
     text: string,
+    confirmButtonText: string = '확인',
     showConfirmButton?: boolean,
     timer?: number
   ) =>
@@ -12,6 +13,7 @@ const useSwalerts = () => {
       text,
       showConfirmButton,
       timer,
+      confirmButtonText,
       icon: 'success',
       position: 'center',
     });
@@ -19,6 +21,7 @@ const useSwalerts = () => {
   const errorAlert = (
     title: string,
     text: string,
+    confirmButtonText: string = '확인',
     showConfirmButton?: boolean,
     timer?: number
   ) =>
@@ -27,6 +30,7 @@ const useSwalerts = () => {
       text,
       showConfirmButton,
       timer,
+      confirmButtonText,
       icon: 'error',
       position: 'center',
     });
@@ -34,6 +38,7 @@ const useSwalerts = () => {
   const informationAlert = (
     title: string,
     text: string,
+    confirmButtonText: string = '확인',
     showConfirmButton?: boolean,
     timer?: number
   ) =>
@@ -42,25 +47,16 @@ const useSwalerts = () => {
       text,
       showConfirmButton,
       timer,
+      confirmButtonText,
       icon: 'info',
       position: 'center',
     });
 
-  const customAlert = (
-    title: string,
-    text: string,
-    icon: SweetAlertIcon,
-    position: SweetAlertPosition,
-    showConfirmButton?: boolean,
-    timer?: number
-  ) =>
+  const customAlert: (
+    customOptions: SweetAlertOptions
+  ) => Promise<SweetAlertResult<any>> = (customOptions) =>
     Swal.fire({
-      title,
-      text,
-      showConfirmButton,
-      timer,
-      icon,
-      position,
+      ...customOptions,
     });
 
   const successToast = (title: string, text: string) =>
@@ -89,24 +85,12 @@ const useSwalerts = () => {
       showCloseButton: true,
     });
 
-  const customToast = (
-    title: string,
-    text: string,
-    icon: SweetAlertIcon,
-    timerProgressBar: boolean,
-    showCloseButton: boolean,
-    timer: number,
-    position: SweetAlertPosition
-  ) =>
+  const customToast: (
+    customOptions: SweetAlertOptions
+  ) => Promise<SweetAlertResult<any>> = (customOptions) =>
     Swal.fire({
+      ...customOptions,
       toast: true,
-      title,
-      text,
-      icon,
-      position,
-      timerProgressBar,
-      showCloseButton,
-      timer,
       showConfirmButton: false,
     });
 

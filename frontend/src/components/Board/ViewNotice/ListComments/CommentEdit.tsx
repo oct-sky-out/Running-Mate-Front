@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Button } from '@nextui-org/react';
-import Swal from 'sweetalert2';
 import CommentService from '../../../../lib/api/commentService';
 import { useSelector } from '../../../../modules';
 import { noticeActions } from '../../../../modules/notice';
 import { CommentType } from '../../../../modules/types/commentType';
+import useSwalerts from '../../../../common/hooks/useSwalerts';
 
 interface IProps {
   commentId: number;
@@ -25,6 +25,8 @@ const CommentEdit: React.FC<IProps> = ({
 
   const [editedComment, setEditedComment] = useState<string>(content);
 
+  const { successToast, errorToast } = useSwalerts();
+
   const changeComment = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setEditedComment(e.target.value);
   };
@@ -43,29 +45,12 @@ const CommentEdit: React.FC<IProps> = ({
           }),
         ])
       );
-      await Swal.fire({
-        toast: true,
-        title: '댓글 변경',
-        text: '댓글이 변경되었습니다!',
-        icon: 'success',
-        position: 'top-end',
-        timer: 5000,
-        timerProgressBar: true,
-        showConfirmButton: false,
-        showCloseButton: true,
-      });
+      await successToast('댓글 변경', '댓글이 변경되었습니다!');
     } catch {
-      await Swal.fire({
-        toast: true,
-        title: '댓글 변경실패',
-        text: '죄송합니다. 댓글 변경에 실패하였습니다.',
-        icon: 'error',
-        position: 'top-end',
-        timer: 5000,
-        timerProgressBar: true,
-        showConfirmButton: false,
-        showCloseButton: true,
-      });
+      await errorToast(
+        '댓글 변경실패',
+        '죄송합니다. 댓글 변경에 실패하였습니다.'
+      );
     }
   };
 

@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Button, Input } from '@nextui-org/react';
-import Swal from 'sweetalert2';
 import { useSelector } from '../../../modules';
 import { crewActions } from '../../../modules/crew';
+import useSwalerts from '../../../common/hooks/useSwalerts';
 
 // import useLocalStroeageData from '../../../hooks/useLocalStorageData';
 
@@ -20,6 +20,7 @@ const CrewDelete = () => {
     })
   );
   const [deleteCrewName, setDeleteCrewName] = useState('');
+  const { successAlert, errorAlert } = useSwalerts();
 
   // const { getToken } = useLocalStroeageData();
 
@@ -29,23 +30,17 @@ const CrewDelete = () => {
 
   useEffect(() => {
     if (deleteFetchState === 'Success') {
-      Swal.fire({
-        title: '삭제 성공!',
-        icon: 'success',
-        confirmButtonText: '뛰어요 페이지로 돌아가기.',
-        confirmButtonColor: '#d33',
-      }).then(() => {
+      successAlert(
+        '삭제 성공!',
+        '삭제를 성공했습니다!',
+        '뛰어요 페이지로 돌아가기.'
+      ).then(() => {
         history.push('/crewList');
       });
       dispatch(crewActions.initCrewRequestFetch());
     }
     if (deleteFetchState === 'Failure') {
-      Swal.fire({
-        title: '삭제 실패',
-        text: '삭제에 실패하였습니다. 죄송합니다.',
-        icon: 'error',
-        confirmButtonText: '확인',
-      });
+      errorAlert('삭제 실패', '삭제에 실패하였습니다. 죄송합니다.');
       dispatch(crewActions.initCrewRequestFetch());
     }
   }, [deleteFetchState]);

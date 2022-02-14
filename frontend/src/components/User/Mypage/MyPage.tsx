@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { Route, useLocation, useHistory } from 'react-router-dom';
-import Swal from 'sweetalert2';
 import { v4 } from 'uuid';
 import MyPageMenu from './MyPageMenu';
 import MyPageInformations from './MyPageInformations';
@@ -12,6 +11,7 @@ import useValidToken, {
 } from '../../../common/hooks/useValidToken';
 import RequestFriendsManagement from './RequestFriendsManagement';
 import MyBoards from './MyBoards';
+import useSwalerts from '../../../common/hooks/useSwalerts';
 
 const MyPage = () => {
   const location = useLocation();
@@ -25,6 +25,7 @@ const MyPage = () => {
   };
   const token = localStorage.getItem('token');
   const { checkTokenAvailable } = useValidToken();
+  const { errorToast } = useSwalerts();
   const tokenValidCallback = (result: CheckTokenResultType) => {
     if (!result.tokenState) {
       console.error(result.message);
@@ -32,16 +33,10 @@ const MyPage = () => {
     }
   };
   const tokenNotValidCallback = () => {
-    Swal.fire({
-      toast: true,
-      icon: 'error',
-      title: '사용자 정보가 만료되었거나 존재하지않습니다.',
-      position: 'top-end',
-      timer: 5000,
-      timerProgressBar: true,
-      showConfirmButton: false,
-      showCloseButton: true,
-    }).then(() => {
+    errorToast(
+      '사용자 정보 오류',
+      '사용자 정보가 만료되었거나 존재하지않습니다.'
+    ).then(() => {
       history.push('/guest');
     });
   };
