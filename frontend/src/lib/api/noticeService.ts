@@ -19,6 +19,7 @@ interface INoticeService {
   viewChoiceNotices(setUp: ViewNoticesSetUpType): Promise<GetNoticesType[]>;
   viewAllNotices(offset: number, limit: number): Promise<GetNoticesType[]>;
   deleteNotice(noticeId: number, token: string): void;
+  setNoticeClosed(noticeId: string, token: string): Promise<boolean>;
   getMyNotices(
     userNickName: string,
     token: string,
@@ -127,7 +128,7 @@ class NoticeService implements INoticeService {
 
   setNoticeClosed = async (boardId: string, token: string) => {
     try {
-      const { data } = await axios.patch(`/boards/${boardId}`, {
+      const { data } = await axios.patch<boolean>(`/boards/${boardId}`, {
         headers: {
           'x-auth-token': token,
         },

@@ -1,39 +1,83 @@
 import { useHistory } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { v4 } from 'uuid';
 import { Avatar } from '@nextui-org/react';
-import CommentData from '../../../../excuteData/CommentMock/CommentData';
 import * as url from '../../../../assets/default_profile.png';
+import CommentEditDeleteButton from './CommentEditDeleteButton';
+import { useSelector } from '../../../../modules';
+import { noticeActions } from '../../../../modules/notice';
+import CommentService from '../../../../lib/api/commentService';
+import dateParser from '../../../../common/functions/dateParser';
+import CommentEdit from './CommentEdit';
 
-const ListComments = () => {
+interface IProps {
+  boardId: string;
+}
+
+const ListComments: React.FC<IProps> = ({ boardId }) => {
   const history = useHistory();
+
+  const { commentList, userNickName, token } = useSelector((state) => ({
+    commentList: state.viewNotice.comments,
+    userNickName: state.signIn.userData.nickName,
+    token: state.signIn.token,
+  }));
+  const dispatch = useDispatch();
+
+  const [editCommentIndex, setEditCommentIndex] = useState<null | number>(null);
+  const goCommenterUserDetail = (author: string) =>
+    history.push(`/user/${author}`);
+
+  useEffect(() => {
+    new CommentService()
+      .getComments(token, boardId)
+      .then((comments) => dispatch(noticeActions.setComments(comments)));
+  }, [boardId]);
 
   return (
     <ul>
-      {Object.keys(CommentData).map((key) => {
-        const comment = CommentData[key];
+      {commentList.map((comment) => {
         return (
-          <li
-            className="h- border-purple border-b my-3 space-y-4 p-3"
-            key={v4()}
-          >
-            <div
-              className="flex items-center"
-              onClick={() => history.push(`/user/${comment.author}`)}
-            >
+          <li className="border-purple border-b my-3 space-y-4 p-3" key={v4()}>
+            <div className="flex items-center">
               <div className="mr-2 float-left">
-                <Avatar src={url.default} />
+                <Avatar
+                  src={url.default}
+                  onClick={() => goCommenterUserDetail(comment.author)}
+                />
               </div>
               <div>
-                <span className="w-32 font-bold mr-4 block">
+                <span
+                  className="w-32 font-bold mr-4 block cursor-pointer"
+                  onClick={() => goCommenterUserDetail(comment.author)}
+                >
                   {comment.author}
                 </span>
                 <span className="text-gray-400 block pointer-events-none">
-                  {comment.time}
+                  {dateParser(new Date(comment.regDate))}
                 </span>
               </div>
+              {userNickName === comment.author && (
+                <CommentEditDeleteButton
+                  commentId={comment.id}
+                  editCommentIndex={editCommentIndex}
+                  setEditCommentIndex={setEditCommentIndex}
+                  commentList={commentList}
+                />
+              )}
             </div>
-
-            <p className="text-lg pb-4">{comment.content}</p>
+            {editCommentIndex === comment.id &&
+            userNickName === comment.author ? (
+              <CommentEdit
+                commentId={comment.id}
+                content={comment.content}
+                setEditCommentIndex={setEditCommentIndex}
+                commentList={commentList}
+              />
+            ) : (
+              <p className="text-lg pb-4">{comment.content}</p>
+            )}
           </li>
         );
       })}

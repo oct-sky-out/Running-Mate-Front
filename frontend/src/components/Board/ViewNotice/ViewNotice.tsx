@@ -17,6 +17,7 @@ import NoticeService from '../../../lib/api/noticeService';
 import useImageDelete from '../../../common/hooks/useImageDelete';
 import useValidToken from '../../../common/hooks/useValidToken';
 import ListComment from './ListComments/ListComments';
+import WriteComment from './WriteComment/WriteComment';
 
 interface MatchParam {
   runId: string;
@@ -44,6 +45,7 @@ const ViewNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
     author,
     token,
     nickName,
+    noticeFetchStatus,
   } = useSelector((state) => ({
     address: state.viewNotice.viewNoticeData.address,
     closed: state.viewNotice.viewNoticeData.closed,
@@ -58,6 +60,7 @@ const ViewNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
     author: state.viewNotice.viewNoticeData.author,
     token: state.signIn.token,
     nickName: state.signIn.userData.nickName,
+    noticeFetchStatus: state.viewNotice.noticeFetchStatus,
   }));
 
   //* custom hook
@@ -127,19 +130,14 @@ const ViewNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
     }
   };
 
-  const setNoticeClosed = async () => {
-    try {
-      await noticeService.setNoticeClosed(match.params.runId, token);
-      dispatch(noticeActions.setClosed(!closed));
-    } catch {
-      await Swal.fire({
-        title: '게시물 삭제 실패',
-        text: '게시물 삭제에 실패하였습니다. 다시 시도해주세요.',
-        icon: 'error',
-        confirmButtonText: '확인',
-      });
-    }
-  };
+  const setNoticeClosed = () =>
+    dispatch(
+      noticeActions.setClosed({
+        closed: !closed,
+        boardId: match.params.runId,
+        token,
+      })
+    );
 
   const checkToken = async () => {
     const result = await useValidToken().checkTokenApi(token);
@@ -148,13 +146,42 @@ const ViewNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
 
   useEffect(() => {
     console.log(match.params.runId);
-    checkToken().then((state) => {
-      console.log('이것은 토큰 스테이트 입니다.', state);
-      if (!state || !match.params.runId) history.push('/');
-    });
+    // checkToken().then((state) => {
+    //   console.log('이것은 토큰 스테이트 입니다.', state);
+    //   if (!state || !match.params.runId) history.push('/');
+    // });
     console.log('토큰 통과해부럿으');
     getBoardDate(); // MOCK DATA 사용시 주석 처리할것.
   }, [content, match.params.runId]);
+
+  useEffect(() => {
+    if (noticeFetchStatus === 'Success') {
+      Swal.fire({
+        toast: true,
+        title: '게시물 마감상태 변경',
+        text: `게시물 마감상태 변경이 완료되었습니다..`,
+        icon: 'success',
+        position: 'top-end',
+        timer: 5000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+        showCloseButton: true,
+      }).then(() => dispatch(noticeActions.setInitNoticeFetchStatus()));
+    }
+    if (noticeFetchStatus === 'Failure') {
+      Swal.fire({
+        toast: true,
+        title: '게시물 마감상태 변경 실패',
+        text: '게시물 마감상태 변경에 실패하였습니다. 다시 시도해주세요.',
+        icon: 'error',
+        position: 'top-end',
+        timer: 5000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+        showCloseButton: true,
+      }).then(() => dispatch(noticeActions.setInitNoticeFetchStatus()));
+    }
+  }, [noticeFetchStatus]);
 
   const showMeetingTime = () => {
     if (closed) return '마감됨';
@@ -257,12 +284,13 @@ const ViewNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
               className="text-white w-28 h-10 md:w-32 md:w-25 rounded-xl hover:opacity-80 transition ease-in-out delay-100 ml-4 mb-2 outline-none bg-indigo-400 cursor-pointer"
               onClick={setNoticeClosed}
             >
-              {closed ? '마감 취소' : '공지 마감'}
+              {closed ? '공지 마감' : '마감 취소'}
             </button>
           </div>
         </div>
       </div>
-      <ListComment />
+      <WriteComment boardId={match.params.runId} />
+      <ListComment boardId={match.params.runId} />
     </DetailBaseBorder>
   );
 };

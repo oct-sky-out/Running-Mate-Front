@@ -1,21 +1,21 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Button } from '@nextui-org/react';
 import Swal from 'sweetalert2';
 import { useSelector } from '../../../../modules';
-import axios from '../../../../lib/api/axios';
+import CommentService from '../../../../lib/api/commentService';
+import { noticeActions } from '../../../../modules/notice';
 
-interface IRegistCommentResult {
-  id: number;
-  author: string;
-  comment: string;
-  registerDate: string;
-}
 interface IProps {
   boardId: string;
 }
 
 const WriteComment: React.FC<IProps> = ({ boardId }) => {
-  const token = useSelector((state) => state.signIn.token);
+  const { token, commentList } = useSelector((state) => ({
+    token: state.signIn.token,
+    commentList: state.viewNotice.comments,
+  }));
+  const dispatch = useDispatch();
   const [comment, setComment] = useState('');
 
   const changeComment = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -24,14 +24,28 @@ const WriteComment: React.FC<IProps> = ({ boardId }) => {
 
   const registComment = async () => {
     try {
-      await axios.post<IRegistCommentResult>(
-        `/boards/${boardId}/comments`,
-        {
-          content: comment,
-        },
-        { headers: { 'x-auth-token': token } }
+      if (comment === '') {
+        await Swal.fire({
+          toast: true,
+          title: '댓글을 입력해주세요.',
+          text: '댓글이 비어있습니다. 댓글을 입력 후 등록해주세요.',
+          icon: 'info',
+          position: 'top-end',
+          timer: 5000,
+          timerProgressBar: true,
+          showConfirmButton: false,
+          showCloseButton: true,
+        });
+        return;
+      }
+      const registedComment = await new CommentService().registComment(
+        token,
+        comment,
+        boardId
       );
-      Swal.fire({
+      dispatch(noticeActions.setComments([...commentList, registedComment]));
+      setComment('');
+      await Swal.fire({
         toast: true,
         title: '댓글등록 성공.',
         text: '댓글등록에 성공하였습니다.',
