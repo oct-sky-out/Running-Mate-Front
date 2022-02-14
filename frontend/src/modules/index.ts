@@ -35,7 +35,7 @@ export const store = () => {
   const initStroe = configureStore({
     reducer: rootReducer,
     middleware: [sagaMiddleware],
-    devTools: true,
+    devTools: process.env.node_env !== 'production',
   });
 
   sagaMiddleware.run(rootSaga);
