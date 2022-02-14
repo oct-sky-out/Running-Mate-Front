@@ -51,7 +51,7 @@ class UserService implements IUserService {
     try {
       const { tokenState } = await this.tokenValid(token);
       if (!tokenState) return;
-      await axios.get<'잘못된 요청' | '로그아웃 성공'>('/user/login', {
+      await axios.get<'잘못된 요청' | '로그아웃 성공'>('/user/logout', {
         headers: {
           'x-auth-token': token,
         },

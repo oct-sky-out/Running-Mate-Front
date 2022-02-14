@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import OutsideClickHandler from 'react-outside-click-handler';
 import { BiUser } from 'react-icons/bi';
-import { useSelector } from '../../modules';
-import UserService from '../../lib/api/userService';
 import Swal from 'sweetalert2';
+import { useSelector } from '../../modules';
+import { SignInActions } from '../../modules/signIn';
+import UserService from '../../lib/api/userService';
 
 const UserProfile = () => {
   //* react-router
@@ -15,6 +17,7 @@ const UserProfile = () => {
     userNickName: state.signIn.userData.nickName,
     token: state.signIn.token,
   }));
+  const dispatch = useDispatch();
 
   //* useState
   const [isMyMenuOpen, setIsMyMenuOpen] = useState(false);
@@ -27,6 +30,7 @@ const UserProfile = () => {
   const logOut = async () => {
     try {
       await new UserService().logOut(token);
+      dispatch(SignInActions.setInit());
     } catch {
       Swal.fire({
         toast: true,
