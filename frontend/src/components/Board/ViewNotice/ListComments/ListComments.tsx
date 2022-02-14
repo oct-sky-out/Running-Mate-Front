@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { v4 } from 'uuid';
 import { Avatar } from '@nextui-org/react';
+import Swal from 'sweetalert2';
 import * as url from '../../../../assets/default_profile.png';
 import CommentEditDeleteButton from './CommentEditDeleteButton';
 import { useSelector } from '../../../../modules';
@@ -32,7 +33,20 @@ const ListComments: React.FC<IProps> = ({ boardId }) => {
   useEffect(() => {
     new CommentService()
       .getComments(token, boardId)
-      .then((comments) => dispatch(noticeActions.setComments(comments)));
+      .then((comments) => dispatch(noticeActions.setComments(comments)))
+      .catch(() => {
+        Swal.fire({
+          toast: true,
+          title: '댓글 불러오기 실패',
+          text: '댓글을 불러오는데 실패하였습니다.',
+          icon: 'error',
+          position: 'top-end',
+          timer: 5000,
+          timerProgressBar: true,
+          showConfirmButton: false,
+          showCloseButton: true,
+        });
+      });
   }, [boardId]);
 
   return (
