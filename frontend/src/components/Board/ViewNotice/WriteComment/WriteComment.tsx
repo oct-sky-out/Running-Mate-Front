@@ -16,7 +16,10 @@ const WriteComment: React.FC<IProps> = ({ boardId }) => {
     commentList: state.viewNotice.comments,
   }));
   const dispatch = useDispatch();
+
   const [comment, setComment] = useState('');
+
+  const commentCount = commentList.length;
 
   const changeComment = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setComment(e.target.value);
@@ -74,7 +77,7 @@ const WriteComment: React.FC<IProps> = ({ boardId }) => {
   return (
     <div className="my-20 px-3 md:px-0 space-y-5 w-full">
       <div className="text-2xl md:text-3xl font-bold">
-        <span>댓글 {1}개</span>
+        <span>댓글 {commentCount}개</span>
       </div>
       <div className="w-full">
         <textarea

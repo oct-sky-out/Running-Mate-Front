@@ -255,9 +255,7 @@ const ViewNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
           <p
             className="w-full text-base md:text-xl break-words px-10"
             dangerouslySetInnerHTML={{ __html: content }}
-          >
-            {}
-          </p>
+          />
         </div>
         <div className="w-full space-y-3 relative">
           <div>
