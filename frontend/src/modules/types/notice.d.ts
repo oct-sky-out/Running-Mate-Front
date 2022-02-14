@@ -37,3 +37,22 @@ export type GetNoticesType = {
 export type NoticesType = {
   [key in string]: GetNoticesType;
 };
+
+export type GetMyNoticeType = {
+  id: number;
+  title: string;
+  content: string;
+  meetingTime: string;
+  address: AddressType;
+  regDate: string;
+  count: number;
+  image: string;
+  openChat: string;
+  author: string;
+  boardCategory: string;
+  closed: boolean;
+};
+
+export type NoticeFetchStatusType = {
+  noticeFetchStatus: '' | 'Fetch' | 'Success' | 'Failure';
+};

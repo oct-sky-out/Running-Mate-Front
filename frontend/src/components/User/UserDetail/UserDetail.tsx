@@ -37,18 +37,6 @@ const UserDetail: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
 
   //* useEffects
   useEffect(() => {
-    if (match.params.id === userData.nickName) {
-      setNormalCategory({
-        crewName: {
-          ...normalCategory.crewName,
-          description: userData.crewName || '크루에 소속되어있지 않습니다.',
-        },
-        address: { ...normalCategory.address, description: userData.address },
-      });
-    }
-  }, [userData]);
-
-  useEffect(() => {
     setNormalCategory({
       crewName: { icon: BsPeopleFill, title: '소속 크루', description: '' },
       address: {
@@ -57,37 +45,35 @@ const UserDetail: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
         description: '',
       },
     });
-    if (match.params.id !== userData.nickName && token) {
-      new UserService()
-        .getUser(match.params.id, token)
-        .then((result) => {
-          if (result) {
-            setNormalCategory({
-              crewName: {
-                ...normalCategory.crewName,
-                description: result.crewName || '크루에 소속되어있지 않습니다.',
-              },
-              address: {
-                ...normalCategory.address,
-                description: result.address,
-              },
-            });
-          }
-        })
-        .catch((reason) => {
-          console.error(reason);
-          Swal.fire({
-            toast: true,
-            icon: 'error',
-            title: '사용자 정보 조회 실패.',
-            position: 'top-end',
-            timer: 5000,
-            timerProgressBar: true,
-            showConfirmButton: false,
-            showCloseButton: true,
+    new UserService()
+      .getUser(match.params.id, token)
+      .then((result) => {
+        if (result) {
+          setNormalCategory({
+            crewName: {
+              ...normalCategory.crewName,
+              description: result.crewName || '크루에 소속되어있지 않습니다.',
+            },
+            address: {
+              ...normalCategory.address,
+              description: result.address,
+            },
           });
+        }
+      })
+      .catch((reason) => {
+        console.error(reason);
+        Swal.fire({
+          toast: true,
+          icon: 'error',
+          title: '사용자 정보 조회 실패.',
+          position: 'top-end',
+          timer: 5000,
+          timerProgressBar: true,
+          showConfirmButton: false,
+          showCloseButton: true,
         });
-    }
+      });
   }, [token, location.pathname]);
 
   return (

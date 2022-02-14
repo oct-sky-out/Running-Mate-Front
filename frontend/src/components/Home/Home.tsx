@@ -6,7 +6,7 @@ import { HiOutlinePlusCircle } from 'react-icons/hi';
 import { useInView } from 'react-intersection-observer';
 import NoticeService from '../../lib/api/noticeService';
 import Board from '../Board/Board';
-import SelcetRegion from '../SelectRegion/SelcetRegion';
+import SelcetRegion from '../../common/components/SelcetRegion';
 import {
   GetNoticesType,
   SearchAddressType,

@@ -18,7 +18,7 @@ const useValidToken = () => {
       .then(successCallback)
       .catch(failureCallback || null);
 
-  return { checkTokenAvailable };
+  return { checkTokenAvailable, checkTokenApi };
 };
 
 export default useValidToken;

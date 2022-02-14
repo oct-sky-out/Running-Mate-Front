@@ -86,6 +86,8 @@ const mockStore: RootState = {
       author: '',
     },
     notices: {},
+    noticeFetchStatus: '',
+    comments: [],
   },
   friend: { requestFriendFetch: '' },
 };

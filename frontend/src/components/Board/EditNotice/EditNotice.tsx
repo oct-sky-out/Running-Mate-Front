@@ -15,7 +15,7 @@ import Swal from 'sweetalert2';
 import { noticeActions } from '../../../modules/notice';
 import { useSelector } from '../../../modules';
 
-import SelecRegion from '../../SelectRegion/SelcetRegion';
+import SelecRegion from '../../../common/components/SelcetRegion';
 import { AddressType } from '../../../modules/types/notice';
 import ImageButtons from '../../../common/components/ImageButtons';
 
@@ -373,7 +373,6 @@ const EditNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
               theme="snow"
               defaultValue={content}
               onChange={(e) => {
-                console.log(e);
                 dispatch(noticeActions.setContent(e));
               }}
               style={{ height: '300px' }}

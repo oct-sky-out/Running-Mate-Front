@@ -1,9 +1,17 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { GetNoticesType, NoticesType, AddressType } from './types/notice';
+import { CommentType } from './types/commentType';
+import {
+  GetNoticesType,
+  NoticesType,
+  AddressType,
+  NoticeFetchStatusType,
+} from './types/notice';
 
-const initialState: { viewNoticeData: GetNoticesType } & {
+const initialState: {
+  viewNoticeData: GetNoticesType;
   notices: NoticesType;
-} = {
+  comments: CommentType[];
+} & NoticeFetchStatusType = {
   viewNoticeData: {
     address: {
       dou: '',
@@ -22,6 +30,8 @@ const initialState: { viewNoticeData: GetNoticesType } & {
     author: '',
   },
   notices: {},
+  noticeFetchStatus: '',
+  comments: [],
 };
 
 const noticeSlice = createSlice({
@@ -47,6 +57,8 @@ const noticeSlice = createSlice({
         author: '',
       },
       notices: {},
+      noticeFetchStatus: '',
+      comments: [],
     }),
     setInitViewNoticeData: (state, _action: PayloadAction<void>) => ({
       ...state,
@@ -137,6 +149,33 @@ const noticeSlice = createSlice({
     setNotices: (state, action: PayloadAction<NoticesType>) => ({
       ...state,
       notices: action.payload,
+    }),
+    setClosed: (
+      state,
+      action: PayloadAction<{ closed: boolean; boardId: string; token: string }>
+    ) => ({
+      ...state,
+      viewNoticeData: {
+        ...state.viewNoticeData,
+        closed: action.payload.closed,
+      },
+      noticeFetchStatus: 'Fetch',
+    }),
+    setInitNoticeFetchStatus: (state, _action: PayloadAction<void>) => ({
+      ...state,
+      noticeFetchStatus: '',
+    }),
+    setSuccessNoticeFetchStatus: (state, _action: PayloadAction<void>) => ({
+      ...state,
+      noticeFetchStatus: 'Success',
+    }),
+    setFailureNoticeFetchStatus: (state, _action: PayloadAction<void>) => ({
+      ...state,
+      noticeFetchStatus: 'Failure',
+    }),
+    setComments: (state, action: PayloadAction<CommentType[]>) => ({
+      ...state,
+      comments: action.payload,
     }),
   },
 });

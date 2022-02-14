@@ -12,6 +12,7 @@ type MyPageType = {
 interface IUserService {
   signUp(signUpForm: ISignUpForm): void;
   login(signInDat: ISignInForm): void;
+  logOut(token: string): Promise<void>;
   getUser(nickName: string, token: string): Promise<false | IUserData>;
   leaveAccount(
     nickName: string,
@@ -43,6 +44,22 @@ class UserService implements IUserService {
       return { ...data };
     } catch (err: any) {
       throw new Error('아이디 또는 비밀번호를 다시 확인해주세요.');
+    }
+  };
+
+  logOut = async (token: string) => {
+    try {
+      const { tokenState } = await this.tokenValid(token);
+      if (!tokenState) return;
+      await axios.get<'잘못된 요청' | '로그아웃 성공'>('/user/logout', {
+        headers: {
+          'x-auth-token': token,
+        },
+      });
+      localStorage.removeItem('token');
+      localStorage.removeItem('userData');
+    } catch {
+      throw new Error('로그아웃 오류');
     }
   };
 
@@ -130,6 +147,8 @@ class UserService implements IUserService {
         message: 'token is alive',
       };
     } catch (error: any) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('userData');
       return {
         tokenState: false,
         message: error.message,

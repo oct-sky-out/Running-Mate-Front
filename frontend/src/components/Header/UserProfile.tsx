@@ -1,15 +1,23 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import OutsideClickHandler from 'react-outside-click-handler';
 import { BiUser } from 'react-icons/bi';
+import Swal from 'sweetalert2';
 import { useSelector } from '../../modules';
+import { SignInActions } from '../../modules/signIn';
+import UserService from '../../lib/api/userService';
 
 const UserProfile = () => {
   //* react-router
   const history = useHistory();
 
   //* redux
-  const userNickName = useSelector((state) => state.signIn.userData.nickName);
+  const { userNickName, token } = useSelector((state) => ({
+    userNickName: state.signIn.userData.nickName,
+    token: state.signIn.token,
+  }));
+  const dispatch = useDispatch();
 
   //* useState
   const [isMyMenuOpen, setIsMyMenuOpen] = useState(false);
@@ -19,8 +27,23 @@ const UserProfile = () => {
     history.push('/user/mypage');
     setIsMyMenuOpen(false);
   };
-  const logOut = () => {
-    setIsMyMenuOpen(false);
+  const logOut = async () => {
+    try {
+      await new UserService().logOut(token);
+      dispatch(SignInActions.setInit());
+    } catch {
+      Swal.fire({
+        toast: true,
+        title: '로그아웃 오류',
+        text: '죄송합니다. 로그아웃을 실패하였습니다.',
+        icon: 'error',
+        position: 'top-end',
+        timer: 5000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+        showCloseButton: true,
+      });
+    }
   };
 
   const moveMyInformationPage = () => {
