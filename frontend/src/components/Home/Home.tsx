@@ -5,7 +5,7 @@ import { isEmpty } from 'lodash';
 import { HiOutlinePlusCircle } from 'react-icons/hi';
 import { useInView } from 'react-intersection-observer';
 import NoticeService from '../../lib/api/noticeService';
-import Board from '../Board/Board';
+import Board from '../Board/Boards';
 import SelcetRegion from '../../common/components/SelcetRegion';
 import {
   GetNoticesType,

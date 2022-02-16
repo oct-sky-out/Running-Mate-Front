@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Button } from '@nextui-org/react';
-import Swal from 'sweetalert2';
 import { useSelector } from '../../../../modules';
 import CommentService from '../../../../lib/api/commentService';
 import { noticeActions } from '../../../../modules/notice';
+import useSwalerts from '../../../../common/hooks/useSwalerts';
 
 interface IProps {
   boardId: string;
@@ -16,7 +16,10 @@ const WriteComment: React.FC<IProps> = ({ boardId }) => {
     commentList: state.viewNotice.comments,
   }));
   const dispatch = useDispatch();
+
   const [comment, setComment] = useState('');
+  const { customToast, errorToast, successToast } = useSwalerts();
+  const commentCount = commentList.length;
 
   const changeComment = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setComment(e.target.value);
@@ -25,15 +28,13 @@ const WriteComment: React.FC<IProps> = ({ boardId }) => {
   const registComment = async () => {
     try {
       if (comment === '') {
-        await Swal.fire({
-          toast: true,
+        await customToast({
           title: '댓글을 입력해주세요.',
           text: '댓글이 비어있습니다. 댓글을 입력 후 등록해주세요.',
           icon: 'info',
           position: 'top-end',
           timer: 5000,
           timerProgressBar: true,
-          showConfirmButton: false,
           showCloseButton: true,
         });
         return;
@@ -45,36 +46,16 @@ const WriteComment: React.FC<IProps> = ({ boardId }) => {
       );
       dispatch(noticeActions.setComments([...commentList, registedComment]));
       setComment('');
-      await Swal.fire({
-        toast: true,
-        title: '댓글등록 성공.',
-        text: '댓글등록에 성공하였습니다.',
-        icon: 'success',
-        position: 'top-end',
-        timer: 5000,
-        timerProgressBar: true,
-        showConfirmButton: false,
-        showCloseButton: true,
-      });
+      await successToast('댓글등록 성공.', '댓글등록에 성공하였습니다.');
     } catch {
-      Swal.fire({
-        toast: true,
-        title: '댓글등록 실패.',
-        text: '댓글등록에 실패하였습니다.',
-        icon: 'error',
-        position: 'top-end',
-        timer: 5000,
-        timerProgressBar: true,
-        showConfirmButton: false,
-        showCloseButton: true,
-      });
+      errorToast('댓글등록 실패.', '댓글등록에 실패하였습니다.😰');
     }
   };
 
   return (
     <div className="my-20 px-3 md:px-0 space-y-5 w-full">
       <div className="text-2xl md:text-3xl font-bold">
-        <span>댓글 {1}개</span>
+        <span>댓글 {commentCount}개</span>
       </div>
       <div className="w-full">
         <textarea

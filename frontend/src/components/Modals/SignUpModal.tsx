@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import Swal from 'sweetalert2';
 import { SignUpActions } from '../../modules/signUp';
 import { useSelector } from '../../modules';
 import { ReactComponent as MiniLogo } from '../../assets/logo_mini.svg';
 import SignUpForm from './SignUpForm';
+import useSwalerts from '../../common/hooks/useSwalerts';
 
 interface IProps {
   closeModal: () => void;
@@ -14,27 +14,23 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
   //* Redux State
   const dispatch = useDispatch();
   const fetchState = useSelector((state) => state.signUp.signUpFetchState);
+  const { successAlert, errorAlert } = useSwalerts();
 
   useEffect(() => {
     if (fetchState === 'Success') {
       closeModal();
-      Swal.fire({
-        position: 'center',
-        icon: 'success',
-        title: '회원가입이 완료되었습니다.',
-        text: '로그인하고 서비스를 이용해보세요!',
-        showConfirmButton: false,
-        timer: 1500,
-      }).then(() => {
+      successAlert(
+        '회원가입이 완료되었습니다.',
+        '로그인하고 서비스를 이용해보세요!'
+      ).then(() => {
         dispatch(SignUpActions.setInit());
       });
     }
     if (fetchState === 'Error') {
-      Swal.fire({
-        icon: 'error',
-        title: '회원가입 실패',
-        text: '죄송합니다 회원가입에 실패하였습니다.',
-      }).then(() => {
+      errorAlert(
+        '회원가입 실패',
+        '죄송합니다 회원가입에 실패하였습니다.😰'
+      ).then(() => {
         dispatch(SignUpActions.setSignUpState());
       });
     }

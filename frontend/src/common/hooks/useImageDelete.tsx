@@ -1,7 +1,7 @@
 import S3 from 'aws-sdk/clients/s3';
 
 const useImageDelete = () => {
-  const ImageDelete = (fileName: string) => {
+  const imageDelete = (fileName: string) => {
     try {
       const s3Params = {
         Bucket: process.env.REACT_APP_AWS_S3_BUCKET_NAME || '',
@@ -21,7 +21,7 @@ const useImageDelete = () => {
     }
   };
 
-  return ImageDelete;
+  return imageDelete;
 };
 
 export default useImageDelete;

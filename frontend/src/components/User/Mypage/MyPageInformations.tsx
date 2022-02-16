@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { useSelector } from '../../../modules';
 import { SignInActions } from '../../../modules/signIn';
 import useModalPotal from '../../../common/hooks/useModalPotal';
-import Address from '../../address/Address';
+import Address from '../../Address/Address';
 import UserService from '../../../lib/api/userService';
 import useLocalStroeageData from '../../../common/hooks/useLocalStorageData';
 

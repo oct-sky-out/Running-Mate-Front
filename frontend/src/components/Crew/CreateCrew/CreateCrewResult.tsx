@@ -1,7 +1,7 @@
 import { Loading } from '@nextui-org/react';
 import { useEffect, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
-import Swal from 'sweetalert2';
+import useSwalerts from '../../../common/hooks/useSwalerts';
 import { CreateCrewActions } from '../../../modules/createCrew';
 import useCreateCrew from './hooks/useCreateCrew';
 
@@ -20,6 +20,7 @@ const CreateCrewResult: React.FC<IProps> = ({ questionOrder }) => {
   } = useCreateCrew();
   const [loading, setLoading] = loadingState;
   const [createResult, setCreateResult] = createResultState;
+  const { errorToast } = useSwalerts();
 
   const creatingFetchResult = useMemo(() => {
     if (questionOrder === QUESTION_COUNT) {
@@ -34,12 +35,13 @@ const CreateCrewResult: React.FC<IProps> = ({ questionOrder }) => {
   useEffect(() => {
     if (createCrewFetchStatus === 'Sucecss')
       setCreateResult('🎉 축하합니다. 새로운 크루를 만들었습니다!');
-    if (createCrewFetchStatus === 'Failure')
-      Swal.fire({
-        icon: 'error',
-        title: '크루 생성 실패',
-        text: '오류로 인하여 크루 생성에 실패하였습니다.',
-      }).then(() => setCreateResult('크루 생성에 실패하였습니다.'));
+    if (createCrewFetchStatus === 'Failure') {
+      errorToast(
+        '크루 생성 실패',
+        '오류로 인하여 크루 생성에 실패하였습니다.😰'
+      );
+      setCreateResult('크루 생성에 실패하였습니다.');
+    }
     if (
       createCrewFetchStatus === 'Sucecss' ||
       createCrewFetchStatus === 'Failure'

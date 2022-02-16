@@ -2,13 +2,13 @@ import { useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Button } from '@nextui-org/react';
-import Swal from 'sweetalert2';
 import { v4 } from 'uuid';
 import CrewService from '../../../lib/api/crewService';
 import { useSelector } from '../../../modules';
 import { crewActions } from '../../../modules/crew';
 import PeopleList from '../../../common/components/PeopleList';
 import PeopleSearch from '../../../common/components/PeopleSearch';
+import useSwalerts from '../../../common/hooks/useSwalerts';
 
 const PeopleManagement = () => {
   const history = useHistory();
@@ -23,6 +23,7 @@ const PeopleManagement = () => {
       crewFetchStatus: state.crew.crewRequestFetch,
     }));
   const dispatch = useDispatch();
+  const { successAlert, errorAlert, customAlert } = useSwalerts();
 
   const kickCrewMember = (memberNickName: string) => {
     new CrewService()
@@ -35,21 +36,11 @@ const PeopleManagement = () => {
             )
           )
         );
-        Swal.fire({
-          title: message,
-          text: '추방에 성공하였습니다.',
-          icon: 'success',
-          confirmButtonText: '확인',
-        });
+        successAlert(message, '추방에 성공하였습니다.');
       })
       .catch((reason) => {
         console.error(reason);
-        Swal.fire({
-          title: '추방 실패',
-          text: '추방에 실패하였습니다. 죄송합니다.',
-          icon: 'error',
-          confirmButtonText: '확인',
-        });
+        errorAlert('추방 실패', '추방에 실패하였습니다. 죄송합니다.😰');
       });
   };
 
@@ -62,7 +53,7 @@ const PeopleManagement = () => {
   useEffect(() => {
     if (crewFetchStatus === 'Success') {
       dispatch(crewActions.initCrewRequestFetch());
-      Swal.fire({
+      customAlert({
         title: '위임 성공.',
         html: '<div>위임에 성공하였습니다.</div><h2>탈퇴 시 크루 상세 페이지정보로 이동 후 크루 탈퇴 버튼을 눌러 탈퇴해주세요.</h2>',
         icon: 'success',
@@ -72,12 +63,7 @@ const PeopleManagement = () => {
       );
     }
     if (crewFetchStatus === 'Failure') {
-      Swal.fire({
-        title: '위임 실패',
-        text: '위임에 실패하였습니다. 죄송합니다.',
-        icon: 'error',
-        confirmButtonText: '확인',
-      });
+      errorAlert('위임 실패', '위임에 실패하였습니다. 죄송합니다.😰');
       dispatch(crewActions.initCrewRequestFetch());
     }
   }, [crewFetchStatus]);

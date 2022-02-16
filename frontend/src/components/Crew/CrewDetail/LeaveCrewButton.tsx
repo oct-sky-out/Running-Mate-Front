@@ -1,9 +1,9 @@
 import { Button } from '@nextui-org/react';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import Swal from 'sweetalert2';
 import { crewActions } from '../../../modules/crew';
 import { useSelector } from '../../../modules';
+import useSwalerts from '../../../common/hooks/useSwalerts';
 
 const LeaveCrewButton = () => {
   const { userNickName, token, crewFetchStatus } = useSelector((state) => ({
@@ -14,6 +14,7 @@ const LeaveCrewButton = () => {
   const dispatch = useDispatch();
 
   const [isLeaved, setIsLeaved] = useState(false);
+  const { successToast, errorToast } = useSwalerts();
 
   const clickLeaveCrewButton = async () => {
     dispatch(crewActions.leaveCrew({ token, userNickName }));
@@ -21,30 +22,15 @@ const LeaveCrewButton = () => {
 
   useEffect(() => {
     if (crewFetchStatus === 'Success') {
-      Swal.fire({
-        toast: true,
-        icon: 'success',
-        title: '크루 탈퇴 완료.',
-        position: 'top-end',
-        timer: 5000,
-        timerProgressBar: true,
-        showConfirmButton: false,
-        showCloseButton: true,
-      });
+      successToast('크루 탈퇴 완료.', '크루 탈퇴를 완료했습니다.');
       setIsLeaved(true);
       dispatch(crewActions.initCrewRequestFetch());
     }
     if (crewFetchStatus === 'Failure') {
-      Swal.fire({
-        toast: true,
-        icon: 'success',
-        title: '죄송합니다. 크루 탈퇴에 실패하였습니다.',
-        position: 'top-end',
-        timer: 5000,
-        timerProgressBar: true,
-        showConfirmButton: false,
-        showCloseButton: true,
-      });
+      errorToast(
+        '크루 탈퇴 실패.',
+        '죄송합니다. 크루 탈퇴에 실패하였습니다.😰'
+      );
       dispatch(crewActions.initCrewRequestFetch());
     }
   }, [crewFetchStatus]);

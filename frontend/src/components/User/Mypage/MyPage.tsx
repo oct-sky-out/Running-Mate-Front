@@ -1,21 +1,16 @@
-import { useEffect } from 'react';
-import { Route, useLocation, useHistory } from 'react-router-dom';
-import Swal from 'sweetalert2';
+import { Route, useLocation } from 'react-router-dom';
 import { v4 } from 'uuid';
+import { useSelector } from '../../../modules';
 import MyPageMenu from './MyPageMenu';
 import MyPageInformations from './MyPageInformations';
 import ChangeMyPassword from './ChangeMyPassword';
 import LeaveAccount from './LeaveAccount';
 import FriendsList from './FriendsList';
-import useValidToken, {
-  CheckTokenResultType,
-} from '../../../common/hooks/useValidToken';
 import RequestFriendsManagement from './RequestFriendsManagement';
 import MyBoards from './MyBoards';
 
 const MyPage = () => {
   const location = useLocation();
-  const history = useHistory();
   const menuTexts: { [key: string]: string } = {
     '/user/mypage': '정보 관리',
     '/user/mypage/changePassword': '비밀번호 변경',
@@ -23,32 +18,7 @@ const MyPage = () => {
     '/user/mypage/friends/list': '친구관리',
     '/user/mypage/leaving': '회원탈퇴',
   };
-  const token = localStorage.getItem('token');
-  const { checkTokenAvailable } = useValidToken();
-  const tokenValidCallback = (result: CheckTokenResultType) => {
-    if (!result.tokenState) {
-      console.error(result.message);
-      history.push('/guest');
-    }
-  };
-  const tokenNotValidCallback = () => {
-    Swal.fire({
-      toast: true,
-      icon: 'error',
-      title: '사용자 정보가 만료되었거나 존재하지않습니다.',
-      position: 'top-end',
-      timer: 5000,
-      timerProgressBar: true,
-      showConfirmButton: false,
-      showCloseButton: true,
-    }).then(() => {
-      history.push('/guest');
-    });
-  };
-
-  useEffect(() => {
-    checkTokenAvailable(token, tokenValidCallback, tokenNotValidCallback);
-  }, [location.pathname]);
+  const token = useSelector((state) => state.signIn.token);
 
   return (
     <>

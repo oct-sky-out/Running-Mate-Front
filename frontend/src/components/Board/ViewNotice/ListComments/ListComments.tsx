@@ -10,6 +10,7 @@ import { noticeActions } from '../../../../modules/notice';
 import CommentService from '../../../../lib/api/commentService';
 import dateParser from '../../../../common/functions/dateParser';
 import CommentEdit from './CommentEdit';
+import useSwalerts from '../../../../common/hooks/useSwalerts';
 
 interface IProps {
   boardId: string;
@@ -24,6 +25,7 @@ const ListComments: React.FC<IProps> = ({ boardId }) => {
     token: state.signIn.token,
   }));
   const dispatch = useDispatch();
+  const { errorToast } = useSwalerts();
 
   const [editCommentIndex, setEditCommentIndex] = useState<null | number>(null);
   const goCommenterUserDetail = (author: string) =>
@@ -32,7 +34,10 @@ const ListComments: React.FC<IProps> = ({ boardId }) => {
   useEffect(() => {
     new CommentService()
       .getComments(token, boardId)
-      .then((comments) => dispatch(noticeActions.setComments(comments)));
+      .then((comments) => dispatch(noticeActions.setComments(comments)))
+      .catch(() => {
+        errorToast('댓글 불러오기 실패', '댓글을 불러오는데 실패하였습니다.😰');
+      });
   }, [boardId]);
 
   return (

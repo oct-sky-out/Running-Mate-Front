@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button, Input } from '@nextui-org/react';
-import Swal from 'sweetalert2';
 import { useSelector } from '../../../modules';
 import UserService from '../../../lib/api/userService';
+import useSwalerts from '../../../common/hooks/useSwalerts';
 
 const LeaveAccount = () => {
   const history = useHistory();
@@ -14,25 +14,20 @@ const LeaveAccount = () => {
   }));
 
   const [confirmEmail, setConfirmEmail] = useState('');
+  const { errorAlert, successAlert } = useSwalerts();
 
   const clickLeaveAccountButton = async () => {
     try {
       const { message } = await new UserService().leaveAccount(token, nickname);
-      await Swal.fire({
-        title: message,
-        icon: 'success',
-        confirmButtonText: '게스트 페이지로 돌아가기',
-        confirmButtonColor: '#d33',
-      });
+      await successAlert(
+        message,
+        '삭제를 완료했습니다.',
+        '게스트 페이지로 돌아가기'
+      );
       history.push('/guest');
     } catch (err: any) {
       console.error(err);
-      Swal.fire({
-        title: '삭제 실패',
-        text: '삭제에 실패하였습니다. 죄송합니다.',
-        icon: 'error',
-        confirmButtonText: '확인',
-      });
+      errorAlert('삭제 실패', '삭제에 실패하였습니다. 죄송합니다.😰');
     }
   };
 

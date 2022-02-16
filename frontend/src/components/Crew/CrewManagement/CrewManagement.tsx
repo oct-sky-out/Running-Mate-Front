@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Route, useHistory, RouteComponentProps } from 'react-router-dom';
-import Swal from 'sweetalert2';
 import PreviousPageButton from '../../../common/components/PreviousPageButton';
+import useSwalerts from '../../../common/hooks/useSwalerts';
 import CrewService from '../../../lib/api/crewService';
 import { useSelector } from '../../../modules';
 import { crewActions } from '../../../modules/crew';
@@ -26,7 +26,7 @@ const CrewManagement: React.FC<RouteComponentProps<MatchParam>> = ({
     crewId: state.crew.id,
     crewOpenChatLink: state.crew.openChat,
   }));
-
+  const { errorToast } = useSwalerts();
   useEffect(() => {
     if (crewId === 0)
       new CrewService()
@@ -34,16 +34,7 @@ const CrewManagement: React.FC<RouteComponentProps<MatchParam>> = ({
         .then((data) => dispatch(crewActions.setCrewDetail(data)))
         .catch((reason) => {
           console.error(reason);
-          Swal.fire({
-            toast: true,
-            icon: 'error',
-            title: '데이터 조회 실패',
-            position: 'top-end',
-            timer: 5000,
-            timerProgressBar: true,
-            showConfirmButton: false,
-            showCloseButton: true,
-          });
+          errorToast('데이터 조회 실패', '데이터 조회에 실패했습니다.😰');
         });
   }, []);
 

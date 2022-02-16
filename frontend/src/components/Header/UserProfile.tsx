@@ -3,10 +3,10 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import OutsideClickHandler from 'react-outside-click-handler';
 import { BiUser } from 'react-icons/bi';
-import Swal from 'sweetalert2';
 import { useSelector } from '../../modules';
 import { SignInActions } from '../../modules/signIn';
 import UserService from '../../lib/api/userService';
+import useSwalerts from '../../common/hooks/useSwalerts';
 
 const UserProfile = () => {
   //* react-router
@@ -22,6 +22,8 @@ const UserProfile = () => {
   //* useState
   const [isMyMenuOpen, setIsMyMenuOpen] = useState(false);
 
+  const { errorToast } = useSwalerts();
+
   //* Any Functions
   const moveMyPage = () => {
     history.push('/user/mypage');
@@ -32,17 +34,7 @@ const UserProfile = () => {
       await new UserService().logOut(token);
       dispatch(SignInActions.setInit());
     } catch {
-      Swal.fire({
-        toast: true,
-        title: '로그아웃 오류',
-        text: '죄송합니다. 로그아웃을 실패하였습니다.',
-        icon: 'error',
-        position: 'top-end',
-        timer: 5000,
-        timerProgressBar: true,
-        showConfirmButton: false,
-        showCloseButton: true,
-      });
+      errorToast('로그아웃 오류', '죄송합니다. 로그아웃을 실패하였습니다.😰');
     }
   };
 

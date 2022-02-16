@@ -137,10 +137,10 @@ class UserService implements IUserService {
     try {
       if (!token) throw Error('token is not find please check token');
 
-      const { data } = await axios.get<'ok' | '토큰 만료'>('/validate', {
+      const { data } = await axios.get<'ok' | '만료된 토큰'>('/validate', {
         headers: { 'x-auth-token': token },
       });
-      if (data === '토큰 만료')
+      if (data === '만료된 토큰')
         throw Error('token have been expired please check token');
       return {
         tokenState: true,

@@ -1,19 +1,13 @@
 import React, { useEffect } from 'react';
 import { RouteComponentProps, useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { Button } from '@nextui-org/react';
-import Swal from 'sweetalert2';
-import { BsPeopleFill } from 'react-icons/bs';
-import { GiPositionMarker } from 'react-icons/gi';
-import { v4 } from 'uuid';
 import { useSelector } from '../../../modules';
 import { crewActions } from '../../../modules/crew';
 import CrewService from '../../../lib/api/crewService';
-import useLocalStroeageData from '../../../common/hooks/useLocalStorageData';
-import CrewWidget from './CrewWidget';
 import DetailBaseBorder from '../../../common/components/DetailBaseBorder';
 import PreviousPageButton from '../../../common/components/PreviousPageButton';
 import NextPageButton from '../../../common/components/NextPageButton';
+import useSwalerts from '../../../common/hooks/useSwalerts';
 import LeaveCrewButton from './LeaveCrewButton';
 import CrewNormalInformation from './CrewNormalInformation';
 import CrewSignUpRequestButton from './CrewSignUpRequestButton';
@@ -44,7 +38,7 @@ const CrewDetail: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
     isCrewLeader: state.signIn.userData.crewLeader,
     userCrewName: state.signIn.userData.crewName,
   }));
-  const { getUserData } = useLocalStroeageData();
+  const { errorToast, successAlert, errorAlert } = useSwalerts();
 
   useEffect(() => {
     new CrewService()
@@ -57,43 +51,26 @@ const CrewDetail: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
         dispatch(crewActions.setCrewDetail(data));
       })
       .catch(() =>
-        Swal.fire({
-          toast: true,
-          icon: 'error',
-          title: '크루 상세 데이터 조회 실패',
-          position: 'top-end',
-          timer: 5000,
-          timerProgressBar: true,
-          showConfirmButton: false,
-          showCloseButton: true,
-        })
+        errorToast(
+          '크루상세 데이터 조회 실패',
+          '크루상세 데이터를 조회하는데 실패하였습니다. 죄송합니다.😰'
+        )
       );
   }, [match.params.id]);
 
   useEffect(() => {
     if (crewRequestFetch === 'Success') {
-      Swal.fire({
-        title: '요청 성공!',
-        text: '요청에 성공하였습니다. 크루장이 수락할 때 까지 기다려주세요.',
-        icon: 'success',
-        confirmButtonText: '확인',
-      });
+      successAlert(
+        '요청 성공!',
+        '요청에 성공하였습니다. 크루장이 수락할 때 까지 기다려주세요.😆'
+      );
       dispatch(crewActions.initCrewRequestFetch());
     }
     if (crewRequestFetch === 'Failure') {
-      Swal.fire({
-        title: '요청 실패',
-        text: '요청에 실패하였습니다. 죄송합니다.',
-        icon: 'error',
-        confirmButtonText: '확인',
-      });
+      errorAlert('요청 실패', '요청에 실패하였습니다. 죄송합니다.😰');
       dispatch(crewActions.initCrewRequestFetch());
     }
   }, [crewRequestFetch]);
-
-  useEffect(() => {
-    getUserData();
-  }, []);
 
   return (
     <DetailBaseBorder>

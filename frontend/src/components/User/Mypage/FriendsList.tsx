@@ -3,12 +3,12 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { v4 } from 'uuid';
 import { Button, Loading } from '@nextui-org/react';
-import Swal from 'sweetalert2';
 import { useSelector } from '../../../modules';
 import { friendActions } from '../../../modules/friend';
 import PeopleSearch from '../../../common/components/PeopleSearch';
 import FriendService from '../../../lib/api/friendService';
 import PeopleList from '../../../common/components/PeopleList';
+import useSwalerts from '../../../common/hooks/useSwalerts';
 
 const FriendsList = () => {
   const history = useHistory();
@@ -22,22 +22,17 @@ const FriendsList = () => {
   const [userFriends, setUserFriends] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
 
+  const { errorToast } = useSwalerts();
+
   const getUserFriends = async () => {
     try {
       const { friendList } = await new FriendService().getMyFriends(token);
       setUserFriends(friendList);
     } catch {
-      Swal.fire({
-        toast: true,
-        title: '친구 정보 불러오기 실패.',
-        text: '친구 정보를 불러오는데 실패하였습니다.',
-        icon: 'error',
-        position: 'top-end',
-        timer: 5000,
-        timerProgressBar: true,
-        showConfirmButton: false,
-        showCloseButton: true,
-      });
+      errorToast(
+        '친구 정보 불러오기 실패.',
+        '친구 정보를 불러오는데 실패하였습니다.'
+      );
     }
   };
 
@@ -66,16 +61,7 @@ const FriendsList = () => {
     if (requestFriendFetch === 'Success')
       dispatch(friendActions.initRequestFriendFetch());
     if (requestFriendFetch === 'Failure') {
-      Swal.fire({
-        toast: true,
-        icon: 'error',
-        title: '죄송합니다. 요청에 실패하였습니다.',
-        position: 'top-end',
-        timer: 5000,
-        timerProgressBar: true,
-        showConfirmButton: false,
-        showCloseButton: true,
-      });
+      errorToast('요청실패', '죄송합니다. 요청에 실패하였습니다.😰');
       dispatch(friendActions.initRequestFriendFetch());
     }
   }, [requestFriendFetch]);

@@ -2,11 +2,11 @@ import { Button, Loading } from '@nextui-org/react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { GiThreeFriends } from 'react-icons/gi';
-import Swal from 'sweetalert2';
 import { useSelector } from '../../../modules';
 import { friendActions } from '../../../modules/friend';
 import FriendService from '../../../lib/api/friendService';
 import { FriendRelations } from '../../../modules/types/Friend';
+import useSwalerts from '../../../common/hooks/useSwalerts';
 
 interface IProps {
   userNickName: string;
@@ -24,6 +24,7 @@ const FriendButton: React.FC<IProps> = ({ userNickName }) => {
   const [friednRelationResult, setFriednRelationResult] = useState<
     FriendRelations | 'LOADING'
   >('LOADING');
+  const { errorToast } = useSwalerts();
 
   // * useCallback
   const checkFriendRelation = useCallback(async () => {
@@ -33,16 +34,7 @@ const FriendButton: React.FC<IProps> = ({ userNickName }) => {
       setFriednRelationResult(friendRelation);
     } catch (err) {
       console.error(err);
-      Swal.fire({
-        toast: true,
-        icon: 'error',
-        title: '사용자 정보 조회 실패.',
-        position: 'top-end',
-        timer: 5000,
-        timerProgressBar: true,
-        showConfirmButton: false,
-        showCloseButton: true,
-      });
+      errorToast('사용자 정보 오류', '사용자 정보 조회를 실패했습니다.😰');
     }
   }, [userNickName]);
 
@@ -139,16 +131,7 @@ const FriendButton: React.FC<IProps> = ({ userNickName }) => {
     if (friendFetchStatus === 'Success')
       dispatch(friendActions.initRequestFriendFetch());
     if (friendFetchStatus === 'Failure') {
-      Swal.fire({
-        toast: true,
-        icon: 'error',
-        title: '죄송합니다. 요청에 실패하였습니다.',
-        position: 'top-end',
-        timer: 5000,
-        timerProgressBar: true,
-        showConfirmButton: false,
-        showCloseButton: true,
-      });
+      errorToast('요청실패', '죄송합니다. 요청에 실패하였습니다.😰');
       dispatch(friendActions.initRequestFriendFetch());
     }
   }, [friendFetchStatus]);

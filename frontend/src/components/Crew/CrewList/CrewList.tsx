@@ -2,16 +2,17 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { v4 } from 'uuid';
 import { Loading } from '@nextui-org/react';
-import Swal from 'sweetalert2';
 import CrewService from '../../../lib/api/crewService';
 import CrewImageSlider from '../CrewImageSlider';
 import CrewCard from '../CrewCard';
 import { ICrewsData } from '../../../modules/types/crewTypes';
 import CrewMainBar from './CrewMainBar';
+import useSwalerts from '../../../common/hooks/useSwalerts';
 
 const CrewList = () => {
-  //* customHook (무한스크롤 hook)
+  //* customHook
   const [inViewRef, inView] = useInView();
+  const { errorToast } = useSwalerts();
 
   //* useState
   const [offset, setOffset] = useState(0);
@@ -36,16 +37,7 @@ const CrewList = () => {
         ]);
       }
     } catch (err) {
-      Swal.fire({
-        toast: true,
-        icon: 'error',
-        title: '데이터 조회 실패',
-        position: 'top-end',
-        timer: 5000,
-        timerProgressBar: true,
-        showConfirmButton: false,
-        showCloseButton: true,
-      });
+      errorToast('데이터 조회 실패', '데이터 조회에 실패하였습니다.😰');
     } finally {
       setLoading(false);
     }

@@ -3,27 +3,19 @@ import { useDispatch } from 'react-redux';
 import { RouteComponentProps, useHistory } from 'react-router-dom';
 import { Input, Button } from '@nextui-org/react';
 import { FormElement } from '@nextui-org/react/esm/input/input-props';
-// Quill
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-// DatePicker
 import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-
-import Swal from 'sweetalert2';
-
 import { noticeActions } from '../../../modules/notice';
 import { useSelector } from '../../../modules';
-
 import SelecRegion from '../../../common/components/SelcetRegion';
 import { AddressType } from '../../../modules/types/notice';
 import ImageButtons from '../../../common/components/ImageButtons';
-
-// API
 import NoticeService from '../../../lib/api/noticeService';
 import useImageUploader from '../../../common/hooks/useImageUploader';
 import useImageDelete from '../../../common/hooks/useImageDelete';
-// import { ImageUploader, ImageDelete } from '../../../lib/api/imageUploader';
+import useSwalerts from '../../../common/hooks/useSwalerts';
+import 'react-datepicker/dist/react-datepicker.css';
 
 type NoticeActionType = 'setTitle' | 'setContent' | 'setOpenChat';
 
@@ -78,6 +70,7 @@ const EditNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
   //* custom hooks
   const { progress, imageUploader } = useImageUploader();
   const imageDelete = useImageDelete();
+  const { customAlert, errorAlert, successAlert } = useSwalerts();
 
   //* event version
   const setPreviewImage = (file: File) => {
@@ -101,13 +94,10 @@ const EditNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
       setImageUploadLoading(false);
     } catch (error) {
       setImageUploadLoading(false);
-      Swal.fire({
-        title: '이미지 업로드 실패',
-        text: '이미지 업로드에 실패하였습니다. 다시 시도해주세요.',
-        icon: 'error',
-        confirmButtonText: '확인',
-      });
-      console.error(error);
+      errorAlert(
+        '이미지 업로드 실패',
+        '이미지 업로드에 실패하였습니다. 다시 시도해주세요.😰'
+      );
     }
   };
   const deleteImageFile = () => {
@@ -125,13 +115,10 @@ const EditNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
       setImageUploadLoading(false);
     } catch (error) {
       setImageUploadLoading(false);
-      Swal.fire({
-        title: '이미지 삭제 실패',
-        text: '이미지 삭제에 실패하였습니다. 다시 시도해주세요.',
-        icon: 'error',
-        confirmButtonText: '확인',
-      });
-      console.error(error);
+      errorAlert(
+        '이미지 삭제 실패',
+        '이미지 삭제에 실패하였습니다. 다시 시도해주세요.😰'
+      );
     }
   };
 
@@ -157,30 +144,23 @@ const EditNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
       setImageUploadLoading(false);
     } catch (error) {
       setImageUploadLoading(false);
-      Swal.fire({
-        title: '이미지 변경 실패',
-        text: '이미지 변경에 실패하였습니다. 다시 시도해주세요.',
-        icon: 'error',
-        confirmButtonText: '확인',
-      });
-      console.error(error);
+      errorAlert(
+        '이미지 변경 실패',
+        '이미지 변경에 실패하였습니다. 다시 시도해주세요.😰'
+      );
     }
   };
 
   const onChangeInputState = (
     e: React.ChangeEvent<FormElement>,
     actionName: NoticeActionType
-  ) => {
-    dispatch(noticeActions[actionName](e.currentTarget.value));
-  };
+  ) => dispatch(noticeActions[actionName](e.currentTarget.value));
 
-  const onChangeSelectState = (region: AddressType) => {
+  const onChangeSelectState = (region: AddressType) =>
     dispatch(noticeActions.setAddress(region));
-  };
 
-  const onChangeDatePickderState = (date: string) => {
+  const onChangeDatePickderState = (date: string) =>
     dispatch(noticeActions.setMeetingTime(date));
-  };
 
   const editNotice = async () => {
     try {
@@ -193,20 +173,11 @@ const EditNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
         image,
         author,
       });
-      Swal.fire(
-        '수정 성공',
-        '게시물을 성공적으로 변경하였습니다.',
-        'success'
-      ).then(() => {
-        history.push(`/boards/run/${id}`);
-      });
+      await successAlert('수정 성공', '게시물을 성공적으로 변경하였습니다.');
+      history.push(`/boards/run/${id}`);
     } catch (error) {
-      Swal.fire('수정 실패', '게시물을 변경을 실패하였습니다.', 'error').then(
-        () => {
-          history.push(`/boards/run/${id}`);
-        }
-      );
-      console.log(error);
+      await errorAlert('수정 실패', '게시물을 변경을 실패하였습니다.😰');
+      history.push(`/boards/run/${id}`);
     }
   };
 
@@ -217,8 +188,10 @@ const EditNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
       [address.si, '모든 주소를 선택해주세요'],
       [title, '제목을 작성해주세요'],
     ].forEach((str) => {
-      if (!str[0]) {
-        Swal.fire(`${str[1]}`).then(() => {
+      const requireData = str[0];
+      const alertText = str[1];
+      if (!requireData) {
+        customAlert({ title: `${alertText}` }).then(() => {
           return false;
         });
       }

@@ -1,31 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { withRouter, useHistory } from 'react-router-dom';
-// Next UI
 import { Input, Button } from '@nextui-org/react';
 import { FormElement } from '@nextui-org/react/esm/input/input-props';
-// Quill
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-// DatePicker
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-// Sweetalert
-import Swal from 'sweetalert2';
-// Action
 import { useSelector } from '../../../modules';
 import { CreateNoticeActions } from '../../../modules/createNotice';
-// Component
 import SelecRegion from '../../../common/components/SelcetRegion';
 import ImageButtons from '../../../common/components/ImageButtons';
-// Type
-import { AddressType } from '../../../modules/types/notice';
-
-// API
 import NoticeService from '../../../lib/api/noticeService';
 import useImageUploader from '../../../common/hooks/useImageUploader';
 import useImageDelete from '../../../common/hooks/useImageDelete';
-// import { ImageUploader, ImageDelete } from '../../../lib/api/imageUploader';
+import useSwalerts from '../../../common/hooks/useSwalerts';
+import { AddressType } from '../../../modules/types/notice';
 
 type CreacteNoticeActionType = 'setTitle' | 'setContent' | 'setOpenChat';
 
@@ -73,6 +63,7 @@ const CreateNotice = () => {
   //* custom Hook
   const { progress, imageUploader } = useImageUploader();
   const imageDelete = useImageDelete();
+  const { customAlert, errorAlert, successAlert } = useSwalerts();
 
   const setPreviewImage = (file: File) => {
     const reader = new FileReader();
@@ -95,12 +86,10 @@ const CreateNotice = () => {
       setImageUploadLoading(false);
     } catch (error) {
       setImageUploadLoading(false);
-      Swal.fire({
-        title: '이미지 업로드 실패',
-        text: '이미지 업로드에 실패하였습니다. 다시 시도해주세요.',
-        icon: 'error',
-        confirmButtonText: '확인',
-      });
+      errorAlert(
+        '이미지 업로드 실패',
+        '이미지 업로드에 실패하였습니다. 다시 시도해주세요.😰'
+      );
       console.error(error);
     }
   };
@@ -119,12 +108,10 @@ const CreateNotice = () => {
       setImageUploadLoading(false);
     } catch (error) {
       setImageUploadLoading(false);
-      Swal.fire({
-        title: '이미지 삭제 실패',
-        text: '이미지 삭제에 실패하였습니다. 다시 시도해주세요.',
-        icon: 'error',
-        confirmButtonText: '확인',
-      });
+      errorAlert(
+        '이미지 삭제 실패',
+        '이미지 삭제에 실패하였습니다. 다시 시도해주세요.😰'
+      );
       console.error(error);
     }
   };
@@ -151,12 +138,10 @@ const CreateNotice = () => {
       setImageUploadLoading(false);
     } catch (error) {
       setImageUploadLoading(false);
-      Swal.fire({
-        title: '이미지 변경 실패',
-        text: '이미지 변경에 실패하였습니다. 다시 시도해주세요.',
-        icon: 'error',
-        confirmButtonText: '확인',
-      });
+      errorAlert(
+        '이미지 변경 실패',
+        '이미지 변경에 실패하였습니다. 다시 시도해주세요.😰'
+      );
       console.error(error);
     }
   };
@@ -187,21 +172,19 @@ const CreateNotice = () => {
         image,
         author,
       });
-      await Swal.fire({
-        position: 'top-end',
-        icon: 'success',
-        title: 'Your work has been saved',
-        showConfirmButton: false,
-        timer: 1500,
-      });
+      await successAlert(
+        '게시글이 저장',
+        '게시글이 저장되었습니다.',
+        undefined,
+        false,
+        1500
+      );
       history.push(`/boards/run/${boardId}`);
     } catch (error) {
-      await Swal.fire({
-        title: '게시물 생성 실패',
-        text: '게시물 생성에 실패하였습니다. 죄송합니다.',
-        icon: 'error',
-        confirmButtonText: '확인',
-      });
+      await errorAlert(
+        '게시물 생성 실패',
+        '게시물 생성에 실패하였습니다. 죄송합니다.😰'
+      );
       history.push('/');
     }
   };
@@ -214,8 +197,10 @@ const CreateNotice = () => {
       [title, '제목을 작성해주세요'],
       [imageUploadLoading, '이미지가 저장 중입니다. 조금만 기다려주세요 :)'],
     ].forEach((str) => {
-      if (!str[0]) {
-        Swal.fire(`${str[1]}`).then(() => {
+      const requireData = str[0];
+      const alertText = str[1];
+      if (!requireData) {
+        customAlert({ title: `${alertText}` }).then(() => {
           return false;
         });
       }

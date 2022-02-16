@@ -3,11 +3,11 @@ import { useCallback, useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { Button, Loading } from '@nextui-org/react';
 import { v4 } from 'uuid';
-import Swal from 'sweetalert2';
 import { useSelector } from '../../../modules';
 import NoticeService from '../../../lib/api/noticeService';
 import { GetMyNoticeType } from '../../../modules/types/notice';
 import dateParser from '../../../common/functions/dateParser';
+import useSwalerts from '../../../common/hooks/useSwalerts';
 
 const MyBoards = () => {
   //* react-router-dom
@@ -21,6 +21,7 @@ const MyBoards = () => {
 
   //* extend hook
   const [viewRef, inView] = useInView();
+  const { successToast, errorToast } = useSwalerts();
 
   //* any variables
   const LIMIT = 20;
@@ -43,16 +44,10 @@ const MyBoards = () => {
         setMyBoards((previousMyBoards) => [...previousMyBoards, ...boards]);
       }
     } catch {
-      await Swal.fire({
-        toast: true,
-        icon: 'error',
-        title: '내 작성글 데이터 조회 실패',
-        position: 'top-end',
-        timer: 5000,
-        timerProgressBar: true,
-        showConfirmButton: false,
-        showCloseButton: true,
-      });
+      await errorToast(
+        '작성글 조회 실패',
+        '내 작성글 데이터를 조회 실패하였습니다.'
+      );
     } finally {
       setLoading(false);
     }
@@ -85,29 +80,9 @@ const MyBoards = () => {
     try {
       await deleteNotice(boardId, token);
       setMyBoards((boards) => boards.filter((board) => board.id !== boardId));
-      await Swal.fire({
-        toast: true,
-        icon: 'error',
-        title: '게시글 삭제 성공!',
-        text: '게시글 삭제에 성공하였습니다.',
-        position: 'top-end',
-        timer: 5000,
-        timerProgressBar: true,
-        showConfirmButton: false,
-        showCloseButton: true,
-      });
+      await successToast('게시글 삭제 성공!', '게시글 삭제에 성공하였습니다.');
     } catch {
-      await Swal.fire({
-        toast: true,
-        icon: 'error',
-        title: '게시물 삭제 실패',
-        text: '게시글 삭제에 실패하였습니다.',
-        position: 'top-end',
-        timer: 5000,
-        timerProgressBar: true,
-        showConfirmButton: false,
-        showCloseButton: true,
-      });
+      await errorToast('게시물 삭제 실패', '게시글 삭제에 실패하였습니다.😰');
     }
   };
 

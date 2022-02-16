@@ -4,7 +4,6 @@ import { v4 } from 'uuid';
 import { BsPeopleFill } from 'react-icons/bs';
 import { GiPositionMarker } from 'react-icons/gi';
 import { BiUser } from 'react-icons/bi';
-import Swal from 'sweetalert2';
 import { useSelector } from '../../../modules';
 import UserService from '../../../lib/api/userService';
 import CrewWidget from '../../Crew/CrewDetail/CrewWidget';
@@ -13,6 +12,7 @@ import PreviousPageButton from '../../../common/components/PreviousPageButton';
 // test data
 import userPageMock from '../../../excuteData/UserPageMock/UserPageMock';
 import FriendButton from './FriendButton';
+import useSwalerts from '../../../common/hooks/useSwalerts';
 
 interface MatchParam {
   id: string;
@@ -34,6 +34,8 @@ const UserDetail: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
     crewName: { icon: BsPeopleFill, title: '소속 크루', description: '' },
     address: { icon: GiPositionMarker, title: '러닝 지역', description: '' },
   });
+
+  const { errorToast } = useSwalerts();
 
   //* useEffects
   useEffect(() => {
@@ -61,18 +63,8 @@ const UserDetail: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
           });
         }
       })
-      .catch((reason) => {
-        console.error(reason);
-        Swal.fire({
-          toast: true,
-          icon: 'error',
-          title: '사용자 정보 조회 실패.',
-          position: 'top-end',
-          timer: 5000,
-          timerProgressBar: true,
-          showConfirmButton: false,
-          showCloseButton: true,
-        });
+      .catch(() => {
+        errorToast('사용자 정보 오류', '사용자 정보 조회를 실패했습니다.😰');
       });
   }, [token, location.pathname]);
 
