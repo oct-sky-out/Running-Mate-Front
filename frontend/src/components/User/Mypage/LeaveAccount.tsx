@@ -25,8 +25,7 @@ const LeaveAccount = () => {
         '게스트 페이지로 돌아가기'
       );
       history.push('/guest');
-    } catch (err: any) {
-      console.error(err);
+    } catch {
       errorAlert('삭제 실패', '삭제에 실패하였습니다. 죄송합니다.😰');
     }
   };

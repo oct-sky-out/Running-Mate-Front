@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import OutsideClickHandler from 'react-outside-click-handler';
 import { BiUser } from 'react-icons/bi';
 import { useSelector } from '../../modules';
 import { SignInActions } from '../../modules/signIn';
-import UserService from '../../lib/api/userService';
 import useSwalerts from '../../common/hooks/useSwalerts';
 
 const UserProfile = () => {

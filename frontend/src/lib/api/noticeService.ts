@@ -4,7 +4,6 @@ import {
   GetNoticesType,
   GetMyNoticeType,
 } from '../../modules/types/notice';
-import BoardData from '../../excuteData/BoardMock/BoardMock';
 
 type ViewNoticesSetUpType = {
   dou: string;

@@ -38,8 +38,7 @@ const PeopleManagement = () => {
         );
         successAlert(message, '추방에 성공하였습니다.');
       })
-      .catch((reason) => {
-        console.error(reason);
+      .catch(() => {
         errorAlert('추방 실패', '추방에 실패하였습니다. 죄송합니다.😰');
       });
   };

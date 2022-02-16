@@ -48,7 +48,6 @@ const CreateCrewButton: React.FC<IProps> = ({
   }, [questionOrder]);
 
   const moveNextOrComplete = useCallback(() => {
-    console.log(questionOrder);
     if (questionOrder < QUESTION_COUNT)
       setQuestionOrder((previousQuestionOrder) => previousQuestionOrder + 1);
     if (questionOrder === QUESTION_COUNT - 1) {

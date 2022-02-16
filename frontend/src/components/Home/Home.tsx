@@ -62,9 +62,8 @@ const Home = () => {
         } else {
           setInfiniteFetchStop(true);
         }
-      } catch (error) {
+      } catch {
         setInfiniteFetchStop(true);
-        console.error(error);
       }
     },
     []
@@ -80,9 +79,8 @@ const Home = () => {
         } else {
           setInfiniteFetchStop(true);
         }
-      } catch (error) {
+      } catch {
         setInfiniteFetchStop(true);
-        console.error(error);
       }
     },
     []
@@ -106,7 +104,6 @@ const Home = () => {
 
   useEffect(() => {
     if (!infiniteFetchStop && InView && !isLoading) {
-      console.log('api 실행'); // TEST 콘솔 배포시에는 지우기
       fetchAllRegionNoticeDataAndUpdate();
     }
   }, [infiniteFetchStop, InView, isLoading]);

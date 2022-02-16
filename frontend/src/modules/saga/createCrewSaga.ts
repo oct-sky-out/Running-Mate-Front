@@ -13,8 +13,7 @@ export const refreshUserDataAndRefreshLocalStorage = async (
     const userData = await new UserService().getUser(userNickName, token);
     localStorage.setItem('userData', JSON.stringify(userData));
     return userData;
-  } catch (err: Error | any) {
-    console.error(err);
+  } catch {
     return { result: false };
   }
 };
