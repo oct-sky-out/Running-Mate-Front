@@ -133,6 +133,18 @@ const signInSliceReducer = createSlice({
       ...state,
       signInFetchStatus: 'Error',
     }),
+    logOut: (state, _action: PayloadAction<string>) => ({
+      ...state,
+      signInFetchStatus: 'Fetch',
+    }),
+    logOutSuccess: (state, _action: PayloadAction<void>) => ({
+      ...state,
+      signInFetchStatus: 'LogOut',
+    }),
+    logOutFailure: (state, _action: PayloadAction<void>) => ({
+      ...state,
+      signInFetchStatus: 'LogOutError',
+    }),
   },
 });
 
