@@ -16,7 +16,6 @@ import useImageUploader from '../../../common/hooks/useImageUploader';
 import useImageDelete from '../../../common/hooks/useImageDelete';
 import useSwalerts from '../../../common/hooks/useSwalerts';
 import 'react-datepicker/dist/react-datepicker.css';
-// import { ImageUploader, ImageDelete } from '../../../lib/api/imageUploader';
 
 type NoticeActionType = 'setTitle' | 'setContent' | 'setOpenChat';
 
@@ -97,7 +96,7 @@ const EditNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
       setImageUploadLoading(false);
       errorAlert(
         '이미지 업로드 실패',
-        '이미지 업로드에 실패하였습니다. 다시 시도해주세요.'
+        '이미지 업로드에 실패하였습니다. 다시 시도해주세요.😰'
       );
     }
   };
@@ -118,7 +117,7 @@ const EditNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
       setImageUploadLoading(false);
       errorAlert(
         '이미지 삭제 실패',
-        '이미지 삭제에 실패하였습니다. 다시 시도해주세요.'
+        '이미지 삭제에 실패하였습니다. 다시 시도해주세요.😰'
       );
     }
   };
@@ -147,7 +146,7 @@ const EditNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
       setImageUploadLoading(false);
       errorAlert(
         '이미지 변경 실패',
-        '이미지 변경에 실패하였습니다. 다시 시도해주세요.'
+        '이미지 변경에 실패하였습니다. 다시 시도해주세요.😰'
       );
     }
   };
@@ -177,7 +176,7 @@ const EditNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
       await successAlert('수정 성공', '게시물을 성공적으로 변경하였습니다.');
       history.push(`/boards/run/${id}`);
     } catch (error) {
-      await errorAlert('수정 실패', '게시물을 변경을 실패하였습니다.');
+      await errorAlert('수정 실패', '게시물을 변경을 실패하였습니다.😰');
       history.push(`/boards/run/${id}`);
     }
   };

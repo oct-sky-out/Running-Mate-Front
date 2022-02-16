@@ -36,7 +36,7 @@ const ListComments: React.FC<IProps> = ({ boardId }) => {
       .getComments(token, boardId)
       .then((comments) => dispatch(noticeActions.setComments(comments)))
       .catch(() => {
-        errorToast('댓글 불러오기 실패', '댓글을 불러오는데 실패하였습니다.');
+        errorToast('댓글 불러오기 실패', '댓글을 불러오는데 실패하였습니다.😰');
       });
   }, [boardId]);
 

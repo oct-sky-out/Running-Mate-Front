@@ -49,7 +49,7 @@ const CommentEdit: React.FC<IProps> = ({
     } catch {
       await errorToast(
         '댓글 변경실패',
-        '죄송합니다. 댓글 변경에 실패하였습니다.'
+        '죄송합니다. 댓글 변경에 실패하였습니다.😰'
       );
     }
   };

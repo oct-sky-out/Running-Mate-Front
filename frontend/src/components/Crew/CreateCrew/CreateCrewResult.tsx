@@ -36,7 +36,10 @@ const CreateCrewResult: React.FC<IProps> = ({ questionOrder }) => {
     if (createCrewFetchStatus === 'Sucecss')
       setCreateResult('🎉 축하합니다. 새로운 크루를 만들었습니다!');
     if (createCrewFetchStatus === 'Failure') {
-      errorToast('크루 생성 실패', '오류로 인하여 크루 생성에 실패하였습니다.');
+      errorToast(
+        '크루 생성 실패',
+        '오류로 인하여 크루 생성에 실패하였습니다.😰'
+      );
       setCreateResult('크루 생성에 실패하였습니다.');
     }
     if (

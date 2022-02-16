@@ -88,7 +88,7 @@ const CreateNotice = () => {
       setImageUploadLoading(false);
       errorAlert(
         '이미지 업로드 실패',
-        '이미지 업로드에 실패하였습니다. 다시 시도해주세요.'
+        '이미지 업로드에 실패하였습니다. 다시 시도해주세요.😰'
       );
       console.error(error);
     }
@@ -110,7 +110,7 @@ const CreateNotice = () => {
       setImageUploadLoading(false);
       errorAlert(
         '이미지 삭제 실패',
-        '이미지 삭제에 실패하였습니다. 다시 시도해주세요.'
+        '이미지 삭제에 실패하였습니다. 다시 시도해주세요.😰'
       );
       console.error(error);
     }
@@ -140,7 +140,7 @@ const CreateNotice = () => {
       setImageUploadLoading(false);
       errorAlert(
         '이미지 변경 실패',
-        '이미지 변경에 실패하였습니다. 다시 시도해주세요.'
+        '이미지 변경에 실패하였습니다. 다시 시도해주세요.😰'
       );
       console.error(error);
     }
@@ -183,7 +183,7 @@ const CreateNotice = () => {
     } catch (error) {
       await errorAlert(
         '게시물 생성 실패',
-        '게시물 생성에 실패하였습니다. 죄송합니다.'
+        '게시물 생성에 실패하였습니다. 죄송합니다.😰'
       );
       history.push('/');
     }

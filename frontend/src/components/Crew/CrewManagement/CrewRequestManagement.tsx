@@ -37,7 +37,7 @@ const CrewRequestManagement = () => {
       })
       .catch((reason) => {
         console.error(reason);
-        errorToast('추방 실패', '추방을 실패하였습니다.');
+        errorToast('추방 실패', '추방을 실패하였습니다.😰');
       });
   };
 
@@ -57,7 +57,7 @@ const CrewRequestManagement = () => {
       dispatch(crewActions.initCrewRequestFetch());
     }
     if (crewFetchStatus === 'Failure') {
-      errorToast('크루원 추가 실패', '크루원 추가를 실패했습니다.');
+      errorToast('크루원 추가 실패', '크루원 추가를 실패했습니다.😰');
       dispatch(crewActions.initCrewRequestFetch());
     }
   }, [crewFetchStatus]);

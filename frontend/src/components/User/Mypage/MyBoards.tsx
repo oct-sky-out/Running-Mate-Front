@@ -82,7 +82,7 @@ const MyBoards = () => {
       setMyBoards((boards) => boards.filter((board) => board.id !== boardId));
       await successToast('게시글 삭제 성공!', '게시글 삭제에 성공하였습니다.');
     } catch {
-      await errorToast('게시물 삭제 실패', '게시글 삭제에 실패하였습니다.');
+      await errorToast('게시물 삭제 실패', '게시글 삭제에 실패하였습니다.😰');
     }
   };
 

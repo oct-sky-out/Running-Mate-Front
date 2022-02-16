@@ -7,7 +7,6 @@ import PreviousPageButton from '../../../common/components/PreviousPageButton';
 import useSwalerts from '../../../common/hooks/useSwalerts';
 import { useSelector } from '../../../modules/index';
 import NoticeService from '../../../lib/api/noticeService';
-import useValidToken from '../../../common/hooks/useValidToken';
 import ListComment from './ListComments/ListComments';
 import WriteComment from './WriteComment/WriteComment';
 import ViewNoticeHeader from './ViewNoticeHeader';
@@ -26,8 +25,7 @@ const ViewNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
   //* ajax Object
   const noticeService = new NoticeService();
   //* custom hook
-  const { checkTokenAvailable } = useValidToken();
-  const { errorToast, informationAlert } = useSwalerts();
+  const { errorToast } = useSwalerts();
   //* any functions
   const getBoardDate = async () => {
     try {
@@ -36,21 +34,13 @@ const ViewNotice: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
     } catch {
       errorToast(
         '게시글 불러오기 실패.',
-        '게시글을 불러오는데 실패하였습니다.'
+        '게시글을 불러오는데 실패하였습니다.😰'
       );
     }
   };
-  const unavailableTokenCallback = async () => {
-    await informationAlert(
-      '로그인이 필요합니다.',
-      '로그인 창으로 이동하시겠습니까?',
-      '이동'
-    );
-    history.push('/guest');
-  };
   //* useEffect
   useEffect(() => {
-    checkTokenAvailable(token, getBoardDate, unavailableTokenCallback);
+    getBoardDate();
   }, [match.params.runId]);
 
   return (

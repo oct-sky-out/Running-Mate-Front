@@ -37,7 +37,7 @@ const CrewList = () => {
         ]);
       }
     } catch (err) {
-      errorToast('데이터 조회 실패', '데이터 조회에 실패하였습니다.');
+      errorToast('데이터 조회 실패', '데이터 조회에 실패하였습니다.😰');
     } finally {
       setLoading(false);
     }

@@ -40,7 +40,7 @@ const PeopleManagement = () => {
       })
       .catch((reason) => {
         console.error(reason);
-        errorAlert('추방 실패', '추방에 실패하였습니다. 죄송합니다.');
+        errorAlert('추방 실패', '추방에 실패하였습니다. 죄송합니다.😰');
       });
   };
 
@@ -63,7 +63,7 @@ const PeopleManagement = () => {
       );
     }
     if (crewFetchStatus === 'Failure') {
-      errorAlert('위임 실패', '위임에 실패하였습니다. 죄송합니다.');
+      errorAlert('위임 실패', '위임에 실패하였습니다. 죄송합니다.😰');
       dispatch(crewActions.initCrewRequestFetch());
     }
   }, [crewFetchStatus]);

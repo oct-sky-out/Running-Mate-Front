@@ -27,7 +27,10 @@ const LeaveCrewButton = () => {
       dispatch(crewActions.initCrewRequestFetch());
     }
     if (crewFetchStatus === 'Failure') {
-      errorToast('크루 탈퇴 실패.', '죄송합니다. 크루 탈퇴에 실패하였습니다.');
+      errorToast(
+        '크루 탈퇴 실패.',
+        '죄송합니다. 크루 탈퇴에 실패하였습니다.😰'
+      );
       dispatch(crewActions.initCrewRequestFetch());
     }
   }, [crewFetchStatus]);

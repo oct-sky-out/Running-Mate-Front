@@ -48,7 +48,7 @@ const WriteComment: React.FC<IProps> = ({ boardId }) => {
       setComment('');
       await successToast('댓글등록 성공.', '댓글등록에 성공하였습니다.');
     } catch {
-      errorToast('댓글등록 실패.', '댓글등록에 실패하였습니다.');
+      errorToast('댓글등록 실패.', '댓글등록에 실패하였습니다.😰');
     }
   };
 

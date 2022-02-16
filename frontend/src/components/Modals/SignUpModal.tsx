@@ -27,11 +27,12 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
       });
     }
     if (fetchState === 'Error') {
-      errorAlert('회원가입 실패', '죄송합니다 회원가입에 실패하였습니다.').then(
-        () => {
-          dispatch(SignUpActions.setSignUpState());
-        }
-      );
+      errorAlert(
+        '회원가입 실패',
+        '죄송합니다 회원가입에 실패하였습니다.😰'
+      ).then(() => {
+        dispatch(SignUpActions.setSignUpState());
+      });
     }
   }, [fetchState]);
 

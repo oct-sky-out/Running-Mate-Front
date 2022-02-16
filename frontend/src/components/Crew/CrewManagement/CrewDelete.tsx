@@ -40,7 +40,7 @@ const CrewDelete = () => {
       dispatch(crewActions.initCrewRequestFetch());
     }
     if (deleteFetchState === 'Failure') {
-      errorAlert('삭제 실패', '삭제에 실패하였습니다. 죄송합니다.');
+      errorAlert('삭제 실패', '삭제에 실패하였습니다. 죄송합니다.😰');
       dispatch(crewActions.initCrewRequestFetch());
     }
   }, [deleteFetchState]);

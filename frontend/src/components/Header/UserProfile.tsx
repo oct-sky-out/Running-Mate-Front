@@ -34,7 +34,7 @@ const UserProfile = () => {
       await new UserService().logOut(token);
       dispatch(SignInActions.setInit());
     } catch {
-      errorToast('로그아웃 오류', '죄송합니다. 로그아웃을 실패하였습니다.');
+      errorToast('로그아웃 오류', '죄송합니다. 로그아웃을 실패하였습니다.😰');
     }
   };
 

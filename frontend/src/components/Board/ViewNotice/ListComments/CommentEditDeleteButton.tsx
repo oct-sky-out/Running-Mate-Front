@@ -37,7 +37,7 @@ const CommentEditDeleteButton: React.FC<IProps> = ({
     } catch {
       await errorToast(
         '댓글 삭제 실패',
-        '죄송합니다. 댓글 삭제에 실패하였습니다.'
+        '죄송합니다. 댓글 삭제에 실패하였습니다.😰'
       );
     }
   };

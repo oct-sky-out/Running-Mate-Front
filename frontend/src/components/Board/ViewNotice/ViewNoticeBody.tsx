@@ -57,7 +57,7 @@ const ViewNoticeBody: React.FC<IProps> = ({ boardId }) => {
     if (noticeFetchStatus === 'Failure') {
       errorToast(
         '게시물 마감상태 변경 실패',
-        '게시물 마감상태 변경에 실패하였습니다. 다시 시도해주세요.'
+        '게시물 마감상태 변경에 실패하였습니다. 다시 시도해주세요.😰'
       ).then(() => dispatch(noticeActions.setInitNoticeFetchStatus()));
     }
   }, [noticeFetchStatus]);

@@ -64,7 +64,7 @@ const UserDetail: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
         }
       })
       .catch(() => {
-        errorToast('사용자 정보 오류', '사용자 정보 조회를 실패했습니다..');
+        errorToast('사용자 정보 오류', '사용자 정보 조회를 실패했습니다.😰');
       });
   }, [token, location.pathname]);
 

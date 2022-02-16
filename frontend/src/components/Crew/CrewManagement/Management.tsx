@@ -29,7 +29,7 @@ const Management = () => {
       );
       history.push(`/crewList/${newCrewName}`);
     } catch (err) {
-      errorAlert('정보 변경 실패', '정보 변경에 실패하였습니다.');
+      errorAlert('정보 변경 실패', '정보 변경에 실패하였습니다.😰');
     }
   };
 

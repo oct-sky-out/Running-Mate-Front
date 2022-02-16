@@ -61,7 +61,7 @@ const FriendsList = () => {
     if (requestFriendFetch === 'Success')
       dispatch(friendActions.initRequestFriendFetch());
     if (requestFriendFetch === 'Failure') {
-      errorToast('요청실패', '죄송합니다. 요청에 실패하였습니다.');
+      errorToast('요청실패', '죄송합니다. 요청에 실패하였습니다.😰');
       dispatch(friendActions.initRequestFriendFetch());
     }
   }, [requestFriendFetch]);
