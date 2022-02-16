@@ -5,15 +5,15 @@ const useSwalerts = () => {
     title: string,
     text: string,
     confirmButtonText: string = '확인',
-    showConfirmButton?: boolean,
+    showConfirmButton: boolean = true,
     timer?: number
   ) =>
     Swal.fire({
       title,
       text,
-      showConfirmButton,
-      timer,
       confirmButtonText,
+      timer,
+      showConfirmButton,
       icon: 'success',
       position: 'center',
     });
@@ -39,7 +39,7 @@ const useSwalerts = () => {
     title: string,
     text: string,
     confirmButtonText: string = '확인',
-    showConfirmButton?: boolean,
+    showConfirmButton: boolean = true,
     timer?: number
   ) =>
     Swal.fire({

@@ -2,7 +2,10 @@ import { useState } from 'react';
 import S3 from 'aws-sdk/clients/s3';
 import { v4 } from 'uuid';
 
-const useImageUploader = () => {
+const useImageUploader: () => [
+  number,
+  (file: File, folderName?: string | null) => any
+] = () => {
   const [progress, setProgress] = useState(0);
   const imageUploader = (file: File, folderName: string | null = null) => {
     try {
@@ -31,7 +34,7 @@ const useImageUploader = () => {
     }
   };
 
-  return { progress, imageUploader };
+  return [progress, imageUploader];
 };
 
 export default useImageUploader;

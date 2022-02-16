@@ -98,7 +98,7 @@ const ViewNoticeBody: React.FC<IProps> = ({ boardId }) => {
             className="text-white w-28 h-10 md:w-32 md:w-25 rounded-xl hover:opacity-80 transition ease-in-out delay-100 ml-4 mb-2 outline-none bg-indigo-400 cursor-pointer"
             onClick={setNoticeClosed}
           >
-            {closed ? '공지 마감' : '마감 취소'}
+            {closed ? '마감 취소' : '공지 마감'}
           </button>
         </div>
       </div>

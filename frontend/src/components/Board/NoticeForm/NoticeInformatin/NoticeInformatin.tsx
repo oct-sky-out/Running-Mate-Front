@@ -1,0 +1,30 @@
+import NoticeEndTime from './NoticeEndTime';
+import NoticeImage from './NoticeImage';
+import NoticeOpenChat from './NoticeOpenChat';
+import NoticeRegion from './NoticeRegion';
+import { AddressType } from '../../../../modules/types/notice';
+
+interface IProps {
+  formType: 'edit' | 'new';
+  initRegion?: AddressType;
+  image: string;
+}
+
+const NoticeInformatin: React.FC<IProps> = ({
+  formType,
+  initRegion,
+  image,
+}) => {
+  return (
+    <div className="md:flex md:justify-around space-y-5 mb-5">
+      <div className="mt-10 w-full space-y-5">
+        <NoticeEndTime formType={formType} />
+        <NoticeRegion initRegion={initRegion} formType={formType} />
+        <NoticeOpenChat formType={formType} />
+      </div>
+      <NoticeImage formType={formType} image={image} />
+    </div>
+  );
+};
+
+export default NoticeInformatin;

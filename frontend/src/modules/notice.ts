@@ -95,7 +95,7 @@ const noticeSlice = createSlice({
       ...state,
       viewNoticeData: {
         ...state.viewNoticeData,
-        constent: action.payload,
+        content: action.payload,
       },
     }),
     setImage: (state, action: PayloadAction<string>) => ({
