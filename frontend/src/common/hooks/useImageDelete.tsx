@@ -1,7 +1,7 @@
 import S3 from 'aws-sdk/clients/s3';
 
 const useImageDelete = () => {
-  const imageDelete = (fileName: string) => {
+  const imageDelete = async (fileName: string) => {
     try {
       const s3Params = {
         Bucket: process.env.REACT_APP_AWS_S3_BUCKET_NAME || '',
@@ -14,9 +14,8 @@ const useImageDelete = () => {
         secretAccessKey: process.env.REACT_APP_AWS_S3_SECRET_ACCESS_KEY,
       };
 
-      new S3(s3Config).deleteObject(s3Params);
-    } catch (error) {
-      console.error(error);
+      await new S3(s3Config).deleteObject(s3Params).promise();
+    } catch {
       throw new Error('이미지 삭제 실패');
     }
   };

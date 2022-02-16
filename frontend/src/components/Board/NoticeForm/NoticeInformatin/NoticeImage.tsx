@@ -27,7 +27,7 @@ const NoticeImage: React.FC<IProps> = ({ formType, image }) => {
   >();
 
   const imageDelete = useImageDelete();
-  const [, imageUploader] = useImageUploader();
+  const imageUploader = useImageUploader();
   const { errorAlert } = useSwalerts();
 
   const getImage = () => (formType === 'new' ? newImage : editImage);
@@ -79,7 +79,7 @@ const NoticeImage: React.FC<IProps> = ({ formType, image }) => {
     reader.readAsDataURL(file);
   };
 
-  const editImageFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const editImageFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     try {
       setImageUploadLoading(true);
       if (!e.target.files) return;
@@ -93,39 +93,38 @@ const NoticeImage: React.FC<IProps> = ({ formType, image }) => {
       }
       // 업로드
       const file = e.target.files[0];
-      const location = imageUploader(file, 'boardImage');
+      const location = await imageUploader(file, 'boardImage');
       if (formType === 'new') dispatch(CreateNoticeActions.setImage(location));
       if (formType === 'edit') dispatch(noticeActions.setImage(location));
 
       // 미리보기 이미지
       setPreviewImage(file);
-      setImageUploadLoading(false);
     } catch (error) {
-      setImageUploadLoading(false);
       errorAlert(
         '이미지 변경 실패',
         '이미지 변경에 실패하였습니다. 다시 시도해주세요.😰'
       );
+    } finally {
+      setImageUploadLoading(false);
     }
   };
 
-  const saveImageFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const saveImageFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     try {
       setImageUploadLoading(true);
       if (!e.target.files) return;
       const file = e.target.files[0];
-      const location = imageUploader(file, 'boardImage');
+      const location = await imageUploader(file, 'boardImage');
       dispatch(CreateNoticeActions.setImage(location));
-
       // 미리보기 이미지
       setPreviewImage(file);
-      setImageUploadLoading(false);
     } catch (error) {
-      setImageUploadLoading(false);
       errorAlert(
         '이미지 업로드 실패',
         '이미지 업로드에 실패하였습니다. 다시 시도해주세요.😰'
       );
+    } finally {
+      setImageUploadLoading(false);
     }
   };
 
@@ -133,8 +132,8 @@ const NoticeImage: React.FC<IProps> = ({ formType, image }) => {
     <div className="flex flex-col items-center">
       <div className="flex flex-col justify-center items-center rounded border-solid border-2 border-indigo-400 h-60 w-60 mb-3 relative">
         {imageUploadLoading && (
-          <div className="absolute top-0 left-0 w-full h-full mx-auto my-0">
-            <Loading size="medium" color="#8b8bf5" />
+          <div className="w-full h-full absolute top-0 left-0 bg-black opacity-90 flex justify-center items-center">
+            <Loading size="medium" color="#8b8bf5" type="points" />
           </div>
         )}
         {viewImage()}

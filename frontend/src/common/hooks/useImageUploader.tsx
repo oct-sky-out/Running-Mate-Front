@@ -2,12 +2,11 @@ import { useState } from 'react';
 import S3 from 'aws-sdk/clients/s3';
 import { v4 } from 'uuid';
 
-const useImageUploader: () => [
-  number,
-  (file: File, folderName?: string | null) => any
-] = () => {
-  const [progress, setProgress] = useState(0);
-  const imageUploader = (file: File, folderName: string | null = null) => {
+const useImageUploader = () => {
+  const imageUploader = async (
+    file: File,
+    folderName: string | null = null
+  ) => {
     try {
       const s3Params = {
         Bucket: process.env.REACT_APP_AWS_S3_BUCKET_NAME || '',
@@ -22,11 +21,7 @@ const useImageUploader: () => [
         accessKeyId: process.env.REACT_APP_AWS_S3_ACCESS_KEY_ID,
         secretAccessKey: process.env.REACT_APP_AWS_S3_SECRET_ACCESS_KEY,
       };
-      const { Location } = new S3(s3Config)
-        .upload(s3Params)
-        .on('httpUploadProgress', (evt) => {
-          setProgress(Math.round(evt.loaded / evt.total) * 100);
-        });
+      const { Location } = await new S3(s3Config).upload(s3Params).promise();
       return Location;
     } catch (error) {
       console.error(error);
@@ -34,7 +29,7 @@ const useImageUploader: () => [
     }
   };
 
-  return [progress, imageUploader];
+  return imageUploader;
 };
 
 export default useImageUploader;
