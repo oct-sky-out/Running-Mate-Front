@@ -1,9 +1,19 @@
-import { Switch, Route } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Switch, Route, useLocation } from 'react-router-dom';
+import useValidToken from '../../common/hooks/useValidToken';
+import { useSelector } from '../../modules';
 import CreateNotice from './CreateNotice/CreateNotice';
 import EditNotice from './EditNotice/EditNotice';
 import ViewNotice from './ViewNotice/ViewNotice';
 
 const Board = () => {
+  const location = useLocation();
+  const token = useSelector((state) => state.signIn.token);
+  const checkTokenAvailable = useValidToken();
+  useEffect(() => {
+    checkTokenAvailable(token);
+  }, [location.pathname]);
+
   return (
     <Switch>
       <Route exact path="/boards/run/:runId" component={ViewNotice} />
