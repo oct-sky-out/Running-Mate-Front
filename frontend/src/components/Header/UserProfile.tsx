@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import OutsideClickHandler from 'react-outside-click-handler';
@@ -13,35 +13,43 @@ const UserProfile = () => {
   const history = useHistory();
 
   //* redux
-  const { userNickName, token } = useSelector((state) => ({
+  const { userNickName, token, signInFetchStatus } = useSelector((state) => ({
     userNickName: state.signIn.userData.nickName,
     token: state.signIn.token,
+    signInFetchStatus: state.signIn.signInFetchStatus,
   }));
   const dispatch = useDispatch();
 
   //* useState
   const [isMyMenuOpen, setIsMyMenuOpen] = useState(false);
 
-  const { errorToast } = useSwalerts();
+  const { errorToast, successToast } = useSwalerts();
 
   //* Any Functions
   const moveMyPage = () => {
     history.push('/user/mypage');
     setIsMyMenuOpen(false);
   };
-  const logOut = async () => {
-    try {
-      await new UserService().logOut(token);
-      dispatch(SignInActions.setInit());
-    } catch {
-      errorToast('로그아웃 오류', '죄송합니다. 로그아웃을 실패하였습니다.😰');
-    }
+  const logOut = () => {
+    dispatch(SignInActions.logOut(token));
   };
 
   const moveMyInformationPage = () => {
     history.push(`/user/${userNickName}`);
     setIsMyMenuOpen(false);
   };
+
+  useEffect(() => {
+    if (signInFetchStatus === 'LogOut') {
+      successToast('로그아웃', '로그아웃이 안전하게 완료되었습니다.');
+      dispatch(SignInActions.setInitError());
+    }
+    if (signInFetchStatus === 'LogOutError') {
+      errorToast('로그아웃 오류', '죄송합니다. 로그아웃을 실패하였습니다.😰');
+      dispatch(SignInActions.setInitError());
+    }
+  }, [signInFetchStatus]);
+
   return (
     <div className="flex-none flex justify-center items-center w-5 md:w-20">
       <OutsideClickHandler

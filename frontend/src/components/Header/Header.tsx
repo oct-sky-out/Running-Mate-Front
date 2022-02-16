@@ -68,16 +68,6 @@ const Header = () => {
           >
             <span>모여요</span>
           </Link>
-          <Link
-            to="/talk"
-            className={
-              location.pathname === '/talk'
-                ? 'text-purple'
-                : 'hover:text-purple'
-            }
-          >
-            <span>쑥떡쑥떡</span>
-          </Link>
         </div>
         {isLogged ? <UserProfile /> : <SignInAndSignUpButtons />}
       </div>

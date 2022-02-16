@@ -50,14 +50,12 @@ class UserService implements IUserService {
   logOut = async (token: string) => {
     try {
       const { tokenState } = await this.tokenValid(token);
-      if (!tokenState) return;
+      if (!tokenState) throw new Error('로그아웃 오류');
       await axios.get<'잘못된 요청' | '로그아웃 성공'>('/user/logout', {
         headers: {
           'x-auth-token': token,
         },
       });
-      localStorage.removeItem('token');
-      localStorage.removeItem('userData');
     } catch {
       throw new Error('로그아웃 오류');
     }
