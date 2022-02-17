@@ -1,5 +1,6 @@
 import { useHistory } from 'react-router-dom';
 import { useCallback, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useInView } from 'react-intersection-observer';
 import { Button, Loading } from '@nextui-org/react';
 import { v4 } from 'uuid';
@@ -8,6 +9,7 @@ import NoticeService from '../../../lib/api/noticeService';
 import { GetMyNoticeType } from '../../../modules/types/notice';
 import dateParser from '../../../common/functions/dateParser';
 import useSwalerts from '../../../common/hooks/useSwalerts';
+import { noticeActions } from '../../../modules/notice';
 
 const MyBoards = () => {
   //* react-router-dom
@@ -18,6 +20,7 @@ const MyBoards = () => {
     userNickName: state.signIn.userData.nickName,
     token: state.signIn.token,
   }));
+  const dispatch = useDispatch();
 
   //* extend hook
   const [viewRef, inView] = useInView();
@@ -73,6 +76,8 @@ const MyBoards = () => {
     history.push(`/boards/run/${boardId}`);
   };
   const goToEditMyBoard = (boardId: number) => {
+    const filterBoadrd = myBoards.filter((board) => board.id === boardId);
+    dispatch(noticeActions.setOneViewNotice(filterBoadrd[0]));
     history.push(`/boards/edit/run/${boardId}`);
   };
 
@@ -102,7 +107,7 @@ const MyBoards = () => {
                   className="block h-full cursor-pointer text-lg md:text-xl font-bold"
                   onClick={() => goToViewMyBoard(myBoard.id)}
                 >
-                  {myBoard.title}asdfasda
+                  {myBoard.title}
                 </span>
                 <span className="block h-full text-gray-400 text-sm md:text-base s font-bold">
                   {dateParser(new Date(myBoard.regDate))}
