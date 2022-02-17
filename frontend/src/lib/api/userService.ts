@@ -13,6 +13,9 @@ interface IUserService {
   signUp(signUpForm: ISignUpForm): void;
   login(signInDat: ISignInForm): void;
   logOut(token: string): Promise<void>;
+  editMyPageData(
+    myPageData: MyPageType
+  ): Promise<{ address: string; nickName: string }>;
   getUser(nickName: string, token: string): Promise<false | IUserData>;
   leaveAccount(
     nickName: string,
@@ -63,8 +66,8 @@ class UserService implements IUserService {
 
   editMyPageData = async (myPageData: MyPageType) => {
     try {
-      await axios.post(
-        `/user/${myPageData.nickName}`,
+      const { data } = await axios.post<{ address: string; nickName: string }>(
+        `/users/${myPageData.nickName}`,
         {
           nickName: myPageData.nickName,
           address: myPageData.address,
@@ -75,9 +78,9 @@ class UserService implements IUserService {
           },
         }
       );
-      return true;
+      return data;
     } catch {
-      return false;
+      throw new Error('회원정보 변경 실패');
     }
   };
 
