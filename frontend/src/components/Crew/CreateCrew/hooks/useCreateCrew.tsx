@@ -46,8 +46,6 @@ const useCreateCrew = () => {
 
   //* react hooks
   const [canComplete, setCanComplete] = useState(false as boolean);
-  const [loading, setLoading] = useState(false as boolean);
-  const [createResult, setCreateResult] = useState('');
 
   //* any variables
   const questionInputValues = [crewName, crewRegion, explanation, openChat];
@@ -77,14 +75,6 @@ const useCreateCrew = () => {
     canCompleteState: [canComplete, setCanComplete] as [
       boolean,
       React.Dispatch<React.SetStateAction<boolean>>
-    ],
-    loadingState: [loading, setLoading] as [
-      boolean,
-      React.Dispatch<React.SetStateAction<boolean>>
-    ],
-    createResultState: [createResult, setCreateResult] as [
-      string,
-      React.Dispatch<React.SetStateAction<string>>
     ],
     goToCrewDetail,
     goToCrewMainPage,
