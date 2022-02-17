@@ -3,7 +3,7 @@ import { Route, Switch, useLocation } from 'react-router-dom';
 import DetailBaseBorder from '../../common/components/DetailBaseBorder';
 import useValidToken from '../../common/hooks/useValidToken';
 import { useSelector } from '../../modules';
-import CrewDetail from './CreateCrew/CreateCrew';
+import CreateCrew from './CreateCrew/CreateCrew';
 import CrewManagement from './CrewManagement/CrewManagement';
 
 const Crew = () => {
@@ -17,8 +17,8 @@ const Crew = () => {
   return (
     <DetailBaseBorder>
       <Switch>
-        <Route path="/crew/new" component={CrewDetail} />
-        <Route path="/crew/:id" component={CrewManagement} />
+        <Route exact path="/crew/new" component={CreateCrew} />
+        <Route sensitive path="/crew/:id" component={CrewManagement} />
       </Switch>
     </DetailBaseBorder>
   );
