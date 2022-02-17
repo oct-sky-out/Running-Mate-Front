@@ -39,7 +39,7 @@ const usePasswordCheck = () => {
         if (isEqual(passwordTarget, e.target.value)) {
           setSamePassword('같은 비밀번호입니다.');
         }
-        if (isEqual(passwordTarget, e.target.value)) {
+        if (!isEqual(passwordTarget, e.target.value)) {
           setSamePassword('비밀번호가 다릅니다.');
         }
         if (dispatch) dispatch();

@@ -13,6 +13,10 @@ interface IUserService {
   signUp(signUpForm: ISignUpForm): void;
   login(signInDat: ISignInForm): void;
   logOut(token: string): Promise<void>;
+  editMyPageData(
+    myPageData: MyPageType
+  ): Promise<{ address: string; nickName: string }>;
+  myPage(token: string): Promise<IUserData>;
   getUser(nickName: string, token: string): Promise<false | IUserData>;
   leaveAccount(
     nickName: string,
@@ -61,10 +65,23 @@ class UserService implements IUserService {
     }
   };
 
+  myPage = async (token: string) => {
+    try {
+      const { data } = await axios.get<IUserData>('/user', {
+        headers: {
+          'x-auth-token': token,
+        },
+      });
+      return data;
+    } catch {
+      throw new Error('내정보 조회 실패');
+    }
+  };
+
   editMyPageData = async (myPageData: MyPageType) => {
     try {
-      await axios.post(
-        `/user/${myPageData.nickName}`,
+      const { data } = await axios.post<{ address: string; nickName: string }>(
+        `/users/${myPageData.nickName}`,
         {
           nickName: myPageData.nickName,
           address: myPageData.address,
@@ -75,9 +92,9 @@ class UserService implements IUserService {
           },
         }
       );
-      return true;
+      return data;
     } catch {
-      return false;
+      throw new Error('회원정보 변경 실패');
     }
   };
 
@@ -112,7 +129,7 @@ class UserService implements IUserService {
 
   getUser = async (userNickName: string, token: string) => {
     try {
-      const { data } = await axios.get<IUserData>(`/validate`, {
+      const { data } = await axios.get<IUserData>(`/users/${userNickName}`, {
         headers: {
           'x-auth-token': token,
         },

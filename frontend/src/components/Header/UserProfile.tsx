@@ -43,6 +43,7 @@ const UserProfile = () => {
     if (signInFetchStatus === 'LogOut') {
       successToast('로그아웃', '로그아웃이 안전하게 완료되었습니다.');
       dispatch(SignInActions.setInitError());
+      history.push('/');
     }
     if (signInFetchStatus === 'LogOutError') {
       errorToast('로그아웃 오류', '죄송합니다. 로그아웃을 실패하였습니다.😰');

@@ -70,6 +70,7 @@ const Management = () => {
             type="file"
             accept="image/*"
             className="hidden"
+            disabled
           />
         </label>
       </div>

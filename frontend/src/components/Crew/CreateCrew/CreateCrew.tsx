@@ -21,6 +21,8 @@ const CreateCrew = () => {
   const [, setCanComplete] = canCompleteState;
 
   const [questionOrder, setQuestionOrder] = useState(0);
+  const [createResult, setCreateResult] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const completeCheck = useCallback(() => {
     if (questionOrder >= QUESTION_COUNT - 1) setCanComplete(true);
@@ -64,11 +66,20 @@ const CreateCrew = () => {
           className="text-2xl md:text-3xl font-bold lg:mb-20 p-8 text-center"
           data-testid="question-span"
         >
-          <CreateCrewResult questionOrder={questionOrder} />
+          <CreateCrewResult
+            questionOrder={questionOrder}
+            createResult={createResult}
+            setCreateResult={setCreateResult}
+            loading={loading}
+            setLoading={setLoading}
+          />
         </span>
         <CreateCrewButton
+          createResult={createResult}
           questionOrder={questionOrder}
           setQuestionOrder={setQuestionOrder}
+          loading={loading}
+          setLoading={setLoading}
         />
       </div>
     </>

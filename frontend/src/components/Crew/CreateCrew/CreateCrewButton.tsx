@@ -8,11 +8,17 @@ import useCreateCrew, { CreacteCrewActionType } from './hooks/useCreateCrew';
 interface IProps {
   questionOrder: number;
   setQuestionOrder: React.Dispatch<React.SetStateAction<number>>;
+  createResult: string;
+  loading: boolean;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const CreateCrewButton: React.FC<IProps> = ({
   questionOrder,
   setQuestionOrder,
+  createResult,
+  loading,
+  setLoading,
 }) => {
   const dispatch = useDispatch();
 
@@ -26,9 +32,7 @@ const CreateCrewButton: React.FC<IProps> = ({
       token,
       userNickName,
     },
-    loadingState,
     canCompleteState,
-    createResultState,
     QUESTION_COUNT,
     goToCrewDetail,
     goToCrewMainPage,
@@ -36,9 +40,7 @@ const CreateCrewButton: React.FC<IProps> = ({
     ReduxActionNames,
   } = useCreateCrew();
 
-  const [loading, setLoading] = loadingState;
   const [canComplete] = canCompleteState;
-  const [createResult] = createResultState;
 
   const movePrevious = useCallback(() => {
     if (questionOrder > 0)
@@ -72,6 +74,15 @@ const CreateCrewButton: React.FC<IProps> = ({
     dispatch(CreateCrewActions[actionName](e.target.value));
   };
 
+  const questionOpenChat = () => {
+    if (questionOrder === 3) {
+      if (questionInputValues[questionOrder].includes('https://'))
+        return questionInputValues[questionOrder];
+      return `https://${questionInputValues[questionOrder]}`;
+    }
+    return questionInputValues[questionOrder];
+  };
+
   return (
     <>
       {questionOrder !== QUESTION_COUNT && (
@@ -83,7 +94,7 @@ const CreateCrewButton: React.FC<IProps> = ({
             type="text"
             width="80%"
             className="lg:mb-20"
-            value={questionInputValues[questionOrder]}
+            value={questionOpenChat()}
             onChange={(e) => {
               InputStateToRedux(e, ReduxActionNames[questionOrder]);
             }}

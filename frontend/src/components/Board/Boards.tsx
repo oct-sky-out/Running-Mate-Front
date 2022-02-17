@@ -56,7 +56,8 @@ const Board: React.FC<IProps & RouteComponentProps> = ({ data }) => {
           <div>
             <div className="flex justify-center mb-2">
               <span className="text-sm font-bold">
-                {address && address.si.concat(' ', address.si, ' ', address.gu)}
+                {address &&
+                  address.dou.concat(' ', address.si, ' ', address.gu)}
               </span>
             </div>
             <div className="flex items-center justify-around text-gray-600">

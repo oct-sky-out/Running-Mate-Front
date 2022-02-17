@@ -7,6 +7,7 @@ import useModalPotal from '../../../common/hooks/useModalPotal';
 import Address from '../../Address/Address';
 import UserService from '../../../lib/api/userService';
 import useLocalStroeageData from '../../../common/hooks/useLocalStorageData';
+import useSwalerts from '../../../common/hooks/useSwalerts';
 
 type Props = {
   token: string;
@@ -24,9 +25,20 @@ const MyPageInformations: React.FC<Props> = ({ token }) => {
     address: state.signIn.userData.address,
   }));
 
+  const { successToast, errorToast } = useSwalerts();
   //* Modal
   const { ModalPotal, closeModal, openModal } = useModalPotal();
   const { getUserData } = useLocalStroeageData();
+
+  const changeMyInformation = async () => {
+    try {
+      await userService.editMyPageData({ nickName, address, token });
+      await userService.getMyPageData(token);
+      successToast('회원정보 변경', '회원정보 변경에 성공했습니다!');
+    } catch {
+      errorToast('회원정보 변경', '회원정보 변경에 실패했습니다.😰');
+    }
+  };
 
   useEffect(() => {
     getUserData();
@@ -83,10 +95,7 @@ const MyPageInformations: React.FC<Props> = ({ token }) => {
               rounded
               color="secondary"
               className="z-0"
-              onClick={async () => {
-                await userService.editMyPageData({ nickName, address, token });
-                await userService.getMyPageData(token);
-              }}
+              onClick={changeMyInformation}
             >
               저장하기
             </Button>

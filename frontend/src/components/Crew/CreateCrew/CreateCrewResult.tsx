@@ -1,5 +1,5 @@
 import { Loading } from '@nextui-org/react';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import useSwalerts from '../../../common/hooks/useSwalerts';
 import { CreateCrewActions } from '../../../modules/createCrew';
@@ -7,30 +7,26 @@ import useCreateCrew from './hooks/useCreateCrew';
 
 interface IProps {
   questionOrder: number;
+  createResult: string;
+  setCreateResult: React.Dispatch<React.SetStateAction<string>>;
+  loading: boolean;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const CreateCrewResult: React.FC<IProps> = ({ questionOrder }) => {
+const CreateCrewResult: React.FC<IProps> = ({
+  questionOrder,
+  createResult,
+  setCreateResult,
+  loading,
+  setLoading,
+}) => {
   const dispatch = useDispatch();
   const {
     reduxCreateCrewState: { createCrewFetchStatus },
-    questions,
     QUESTION_COUNT,
-    createResultState,
-    loadingState,
+    questions,
   } = useCreateCrew();
-  const [loading, setLoading] = loadingState;
-  const [createResult, setCreateResult] = createResultState;
   const { errorToast } = useSwalerts();
-
-  const creatingFetchResult = useMemo(() => {
-    if (questionOrder === QUESTION_COUNT) {
-      if (loading) {
-        return <Loading type="points" size="xlarge" color="#8b8bf5" />;
-      }
-      return createResult;
-    }
-    return questions[questionOrder];
-  }, [questionOrder, createResult, loading]);
 
   useEffect(() => {
     if (createCrewFetchStatus === 'Sucecss')
@@ -51,7 +47,14 @@ const CreateCrewResult: React.FC<IProps> = ({ questionOrder }) => {
     }
   }, [createCrewFetchStatus]);
 
-  return <>{creatingFetchResult}</>;
+  return (
+    <>
+      {loading && <Loading type="points" size="xlarge" color="#8b8bf5" />}
+      {questionOrder === QUESTION_COUNT
+        ? createResult
+        : questions[questionOrder]}
+    </>
+  );
 };
 
 export default CreateCrewResult;

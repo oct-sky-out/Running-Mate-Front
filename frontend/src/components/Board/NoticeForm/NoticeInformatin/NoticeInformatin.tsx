@@ -7,14 +7,9 @@ import { AddressType } from '../../../../modules/types/notice';
 interface IProps {
   formType: 'edit' | 'new';
   initRegion?: AddressType;
-  image: string;
 }
 
-const NoticeInformatin: React.FC<IProps> = ({
-  formType,
-  initRegion,
-  image,
-}) => {
+const NoticeInformatin: React.FC<IProps> = ({ formType, initRegion }) => {
   return (
     <div className="md:flex md:justify-around space-y-5 mb-5">
       <div className="mt-10 w-full space-y-5">
@@ -22,7 +17,7 @@ const NoticeInformatin: React.FC<IProps> = ({
         <NoticeRegion initRegion={initRegion} formType={formType} />
         <NoticeOpenChat formType={formType} />
       </div>
-      <NoticeImage formType={formType} image={image} />
+      <NoticeImage formType={formType} />
     </div>
   );
 };

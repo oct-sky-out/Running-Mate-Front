@@ -9,12 +9,13 @@ const CrewDetailInformation = () => {
   return (
     <>
       <div className="w-full flex justify-center items-center">
-        <img
+        {/* <img
           // 이미지 추가되면 여기에 코드 작성
           src=""
           alt=""
           className="w-48 rounded-full border-4 border-purple "
-        />
+        /> */}
+        크루이미지는 현재 개발중입니다.🚧
       </div>
       <div className="text-2xl">{crewName}</div>
       <div className="text-lg">

@@ -109,7 +109,6 @@ const NoticeForm: React.FC<IProps> = ({ formType, id }) => {
           <NoticeTitle formType={formType} />
           <NoticeInformatin
             formType={formType}
-            image={image}
             initRegion={editedNotice.address}
           />
           <NoticeText formType={formType} />
