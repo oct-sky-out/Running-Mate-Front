@@ -140,6 +140,12 @@ const Home = () => {
         </div>
       </div>
       <div className="pt-7 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mx-auto my-0 mb-5 w-2/3 gap-x-20 gap-y-10 grid-template-rows">
+        {notices.length === 0 && (
+          <>
+            <h1 className="text-2xl">게시글 목록이 비어있습니다.</h1>
+            <h3 className="text-xl">첫 게시글을 등록해보세요!!</h3>
+          </>
+        )}
         {notices &&
           notices.map((notice) => {
             return <Board key={v4()} data={notice} />;

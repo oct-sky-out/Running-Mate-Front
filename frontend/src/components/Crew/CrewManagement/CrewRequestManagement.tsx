@@ -66,6 +66,9 @@ const CrewRequestManagement = () => {
     <div className="mx-auto my-0 py-10 px-20 flex flex-col space-y-10 justify-center">
       <PeopleSearch placeholder="요청자 입력" />
       <div className="border-2 border-purple rounded-lg flex flex-col divide-y divide-purple">
+        {requestUsers.length === 0 && (
+          <h1 className="text-2xl p-5">크루가입 요청목록이 비어있습니다.</h1>
+        )}
         {requestUsers.map((requestUserNickName) => (
           <PeopleList key={v4()} userNickName={requestUserNickName}>
             <div className="w-30">
