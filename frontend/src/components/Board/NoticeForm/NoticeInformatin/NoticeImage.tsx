@@ -1,6 +1,7 @@
-import { Loading } from '@nextui-org/react';
-import { useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { isNull } from 'lodash';
+import { Loading } from '@nextui-org/react';
 import ImageButtons from '../../../../common/components/ImageButtons';
 import useImageDelete from '../../../../common/hooks/useImageDelete';
 import useImageUploader from '../../../../common/hooks/useImageUploader';
@@ -11,10 +12,9 @@ import { noticeActions } from '../../../../modules/notice';
 
 interface IProps {
   formType: 'edit' | 'new';
-  image: string;
 }
 
-const NoticeImage: React.FC<IProps> = ({ formType, image }) => {
+const NoticeImage: React.FC<IProps> = ({ formType }) => {
   const dispatch = useDispatch();
   const { newImage, editImage } = useSelector((state) => ({
     newImage: state.createNotice.image,
@@ -32,26 +32,38 @@ const NoticeImage: React.FC<IProps> = ({ formType, image }) => {
 
   const getImage = () => (formType === 'new' ? newImage : editImage);
 
-  const viewImage = () => {
+  const imageGuide = useMemo(
+    () => (
+      <div className="h-ful w-full flex flex-col justify-center items-center text-indigo-400 space-y-2">
+        <span className="block">러닝 경로 지도를</span>
+        <span className="block">등록해주세요(필수X)</span>
+        <span className="block">(네이버지도 or 카카오 지도)</span>
+      </div>
+    ),
+    []
+  );
+
+  const viewImage = useCallback(() => {
     if (formType === 'new') {
       return previewImageFile ? (
         <img src={previewImageFile as string} alt="map" className="w-full" />
       ) : (
-        <div className="h-ful w-full flex flex-col justify-center items-center text-indigo-400 space-y-2">
-          <span className="block">러닝 경로 지도를</span>
-          <span className="block">등록해주세요(필수X)</span>
-          <span className="block">(네이버지도 or 카카오 지도)</span>
-        </div>
+        imageGuide
       );
     }
     if (formType === 'edit')
-      return <img src={image as string} alt="map" className="w-full" />;
+      return editImage ? (
+        <img src={editImage as string} alt="map" className="w-full" />
+      ) : (
+        imageGuide
+      );
     return null;
-  };
+  }, [previewImageFile]);
 
   const deleteImageFile = () => {
     try {
       setImageUploadLoading(true);
+      const image = getImage();
       const imageURLArr = image.split('/');
       const fileName = `${imageURLArr[imageURLArr.length - 2]}/${
         imageURLArr[imageURLArr.length - 1]
@@ -84,6 +96,7 @@ const NoticeImage: React.FC<IProps> = ({ formType, image }) => {
       setImageUploadLoading(true);
       if (!e.target.files) return;
       // 삭제
+      const image = getImage();
       if (image) {
         const imageURLArr = image.split('/');
         const fileName = `${imageURLArr[imageURLArr.length - 2]}/${
@@ -115,7 +128,8 @@ const NoticeImage: React.FC<IProps> = ({ formType, image }) => {
       if (!e.target.files) return;
       const file = e.target.files[0];
       const location = await imageUploader(file, 'boardImage');
-      dispatch(CreateNoticeActions.setImage(location));
+      if (formType === 'new') dispatch(CreateNoticeActions.setImage(location));
+      if (formType === 'edit') dispatch(noticeActions.setImage(location));
       // 미리보기 이미지
       setPreviewImage(file);
     } catch (error) {
@@ -128,6 +142,7 @@ const NoticeImage: React.FC<IProps> = ({ formType, image }) => {
     }
   };
 
+  console.log(editImage);
   return (
     <div className="flex flex-col items-center">
       <div className="flex flex-col justify-center items-center rounded border-solid border-2 border-indigo-400 h-60 w-60 mb-3 relative">
@@ -136,7 +151,7 @@ const NoticeImage: React.FC<IProps> = ({ formType, image }) => {
             <Loading size="medium" color="#8b8bf5" type="points" />
           </div>
         )}
-        {viewImage()}
+        {viewImage() || '등록된 사진이 없습니다.'}
       </div>
       <ImageButtons
         containerClassName="flex w-64"
