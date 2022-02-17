@@ -142,7 +142,6 @@ const NoticeImage: React.FC<IProps> = ({ formType }) => {
     }
   };
 
-  console.log(editImage);
   return (
     <div className="flex flex-col items-center">
       <div className="flex flex-col justify-center items-center rounded border-solid border-2 border-indigo-400 h-60 w-60 mb-3 relative">
