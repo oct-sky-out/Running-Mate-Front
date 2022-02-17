@@ -22,17 +22,17 @@ const CrewMainBar: React.FC<IProps> = ({ crewBoardTopRef }) => {
         <div>
           <div className="absolute right-1/2 bottom-40">
             <h1 className="text-3xl">
-              {nickName}안녕님의 크루는 {crewName}오르고 달리기 입니다!
+              {nickName}님의 크루는 {crewName}입니다!
             </h1>
           </div>
           <div className="block w-10 absolute right-1/3 bottom-20 ">
-            <Link to={`/crew/${crewName}`}>
+            <Link to={`/crewList/${crewName}`}>
               <Button size="xlarge">크루로 가기 ▹</Button>
             </Link>
           </div>
         </div>
       )}
-      {crewName || (
+      {!crewName && (
         <div className="">
           <div className="w-full absolute top-12 lg:top-1/3 lg:right-1/4 lg:bottom-40 flex flex-col items-center">
             <h1 className="text-2xl lg:text-4xl">
