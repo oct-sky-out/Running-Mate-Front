@@ -48,7 +48,7 @@ const UserDetail: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
       },
     });
     new UserService()
-      .getUser(match.params.id, token)
+      .myPage(token)
       .then((result) => {
         if (result) {
           setNormalCategory({
@@ -110,7 +110,8 @@ const UserDetail: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
             </div>
           ))}
         </div>
-        <div>
+        {/* 기록 기능 제작시 등록 */}
+        {/* <div>
           <span className="pl-5 md:pl-0 text-lg">기록</span>
           <div className="w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 mx-auto gap-5 pt-10">
             {userPageMock.map((category) => (
@@ -124,7 +125,7 @@ const UserDetail: React.FC<RouteComponentProps<MatchParam>> = ({ match }) => {
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
       </div>
     </>
   );

@@ -16,6 +16,7 @@ interface IUserService {
   editMyPageData(
     myPageData: MyPageType
   ): Promise<{ address: string; nickName: string }>;
+  myPage(token: string): Promise<IUserData>;
   getUser(nickName: string, token: string): Promise<false | IUserData>;
   leaveAccount(
     nickName: string,
@@ -61,6 +62,19 @@ class UserService implements IUserService {
       });
     } catch {
       throw new Error('로그아웃 오류');
+    }
+  };
+
+  myPage = async (token: string) => {
+    try {
+      const { data } = await axios.get<IUserData>('/user', {
+        headers: {
+          'x-auth-token': token,
+        },
+      });
+      return data;
+    } catch {
+      throw new Error('내정보 조회 실패');
     }
   };
 
@@ -115,7 +129,7 @@ class UserService implements IUserService {
 
   getUser = async (userNickName: string, token: string) => {
     try {
-      const { data } = await axios.get<IUserData>(`/validate`, {
+      const { data } = await axios.get<IUserData>(`/users/${userNickName}`, {
         headers: {
           'x-auth-token': token,
         },
