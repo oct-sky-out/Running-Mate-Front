@@ -12,8 +12,6 @@ const Management = () => {
   const crewName = useSelector((state) => state.crew.crewName);
   const [newCrewName, setnewCrewName] = useState('');
   const { successAlert, errorAlert } = useSwalerts();
-  //* 이부분도 토큰 필요한지 알아보기
-  // const { getToken } = useLocalStroeageData();
 
   const chnageCrewInformation = async () => {
     try {

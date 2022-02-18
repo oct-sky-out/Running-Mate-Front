@@ -37,7 +37,7 @@ const useCreateCrew = () => {
     token,
     userNickName,
   };
-  const ReduxActionNames: CreacteCrewActionType[] = [
+  const CreateCrewActionTypes: CreacteCrewActionType[] = [
     'setCrewName',
     'setCrewRegion',
     'setExplanation',
@@ -71,7 +71,7 @@ const useCreateCrew = () => {
     questionInputValues,
     questions,
     QUESTION_COUNT,
-    ReduxActionNames,
+    CreateCrewActionTypes,
     canCompleteState: [canComplete, setCanComplete] as [
       boolean,
       React.Dispatch<React.SetStateAction<boolean>>

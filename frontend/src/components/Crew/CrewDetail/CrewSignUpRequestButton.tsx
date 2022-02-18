@@ -3,8 +3,6 @@ import { useDispatch } from 'react-redux';
 import { useSelector } from '../../../modules';
 import { crewActions } from '../../../modules/crew';
 
-interface IProps {}
-
 const CrewSignUpRequestButton = () => {
   const {
     crewRequested,

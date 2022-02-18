@@ -17,14 +17,11 @@ const SignInModal: React.FC<IProps> = ({ closeModal }) => {
   const history = useHistory();
   //* Redux State
   const dispatch = useDispatch();
-  const { email, password, signInFetchStatus, userData } = useSelector(
-    (state) => ({
-      email: state.signIn.loginForm.email,
-      password: state.signIn.loginForm.password,
-      signInFetchStatus: state.signIn.signInFetchStatus,
-      userData: state.signIn.userData,
-    })
-  );
+  const { email, password, signInFetchStatus } = useSelector((state) => ({
+    email: state.signIn.loginForm.email,
+    password: state.signIn.loginForm.password,
+    signInFetchStatus: state.signIn.signInFetchStatus,
+  }));
 
   const { errorAlert } = useSwalerts();
 

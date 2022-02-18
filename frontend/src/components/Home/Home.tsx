@@ -64,7 +64,6 @@ const Home = () => {
         }
       } catch (error) {
         setInfiniteFetchStop(true);
-        console.error(error);
       }
     },
     []
@@ -82,7 +81,6 @@ const Home = () => {
         }
       } catch (error) {
         setInfiniteFetchStop(true);
-        console.error(error);
       }
     },
     []

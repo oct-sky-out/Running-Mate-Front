@@ -36,7 +36,7 @@ const SelcetRegion: React.FC<Props> = ({ submit, className, initRegion }) => {
   }, [region1, region2, region3, region4]);
 
   return (
-    <div className="flex flex-col sm:flex-row justify-center pb-2">
+    <div className="flex flex-col sm:flex-row justify-center pb-2 space-x-2">
       <div className={`border-2 rounded ${className}`}>
         <select
           className="border-gray-400 hover:border-gray-400 outline-none"

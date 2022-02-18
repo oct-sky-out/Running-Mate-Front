@@ -35,8 +35,7 @@ const CrewRequestManagement = () => {
         filterRequestUser(requestUserNickName);
         successToast('추방 성공!', '추방을 성공했습니다.');
       })
-      .catch((reason) => {
-        console.error(reason);
+      .catch(() => {
         errorToast('추방 실패', '추방을 실패하였습니다.😰');
       });
   };

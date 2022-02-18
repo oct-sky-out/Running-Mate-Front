@@ -14,14 +14,14 @@ const PeopleManagement = () => {
   const history = useHistory();
   const params = useParams<{ id: string }>();
 
-  const { crewMembers, crewLeaderId, userNickName, token, crewFetchStatus } =
-    useSelector((state) => ({
+  const { crewMembers, crewLeaderId, token, crewFetchStatus } = useSelector(
+    (state) => ({
       crewMembers: state.crew.userDtos,
       crewLeaderId: state.crew.crewLeaderId,
-      userNickName: state.signIn.userData.nickName,
       token: state.signIn.token,
       crewFetchStatus: state.crew.crewRequestFetch,
-    }));
+    })
+  );
   const dispatch = useDispatch();
   const { successAlert, errorAlert, customAlert } = useSwalerts();
 
@@ -38,16 +38,13 @@ const PeopleManagement = () => {
         );
         successAlert(message, '추방에 성공하였습니다.');
       })
-      .catch((reason) => {
-        console.error(reason);
+      .catch(() => {
         errorAlert('추방 실패', '추방에 실패하였습니다. 죄송합니다.😰');
       });
   };
 
   const deligateCrewMember = (memberNickName: string) => {
-    dispatch(
-      crewActions.deligateCrewLeader({ token, memberNickName, userNickName })
-    );
+    dispatch(crewActions.deligateCrewLeader({ token, memberNickName }));
   };
 
   useEffect(() => {

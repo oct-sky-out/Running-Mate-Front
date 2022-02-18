@@ -6,16 +6,14 @@ import { SignInActions } from '../signIn';
 import { IUserData } from '../types/signInTypes';
 
 export const refreshUserDataAndRefreshLocalStorage = async (
-  token: string,
-  userNickName: string
-): Promise<IUserData | { result: false }> => {
+  token: string
+): Promise<IUserData> => {
   try {
-    const userData = await new UserService().getUser(userNickName, token);
+    const userData = await new UserService().myPage(token);
     localStorage.setItem('userData', JSON.stringify(userData));
     return userData;
   } catch (err: Error | any) {
-    console.error(err);
-    return { result: false };
+    throw Error('정보 불러오기 실패');
   }
 };
 
@@ -29,23 +27,20 @@ function* createCrewFetchSaga({
     });
     if (typeof message === 'number') {
       yield put(CreateCrewActions.setCreateCrewStatus('Sucecss'));
-      const { email, crewName, nickName, address, id, crewLeader, reuslt } =
-        yield call(
-          refreshUserDataAndRefreshLocalStorage,
-          payload.token,
-          payload.userNickName
-        );
-      if (reuslt === undefined)
-        yield put(
-          SignInActions.signInSuccess({
-            email,
-            crewName,
-            nickName,
-            address,
-            id,
-            crewLeader,
-          })
-        );
+      const { email, crewName, nickName, address, id, crewLeader } = yield call(
+        refreshUserDataAndRefreshLocalStorage,
+        payload.token
+      );
+      yield put(
+        SignInActions.signInSuccess({
+          email,
+          crewName,
+          nickName,
+          address,
+          id,
+          crewLeader,
+        })
+      );
     }
   } catch {
     yield put(CreateCrewActions.setCreateCrewStatus('Failure'));

@@ -1,6 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { isNull } from 'lodash';
 import { Loading } from '@nextui-org/react';
 import ImageButtons from '../../../../common/components/ImageButtons';
 import useImageDelete from '../../../../common/hooks/useImageDelete';

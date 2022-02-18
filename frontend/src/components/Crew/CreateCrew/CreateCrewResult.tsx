@@ -1,5 +1,5 @@
 import { Loading } from '@nextui-org/react';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import useSwalerts from '../../../common/hooks/useSwalerts';
 import { CreateCrewActions } from '../../../modules/createCrew';

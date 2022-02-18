@@ -1,9 +1,9 @@
-import { Button, Input } from '@nextui-org/react';
-import { FormElement } from '@nextui-org/react/esm/input/input-props';
+import { Button } from '@nextui-org/react';
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { CreateCrewActions } from '../../../modules/createCrew';
-import useCreateCrew, { CreacteCrewActionType } from './hooks/useCreateCrew';
+import CreateCrewAnswer from './CreateCrewAnswer';
+import useCreateCrew from './hooks/useCreateCrew';
 
 interface IProps {
   questionOrder: number;
@@ -21,7 +21,6 @@ const CreateCrewButton: React.FC<IProps> = ({
   setLoading,
 }) => {
   const dispatch = useDispatch();
-
   //* custom Hook
   const {
     reduxCreateCrewState: {
@@ -30,14 +29,12 @@ const CreateCrewButton: React.FC<IProps> = ({
       explanation,
       openChat,
       token,
-      userNickName,
     },
     canCompleteState,
     QUESTION_COUNT,
     goToCrewDetail,
     goToCrewMainPage,
     questionInputValues,
-    ReduxActionNames,
   } = useCreateCrew();
 
   const [canComplete] = canCompleteState;
@@ -50,7 +47,6 @@ const CreateCrewButton: React.FC<IProps> = ({
   }, [questionOrder]);
 
   const moveNextOrComplete = useCallback(() => {
-    console.log(questionOrder);
     if (questionOrder < QUESTION_COUNT)
       setQuestionOrder((previousQuestionOrder) => previousQuestionOrder + 1);
     if (questionOrder === QUESTION_COUNT - 1) {
@@ -61,47 +57,14 @@ const CreateCrewButton: React.FC<IProps> = ({
             crew: { crewName, crewRegion, explanation, openChat },
           },
           token,
-          userNickName,
         })
       );
     }
-  }, [questionOrder]);
-
-  const InputStateToRedux = (
-    e: React.ChangeEvent<FormElement>,
-    actionName: CreacteCrewActionType
-  ) => {
-    dispatch(CreateCrewActions[actionName](e.target.value));
-  };
-
-  const questionOpenChat = () => {
-    if (questionOrder === 3) {
-      if (questionInputValues[questionOrder].includes('https://'))
-        return questionInputValues[questionOrder];
-      return `https://${questionInputValues[questionOrder]}`;
-    }
-    return questionInputValues[questionOrder];
-  };
+  }, [questionOrder, crewName, crewRegion, explanation, openChat]);
 
   return (
     <>
-      {questionOrder !== QUESTION_COUNT && (
-        <div
-          onSubmit={(e) => e.preventDefault}
-          className="w-3/5 text-center mb-10"
-        >
-          <Input
-            type="text"
-            width="80%"
-            className="lg:mb-20"
-            value={questionOpenChat()}
-            onChange={(e) => {
-              InputStateToRedux(e, ReduxActionNames[questionOrder]);
-            }}
-            data-testid="data-input"
-          />
-        </div>
-      )}
+      <CreateCrewAnswer questionOrder={questionOrder} />
       <div>
         <div
           className={`w-full h-32 flex flex-wrap space-x-3 ${

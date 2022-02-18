@@ -11,21 +11,16 @@ import useSwalerts from '../../../common/hooks/useSwalerts';
 const CrewDelete = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { crewName, token, userNickName, deleteFetchState } = useSelector(
-    (state) => ({
-      crewName: state.crew.crewName,
-      token: state.signIn.token,
-      userNickName: state.signIn.userData.nickName,
-      deleteFetchState: state.crew.crewRequestFetch,
-    })
-  );
+  const { crewName, token, deleteFetchState } = useSelector((state) => ({
+    crewName: state.crew.crewName,
+    token: state.signIn.token,
+    deleteFetchState: state.crew.crewRequestFetch,
+  }));
   const [deleteCrewName, setDeleteCrewName] = useState('');
   const { successAlert, errorAlert } = useSwalerts();
 
-  // const { getToken } = useLocalStroeageData();
-
   const deleteCrew = () => {
-    dispatch(crewActions.deleteCrew({ crewName, token, userNickName }));
+    dispatch(crewActions.deleteCrew({ crewName, token }));
   };
 
   useEffect(() => {
