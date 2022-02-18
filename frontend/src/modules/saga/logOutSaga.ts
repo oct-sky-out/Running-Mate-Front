@@ -16,9 +16,10 @@ function* logOutFetchSaga({
     yield call(userService.logOut, payload);
     yield call(deleteLocalUserDataAndToken);
     yield put(SignInActions.logOutSuccess());
-    yield put(SignInActions.setInit());
   } catch (error: any | Error) {
     yield put(SignInActions.logOutFailure());
+  } finally {
+    yield put(SignInActions.setInit());
   }
 }
 
