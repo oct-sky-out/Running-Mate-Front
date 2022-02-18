@@ -77,7 +77,6 @@ const crewSlice = createSlice({
       _action: PayloadAction<{
         crewName: string;
         token: string;
-        userNickName: string;
       }>
     ) => ({
       ...state,
@@ -105,7 +104,6 @@ const crewSlice = createSlice({
       _action: PayloadAction<{
         token: string;
         memberNickName: string;
-        userNickName: string;
       }>
     ) => ({
       ...state,

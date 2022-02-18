@@ -31,10 +31,7 @@ const createCrewSliceReducer = createSlice({
         createCrewStatus: '',
       };
     },
-    newCrew: (
-      state,
-      _action: PayloadAction<CreateCrewType & { userNickName: string }>
-    ) => {
+    newCrew: (state, _action: PayloadAction<CreateCrewType>) => {
       return { ...state, createCrewStatus: 'Fetch' };
     },
     setCrewName: {

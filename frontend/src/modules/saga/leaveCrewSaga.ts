@@ -14,8 +14,7 @@ function* leaveCrewSaga({ payload }: ReturnType<typeof crewActions.leaveCrew>) {
       yield put(crewActions.sucessCrewRequest());
       const { email, crewName, nickName, address, id, crewLeader } = yield call(
         refreshUserDataAndRefreshLocalStorage,
-        payload.token,
-        payload.userNickName
+        payload.token
       );
       yield put(
         SignInActions.signInSuccess({

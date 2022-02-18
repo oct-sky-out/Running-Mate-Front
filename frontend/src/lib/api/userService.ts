@@ -109,24 +109,6 @@ class UserService implements IUserService {
     }
   };
 
-  /*
-   * getMyPgaeData가 필요할 경우는 유저 데이터를 업데이트하는 목적만 있으므로 바로 LocalStorage에 저장한다.
-   * 나중에 필요할 시 수정.
-   */
-  getMyPageData = async (token: string) => {
-    try {
-      const { data } = await axios.get<IUserData>('/user', {
-        headers: {
-          'x-auth-token': token,
-        },
-      });
-      localStorage.setItem('userData', JSON.stringify(data));
-      return data;
-    } catch {
-      return false;
-    }
-  };
-
   getUser = async (userNickName: string, token: string) => {
     try {
       const { data } = await axios.get<IUserData>(`/users/${userNickName}`, {

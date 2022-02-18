@@ -33,7 +33,8 @@ const MyPageInformations: React.FC<Props> = ({ token }) => {
   const changeMyInformation = async () => {
     try {
       await userService.editMyPageData({ nickName, address, token });
-      await userService.getMyPageData(token);
+      const refreshUserData = await userService.myPage(token);
+      localStorage.setItem('userData', JSON.stringify(refreshUserData));
       successToast('회원정보 변경', '회원정보 변경에 성공했습니다!');
     } catch {
       errorToast('회원정보 변경', '회원정보 변경에 실패했습니다.😰');
