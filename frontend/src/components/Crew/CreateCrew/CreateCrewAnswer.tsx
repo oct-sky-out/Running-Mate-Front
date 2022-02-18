@@ -48,8 +48,6 @@ const CreateCrewAnswer: React.FC<IProps> = ({ questionOrder }) => {
     if (questionOrder === Step.CREW_OPENCHAT)
       if (!answer.includes('https://')) return `https://${answer}`;
 
-    console.log('openchat : ', answer);
-
     return answer;
   };
 

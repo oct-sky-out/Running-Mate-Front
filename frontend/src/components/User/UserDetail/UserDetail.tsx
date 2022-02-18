@@ -8,9 +8,6 @@ import { useSelector } from '../../../modules';
 import UserService from '../../../lib/api/userService';
 import CrewWidget from '../../Crew/CrewDetail/CrewWidget';
 import PreviousPageButton from '../../../common/components/PreviousPageButton';
-
-// test data
-import userPageMock from '../../../excuteData/UserPageMock/UserPageMock';
 import FriendButton from './FriendButton';
 import useSwalerts from '../../../common/hooks/useSwalerts';
 

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import S3 from 'aws-sdk/clients/s3';
 import { v4 } from 'uuid';
 
@@ -24,7 +23,6 @@ const useImageUploader = () => {
       const { Location } = await new S3(s3Config).upload(s3Params).promise();
       return Location;
     } catch (error) {
-      console.error(error);
       throw new Error('이미지 저장 실패');
     }
   };

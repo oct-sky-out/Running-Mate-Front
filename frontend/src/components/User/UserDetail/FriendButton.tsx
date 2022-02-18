@@ -33,7 +33,6 @@ const FriendButton: React.FC<IProps> = ({ userNickName }) => {
         await new FriendService().getUserByUserRelation(token, userNickName);
       setFriednRelationResult(friendRelation);
     } catch (err) {
-      console.error(err);
       errorToast('사용자 정보 오류', '사용자 정보 조회를 실패했습니다.😰');
     }
   }, [userNickName]);

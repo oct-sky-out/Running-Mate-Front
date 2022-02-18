@@ -22,7 +22,7 @@ const useSwalerts = () => {
     title: string,
     text: string,
     confirmButtonText: string = '확인',
-    showConfirmButton?: boolean,
+    showConfirmButton: boolean = true,
     timer?: number
   ) =>
     Swal.fire({

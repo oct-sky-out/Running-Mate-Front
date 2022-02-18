@@ -32,8 +32,7 @@ const CrewManagement: React.FC<RouteComponentProps<MatchParam>> = ({
       new CrewService()
         .getCrewDetail(match.params.id)
         .then((data) => dispatch(crewActions.setCrewDetail(data)))
-        .catch((reason) => {
-          console.error(reason);
+        .catch(() => {
           errorToast('데이터 조회 실패', '데이터 조회에 실패했습니다.😰');
         });
   }, []);
