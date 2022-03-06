@@ -65,8 +65,8 @@ const ViewNoticeBody: React.FC<IProps> = ({ boardId }) => {
   return (
     <div className="px-4 sm:px-0">
       <div className="grid grid-cols-1 gap-10 mb-20">
-        <div className="flex justify-center mb-4 ">
-          {image && <img src={image} alt="map" className="max:w-2/5" />}
+        <div className="flex justify-center mb-4 w-full ">
+          {image && <img src={image} alt="map" className="w-full md:w-1/2" />}
         </div>
         <p
           className="w-full text-base md:text-xl break-words px-10"
